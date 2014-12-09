@@ -17,3 +17,18 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import sys
+
+
+def main(argv):
+    try:
+        cd3_file_path = argv[0]
+    except IndexError:
+        print("A CD3-file must be specified.")
+        sys.exit()
+
+    print(cd3_file_path)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
