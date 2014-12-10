@@ -17,3 +17,14 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import floodestimation as fe
+import jinja2 as jj
+
+
+class Analysis(object):
+    def __init__(self, cd3_file_path):
+        self.cd3_file_path = cd3_file_path
+
+
+class Report(object):
+    pass
