@@ -1,25 +1,25 @@
 # Flood Estimation Report
 
-Date: 10/12/2014
+Date: {{ report_date|default(None)|dateformat }}
 
-River: River Dee  
-Location: Aberdeen  
+River: {{ catchment.watercourse|default("Unnamed") }}
+Location: {{ catchment.location|default("Unknown") }}
 
-Catchment outlet: 123456, 789123  
-Catchment centre: 123456, 789123  
+Catchment outlet: {{ catchment.point.x }}, {{ catchment.point.y }}  
+Catchment centre: {{ catchment.descriptors.centroid_ngr.x }}, {{ catchment.descriptors.centroid_ngr.y }}    
 
 Catchment descriptors:
 
-Descriptor   |      Value | Descriptor  |      Value | Descriptor  |       Value 
+Descriptor   |      Value | Descriptor  |      Value | Descriptor  |      Value 
 :------------|-----------:|:------------|-----------:|:------------|-----------:
-DTM AREA     |    416.56  | FPEXT       |     0.1009 | SPRHOST     |     34.62    
-ALTBAR       |    151     | LDP         |    48.74   | URBCONC1990 |      0.754 
-ASPBAR       |    123     | PROPWET     |     0.45   | URBEXT1990  |      0.0173   
-ASPVAR       |      0.22  | RMED-1H     |     8.8    | URBLOC1990  |      0.738        
-BFIHOST      |      0.511 | RMED-1D     |    35.5    | URBCONC2000 |      0.830   
-DPLBAR       |     26.93  | RMED-2D     |    47.1    | URBEXT2000  |      0.0361    
-DPSBAR       |     62.9   | SAAR        |   947      | URBLOC2000  |      0.702 
-FARL         |      0.824 | SAAR4170    |   951    
+AREA         |{{ catchment.descriptors.dtm_area|floatformat(2) }}| FPEXT       |{{ catchment.descriptors.fpext|floatformat(4) }}| SPRHOST     |{{ catchment.descriptors.sprhost|floatformat(2) }}
+ALTBAR       |{{ catchment.descriptors.altbar|floatformat(0) }}| LDP         |{{ catchment.descriptors.ldp|floatformat(2) }}| URBCONC1990 |{{ catchment.descriptors.urbconc1990|floatformat(3) }}
+ASPBAR       |{{ catchment.descriptors.aspbar|floatformat(0) }}| PROPWET     |{{ catchment.descriptors.propwet|floatformat(2) }}| URBEXT1990  |{{ catchment.descriptors.urbext1990|floatformat(4) }}
+ASPVAR       |{{ catchment.descriptors.aspvar|floatformat(2) }}| RMED-1H     |{{ catchment.descriptors.rmed_1h|floatformat(1) }}| URBLOC1990  |{{ catchment.descriptors.urbloc1990|floatformat(3) }}
+BFIHOST      |{{ catchment.descriptors.bfihost|floatformat(3) }}| RMED-1D     |{{ catchment.descriptors.rmed_1d|floatformat(1) }}| URBCONC2000 |{{ catchment.descriptors.urbconc2000|floatformat(3) }}
+DPLBAR       |{{ catchment.descriptors.dplbar|floatformat(2) }}| RMED-2D     |{{ catchment.descriptors.rmed_2d|floatformat(1) }}| URBEXT2000  |{{ catchment.descriptors.urbext2000|floatformat(4) }}
+DPSBAR       |{{ catchment.descriptors.dpsbar|floatformat(1) }}| SAAR        |{{ catchment.descriptors.saar|floatformat(0) }}| URBLOC2000  |{{ catchment.descriptors.urbloc2000|floatformat(3) }}
+FARL         |{{ catchment.descriptors.farl|floatformat(3) }}| SAAR4170    |{{ catchment.descriptors.saar4170|floatformat(0) }}
 
 ## Median annual flood (QMED) 
                   
@@ -46,16 +46,16 @@ Donor river | Donor location | Similarity distance | L-variance | Weight | L-ske
 River Don   | Bridge of Don  |                  23 |       1.23 |   0.61 |   0.12 |   0.45
 
 Heterogeneity measure (H2): 2.3  
-Interpretation: possibly heterogeneous
-Weighted L-variance: 1.23
+Interpretation: possibly heterogeneous  
+Weighted L-variance: 1.23  
 Weighted L-skew: 0.12
 
 Probability distribution:
 
 Selection: best fitting  
 Name: generalised extreme value  
-Parameters:
-Goodness of fit:
+Parameters:  
+Goodness of fit:  
 
 Flood frequency curve:
 
