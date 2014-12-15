@@ -50,21 +50,20 @@ class Analysis(object):
 
     def run_qmed_analysis(self):
         results = {}
-        analysis = QmedAnalysis(self.catchment, self.gauged_catchments)
-        qmed = {}
-        qmed['descr_rural'] = analysis.qmed(method='descriptors', as_rural=True, donor_catchments=[])
-        qmed['descr_urban'] = analysis.qmed(method='descriptors', donor_catchments=[])
-        donors = analysis.find_donor_catchments()
-        results['donors'] = donors
-        qmed['adjusted'] = analysis.qmed(method='descriptors', donor_catchments=donors)
 
+        analysis = QmedAnalysis(self.catchment, self.gauged_catchments, results_log=results)
+        qmed = analysis.qmed(method='descriptors')
+
+        results = analysis.results_log
         results['qmed'] = qmed
-        self.results['qmed'] = results  # e.g. qmed.qmed.adjusted
+
+        self.results['qmed'] = results
 
     def run_growthcurve(self):
         results = {}
         results['distribution_selection'] = "manual"
         results['distribution_name'] = "Generalised Logistic"
+
         self.results['gc'] = results
 
     def create_report(self):
