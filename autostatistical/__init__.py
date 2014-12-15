@@ -88,7 +88,8 @@ class Report(object):
 
     def save(self, to_folder):
         date_str = date.today().isoformat()
-        file_path = os.path.join(to_folder, '{}.{}{}'.format(self.name, date_str, self.template_extension))
+        file_path = os.path.join(to_folder, '{}.Flood estimation report.{}{}'.
+                                 format(self.name, date_str, self.template_extension))
         content = self._get_content()
         try:
             with open(file_path, 'w', encoding='utf-8') as f:
