@@ -17,12 +17,14 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import floodestimation as fe
-from floodestimation.loaders import load_catchment
 import jinja2 as jj
-import jinja2.exceptions
 import os.path
+import math
 from datetime import date
+from floodestimation.loaders import load_catchment
+from floodestimation import db
+from floodestimation.collections import CatchmentCollections
+from floodestimation.analysis import QmedAnalysis, GrowthCurveAnalysis
 
 
 class Analysis(object):
@@ -33,12 +35,37 @@ class Analysis(object):
         self.results = {'report_date': date.today()}
         self.catchment = load_catchment(cd3_file_path)
         self.results['catchment'] = self.catchment
+        self.db_session = db.Session()
+        self.gauged_catchments = CatchmentCollections(self.db_session)
+
+    def finish(self):
+        self.db_session.close()
 
     def run(self):
-        self.run_qmed_analysis()
+        try:
+            self.run_qmed_analysis()
+            self.run_growthcurve()
+        finally:
+            self.finish()
 
     def run_qmed_analysis(self):
-        self.results['qmed_adjusted'] = '1.2'
+        results = {}
+        analysis = QmedAnalysis(self.catchment, self.gauged_catchments)
+        qmed = {}
+        qmed['descr_rural'] = analysis.qmed(method='descriptors', as_rural=True, donor_catchments=[])
+        qmed['descr_urban'] = analysis.qmed(method='descriptors', donor_catchments=[])
+        donors = analysis.find_donor_catchments()
+        results['donors'] = donors
+        qmed['adjusted'] = analysis.qmed(method='descriptors', donor_catchments=donors)
+
+        results['qmed'] = qmed
+        self.results['qmed'] = results  # e.g. qmed.qmed.adjusted
+
+    def run_growthcurve(self):
+        results = {}
+        results['distribution_selection'] = "manual"
+        results['distribution_name'] = "Generalised Logistic"
+        self.results['gc'] = results
 
     def create_report(self):
         rep = Report(self.name, self.results, template_name='plain.md')
@@ -78,9 +105,11 @@ class Report(object):
 class TemplateEnvironment(jj.Environment):
     def __init__(self):
         jj.Environment.__init__(self)
+        self.trim_blocks = True
         self.loader = jj.PackageLoader('autostatistical', 'templates')
         self.filters['dateformat'] = self.dateformat
-        self.filters['floatformat'] = self.floatformat
+        self.filters['floatcolumn'] = self.floatcolumn
+        self.filters['strcolumn'] = self.strcolumn
 
     @staticmethod
     def dateformat(value, format='%d/%m/%Y'):
@@ -90,10 +119,16 @@ class TemplateEnvironment(jj.Environment):
             return ""
 
     @staticmethod
-    def floatformat(value, decimals=3):
-        width = 7 + decimals
+    def floatcolumn(value, decimals=3, width=12, sep_pos=None):
+        if not sep_pos:
+            sep_pos = math.ceil(width /2)
+        number_width = sep_pos + decimals
         if decimals == 0:
-            width -= 1
-        padding = ' ' * (12 - width)  # right-hand padding: non-breaking space
+            number_width -= 1
+        padding = ' ' * (width - number_width)  # right-hand padding: non-breaking space
         return "{value:>{width}.{decimals}f}{padding}". \
-            format(value=value, width=width, decimals=decimals, padding=padding)
+            format(value=value, width=number_width, decimals=decimals, padding=padding)
+
+    @staticmethod
+    def strcolumn(value, width=25):
+        return "{value:<{width}s}".format(value=value, width=width)

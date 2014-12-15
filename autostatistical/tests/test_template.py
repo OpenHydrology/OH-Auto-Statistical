@@ -57,4 +57,5 @@ class TestAnalysis(unittest.TestCase):
 
     def test_results(self):
         analysis = astat.Analysis('./autostatistical/tests/data/17002.CD3')
+        analysis.run()
         analysis.create_report()

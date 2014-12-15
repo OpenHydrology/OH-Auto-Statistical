@@ -15,7 +15,7 @@ before_install:
 
 install:
 - conda install --yes python=$TRAVIS_PYTHON_VERSION pip numpy scipy nose
-- pip install lmoments3 floodestimation
+- pip install lmoments3 floodestimation jinja2
 - python setup.py install
  
 script:
