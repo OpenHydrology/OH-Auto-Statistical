@@ -52,17 +52,29 @@ class Analysis(object):
         results = {}
 
         analysis = QmedAnalysis(self.catchment, self.gauged_catchments, results_log=results)
-        qmed = analysis.qmed(method='descriptors')
+        self.qmed = analysis.qmed(method='descriptors')
 
         results = analysis.results_log
-        results['qmed'] = qmed
+        results['qmed'] = self.qmed
 
         self.results['qmed'] = results
 
     def run_growthcurve(self):
         results = {}
+
+        analysis = GrowthCurveAnalysis(self.catchment, self.gauged_catchments, results_log=results)
+        gc = analysis.growth_curve()
+        results = analysis.results_log
+
+        aeps = [0.5, 0.2, 0.1, 0.05, 0.03333, 0.02, 0.01333, 0.01, 0.005, 0.002, 0.001]
+        growth_factors = gc(aeps)
+        flows = growth_factors * self.qmed
+
         results['distribution_selection'] = "manual"
         results['distribution_name'] = "Generalised Logistic"
+        results['aeps'] = aeps
+        results['growth_factors'] = growth_factors
+        results['flows'] = flows
 
         self.results['gc'] = results
 

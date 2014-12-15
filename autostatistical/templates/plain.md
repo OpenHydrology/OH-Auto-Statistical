@@ -64,18 +64,6 @@ Flood frequency curve:
 
 AEP (%) | Growth factor | Flow (m³/s)
 -------:|--------------:|-----------:
-   50   |           1.0 |         1.6
-
-
-
-
-
-
-
-
-
- 
- 
-
-
-
+{% for aep in gc.aeps %}
+{{ (aep * 100)|floatcolumn(1, 8, 6) }}|{{ gc.growth_factors[loop.index0]|floatcolumn(2, 15, 12) }}|{{ gc.flows[loop.index0]|floatcolumn(1, 12, 11) }}
+{% endfor %}
