@@ -37,6 +37,7 @@ class Analysis(object):
         self.results['catchment'] = self.catchment
         self.db_session = db.Session()
         self.gauged_catchments = CatchmentCollections(self.db_session)
+        self.qmed = None
 
     def finish(self):
         self.db_session.close()
@@ -54,9 +55,7 @@ class Analysis(object):
         analysis = QmedAnalysis(self.catchment, self.gauged_catchments, results_log=results)
         self.qmed = analysis.qmed(method='descriptors')
 
-        results = analysis.results_log
         results['qmed'] = self.qmed
-
         self.results['qmed'] = results
 
     def run_growthcurve(self):
@@ -64,7 +63,6 @@ class Analysis(object):
 
         analysis = GrowthCurveAnalysis(self.catchment, self.gauged_catchments, results_log=results)
         gc = analysis.growth_curve()
-        results = analysis.results_log
 
         aeps = [0.5, 0.2, 0.1, 0.05, 0.03333, 0.02, 0.01333, 0.01, 0.005, 0.002, 0.001]
         growth_factors = gc(aeps)
@@ -75,7 +73,6 @@ class Analysis(object):
         results['aeps'] = aeps
         results['growth_factors'] = growth_factors
         results['flows'] = flows
-
         self.results['gc'] = results
 
     def create_report(self):

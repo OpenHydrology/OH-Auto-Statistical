@@ -2,7 +2,7 @@
 
 Date: {{ report_date|default(None)|dateformat }}
 
-River: {{ catchment.watercourse|default("Unnamed") }}
+River: {{ catchment.watercourse|default("Unnamed") }}  
 Location: {{ catchment.location|default("Unknown") }}
 
 Catchment outlet: {{ catchment.point.x }}, {{ catchment.point.y }}  
