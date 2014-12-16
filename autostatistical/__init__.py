@@ -117,6 +117,7 @@ class TemplateEnvironment(jj.Environment):
         self.filters['dateformat'] = self.dateformat
         self.filters['round'] = self.round
         self.filters['floatcolumn'] = self.floatcolumn
+        self.filters['intcolumn'] = self.intcolumn
         self.filters['strcolumn'] = self.strcolumn
 
     @staticmethod
@@ -140,9 +141,16 @@ class TemplateEnvironment(jj.Environment):
         number_width = sep_pos + decimals
         if decimals == 0:
             number_width -= 1
-        padding = ' ' * (width - number_width)  # right-hand padding: non-breaking space
+            padding = ' ' + ' ' * (width - number_width - 1)  # punctuation space followed by figure spaces
+        else:
+            padding = ' ' * (width - number_width)  # figure spaces
+
         return "{value:>{width}.{decimals}f}{padding}". \
             format(value=value, width=number_width, decimals=decimals, padding=padding)
+
+    @staticmethod
+    def intcolumn(value, width=12):
+        return "{value:>{width}.0f}".format(value=value, width=width)
 
     @staticmethod
     def strcolumn(value, width=25):
