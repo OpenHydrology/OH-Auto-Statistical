@@ -68,8 +68,6 @@ class Analysis(object):
         growth_factors = gc(aeps)
         flows = growth_factors * self.qmed
 
-        results['distribution_selection'] = "manual"
-        results['distribution_name'] = "Generalised Logistic"
         results['aeps'] = aeps
         results['growth_factors'] = growth_factors
         results['flows'] = flows
@@ -117,6 +115,7 @@ class TemplateEnvironment(jj.Environment):
         self.trim_blocks = True
         self.loader = jj.PackageLoader('autostatistical', 'templates')
         self.filters['dateformat'] = self.dateformat
+        self.filters['round'] = self.round
         self.filters['floatcolumn'] = self.floatcolumn
         self.filters['strcolumn'] = self.strcolumn
 
@@ -126,6 +125,13 @@ class TemplateEnvironment(jj.Environment):
             return value.strftime(format)
         except AttributeError:
             return ""
+
+    @staticmethod
+    def round(value, decimals=2):
+        """
+        Override the default jinja round filter as it drops decimals.
+        """
+        return "{value:.{decimals}f}".format(value=value, decimals=decimals)
 
     @staticmethod
     def floatcolumn(value, decimals=3, width=12, sep_pos=None):
