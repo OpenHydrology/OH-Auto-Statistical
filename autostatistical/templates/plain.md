@@ -30,9 +30,9 @@ QMED, urban: {{ qmed.qmed_descr_urban|round(1) }} m³/s
 QMED donor catchments:
 
 Donor river         | Donor location                 | Distance (km)| Adjustment factor | Weight
-:-------------------|:-------------------------------|-------------:|------------------:|-------:
+:-------------------|:-------------------------------|-------------:|------------------:|------:
 {% for d in qmed.donors %}
-{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} |{{ d.dist|floatcolumn(0, 14, 14) }}|{{ d.factor|floatcolumn(2, 19, 16) }}|{{ d.weight|floatcolumn(2, 8, 5) }}
+{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} |{{ d.dist|floatcolumn(0, 14, 14) }}|{{ d.factor|floatcolumn(2, 19, 16) }}|{{ d.weight|floatcolumn(2, 7, 5) }}
 {% endfor %}
 Total/weighted avg. |                                |              |{{ qmed.donor_adj_factor|floatcolumn(2, 19, 16) }}|   1.00
 
@@ -45,9 +45,9 @@ Analysis type: ungauged, pooling group
 Growth curve donor catchments (pooling group):
 
 Donor river         | Donor location                 | Sim. dist. | Rec. length | L-variance | Weight | L-skew | Weight
-:-------------------|:-------------------------------|-----------:|------------:|-----------:|-------:|-------:|-------:
+:-------------------|:-------------------------------|-----------:|------------:|-----------:|-------:|-------:|------:
 {% for d in gc.donors %}
-{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} |{{ d.similarity_dist|floatcolumn(2, 12, 9) }}|{{ d.record_length|floatcolumn(0, 13, 13) }}|{{ d.l_cv|floatcolumn(2, 12, 9) }}|{{ d.l_cv_weight|floatcolumn(2, 8, 5) }}|{{ d.l_skew|floatcolumn(2, 8, 5) }}|{{ d.l_skew_weight|floatcolumn(2, 8, 5) }}
+{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} |{{ d.similarity_dist|floatcolumn(2, 12, 9) }}|{{ d.record_length|floatcolumn(0, 13, 13) }}|{{ d.l_cv|floatcolumn(2, 12, 9) }}|{{ d.l_cv_weight|floatcolumn(2, 8, 5) }}|{{ d.l_skew|floatcolumn(2, 8, 5) }}|{{ d.l_skew_weight|floatcolumn(2, 7, 5) }}
 {% endfor %}
 Total/weighted avg. |                                |            |{{ gc.donors_record_length|floatcolumn(0, 13, 13) }}|{{ gc.l_cv|floatcolumn(2, 12, 9) }}|   1.00 |{{ gc.l_skew|floatcolumn(2, 8, 5) }}|   1.00
 
