@@ -116,7 +116,9 @@ class TemplateEnvironment(jj.Environment):
         self.loader = jj.PackageLoader('autostatistical', 'templates')
         self.filters['dateformat'] = self.dateformat
         self.filters['round'] = self.round
+        self.filters['signif'] = self.signif
         self.filters['floatcolumn'] = self.floatcolumn
+        self.filters['signifcolumn'] = self.signifcolumn
         self.filters['intcolumn'] = self.intcolumn
         self.filters['strcolumn'] = self.strcolumn
 
@@ -147,6 +149,20 @@ class TemplateEnvironment(jj.Environment):
 
         return "{value:>{width}.{decimals}f}{padding}". \
             format(value=value, width=number_width, decimals=decimals, padding=padding)
+
+    @staticmethod
+    def signif(value, significance=2):
+        order = math.floor(math.log10(value))
+        decimals = max(0, significance - order - 1)
+        rounded_value = round(value, significance - order - 1)
+        return "{value:.{decimals}f}".format(value=rounded_value, decimals=decimals)
+
+    @staticmethod
+    def signifcolumn(value, significance=2, width=12, sep_pos=None):
+        order = math.floor(math.log10(value))
+        decimals = max(0, significance - order - 1)
+        rounded_value = round(value, significance - order - 1)
+        return TemplateEnvironment.floatcolumn(rounded_value, decimals, width, sep_pos)
 
     @staticmethod
     def intcolumn(value, width=12):

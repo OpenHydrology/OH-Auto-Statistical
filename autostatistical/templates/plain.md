@@ -22,10 +22,10 @@ DPSBAR       | {{ catchment.descriptors.dpsbar|floatcolumn(1, 10, 6) }} | SAAR  
 FARL         | {{ catchment.descriptors.farl|floatcolumn(3, 10, 6) }} | SAAR4170    | {{ catchment.descriptors.saar4170|floatcolumn(0, 10, 6) }}
 
 ## Median annual flood (QMED) 
-                  
-QMED, rural: {{ qmed.qmed_descr_rural|round(1) }} m³/s  
+
+QMED, rural: {{ qmed.qmed_descr_rural|signif(2) }} m³/s  
 Urban adjustment factor: {{ qmed.urban_adj_factor|round(2) }}   
-QMED, urban: {{ qmed.qmed_descr_urban|round(1) }} m³/s
+QMED, urban: {{ qmed.qmed_descr_urban|signif(2) }} m³/s
 
 QMED donor catchments:
 
@@ -36,7 +36,7 @@ Donor river         | Donor location                 | Distance (km)| Adjustment
 {% endfor %}
 Total/weighted avg. |                                |              | {{ qmed.donor_adj_factor|floatcolumn(2, 17) }} |   1.00
 
-QMED, adjusted: {{ qmed.qmed|round(1) }} m³/s
+QMED, adjusted: {{ qmed.qmed|signif(2) }} m³/s
 
 ## Growth curve
 
@@ -66,5 +66,5 @@ Flood frequency curve:
 AEP (%) | Growth factor | Flow (m³/s)
 -------:|--------------:|-----------:
 {% for aep in gc.aeps %}
-{{ (aep * 100)|floatcolumn(1, 7) }} | {{ gc.growth_factors[loop.index0]|floatcolumn(2, 13) }} | {{ gc.flows[loop.index0]|floatcolumn(1, 11) }}
+{{ (aep * 100)|floatcolumn(1, 7) }} | {{ gc.growth_factors[loop.index0]|floatcolumn(1, 13) }} | {{ gc.flows[loop.index0]|signifcolumn(2, 11, 10) }}
 {% endfor %}
