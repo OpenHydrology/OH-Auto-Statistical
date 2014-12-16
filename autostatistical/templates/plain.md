@@ -32,9 +32,9 @@ QMED donor catchments:
 Donor river         | Donor location                 | Distance (km)| Adjustment factor | Weight
 :-------------------|:-------------------------------|-------------:|------------------:|------:
 {% for d in qmed.donors %}
-{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.dist|intcolumn(12) }} | {{ d.factor|floatcolumn(2, 17, 15) }} | {{ d.weight|floatcolumn(2, 6, 4) }}
+{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.dist|intcolumn(12) }} | {{ d.factor|floatcolumn(2, 17) }} | {{ d.weight|floatcolumn(2, 6) }}
 {% endfor %}
-Total/weighted avg. |                                |              |{{ qmed.donor_adj_factor|floatcolumn(2, 19, 16) }}|   1.00
+Total/weighted avg. |                                |              | {{ qmed.donor_adj_factor|floatcolumn(2, 17) }} |   1.00
 
 QMED, adjusted: {{ qmed.qmed|round(1) }} m³/s
 
@@ -47,9 +47,9 @@ Growth curve donor catchments (pooling group):
 Donor river         | Donor location                 | Sim. dist. | Rec. length | L-variance | Weight | L-skew | Weight
 :-------------------|:-------------------------------|-----------:|------------:|-----------:|-------:|-------:|------:
 {% for d in gc.donors %}
-{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.similarity_dist|floatcolumn(2, 10, 8) }} | {{ d.record_length|intcolumn(11) }} | {{ d.l_cv|floatcolumn(2, 10, 8) }} | {{ d.l_cv_weight|floatcolumn(2, 6, 4) }} | {{ d.l_skew|floatcolumn(2, 6, 4) }} | {{ d.l_skew_weight|floatcolumn(2, 6, 4) }}
+{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.similarity_dist|floatcolumn(2, 10) }} | {{ d.record_length|intcolumn(11) }} | {{ d.l_cv|floatcolumn(2, 10) }} | {{ d.l_cv_weight|floatcolumn(2, 6) }} | {{ d.l_skew|floatcolumn(2, 6) }} | {{ d.l_skew_weight|floatcolumn(2, 6) }}
 {% endfor %}
-Total/weighted avg. |                                |            | {{ gc.donors_record_length|intcolumn(11) }} | {{ gc.l_cv|floatcolumn(2, 10, 8) }} |   1.00 | {{ gc.l_skew|floatcolumn(2, 6, 4) }} |   1.00
+Total/weighted avg. |                                |            | {{ gc.donors_record_length|intcolumn(11) }} | {{ gc.l_cv|floatcolumn(2, 10) }} |   1.00 | {{ gc.l_skew|floatcolumn(2, 6) }} |   1.00
 
 Heterogeneity measure (H2): {{ gc.heterogeneity }}  
 Interpretation: {{ gc.heterogeneity_text }}  
@@ -66,5 +66,5 @@ Flood frequency curve:
 AEP (%) | Growth factor | Flow (m³/s)
 -------:|--------------:|-----------:
 {% for aep in gc.aeps %}
-{{ (aep * 100)|floatcolumn(1, 8, 6) }}|{{ gc.growth_factors[loop.index0]|floatcolumn(2, 15, 12) }}|{{ gc.flows[loop.index0]|floatcolumn(1, 12, 11) }}
+{{ (aep * 100)|floatcolumn(1, 7) }} | {{ gc.growth_factors[loop.index0]|floatcolumn(2, 13) }} | {{ gc.flows[loop.index0]|floatcolumn(1, 11) }}
 {% endfor %}

@@ -137,7 +137,7 @@ class TemplateEnvironment(jj.Environment):
     @staticmethod
     def floatcolumn(value, decimals=3, width=12, sep_pos=None):
         if not sep_pos:
-            sep_pos = math.ceil(width /2)
+            sep_pos = width - decimals
         number_width = sep_pos + decimals
         if decimals == 0:
             number_width -= 1
