@@ -18,6 +18,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import jinja2 as jj
+import jinja2.exceptions
 import os.path
 import math
 from datetime import date
@@ -134,7 +135,10 @@ class TemplateEnvironment(jj.Environment):
         """
         Override the default jinja round filter as it drops decimals.
         """
-        return "{value:.{decimals}f}".format(value=value, decimals=decimals)
+        try:
+            return "{value:.{decimals}f}".format(value=value, decimals=decimals)
+        except ValueError:
+            return ""
 
     @staticmethod
     def floatcolumn(value, decimals=3, width=12, sep_pos=None):
@@ -146,16 +150,21 @@ class TemplateEnvironment(jj.Environment):
             padding = ' ' + ' ' * (width - number_width - 1)  # punctuation space followed by figure spaces
         else:
             padding = ' ' * (width - number_width)  # figure spaces
-
-        return "{value:>{width}.{decimals}f}{padding}". \
-            format(value=value, width=number_width, decimals=decimals, padding=padding)
+        try:
+            return "{value:>{width}.{decimals}f}{padding}". \
+                format(value=value, width=number_width, decimals=decimals, padding=padding)
+        except ValueError:
+            return ""
 
     @staticmethod
     def signif(value, significance=2):
-        order = math.floor(math.log10(value))
-        decimals = max(0, significance - order - 1)
-        rounded_value = round(value, significance - order - 1)
-        return "{value:.{decimals}f}".format(value=rounded_value, decimals=decimals)
+        try:
+            order = math.floor(math.log10(value))
+            decimals = max(0, significance - order - 1)
+            rounded_value = round(value, significance - order - 1)
+            return "{value:.{decimals}f}".format(value=rounded_value, decimals=decimals)
+        except (ValueError, jinja2.exceptions.UndefinedError):
+            return ""
 
     @staticmethod
     def signifcolumn(value, significance=2, width=12, sep_pos=None):
@@ -166,7 +175,10 @@ class TemplateEnvironment(jj.Environment):
 
     @staticmethod
     def intcolumn(value, width=12):
-        return "{value:>{width}.0f}".format(value=value, width=width)
+        try:
+            return "{value:>{width}.0f}".format(value=value, width=width)
+        except:
+            ValueError
 
     @staticmethod
     def strcolumn(value, width=25):
