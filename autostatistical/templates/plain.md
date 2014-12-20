@@ -64,3 +64,9 @@ AEP (%) | Growth factor | Flow (m³/s)
 {% for aep in gc.aeps %}
 {{ (aep * 100)|floatcolumn(1, 7) }} | {{ gc.growth_factors[loop.index0]|floatcolumn(1, 13) }} | {{ gc.flows[loop.index0]|signifcolumn(2, 11, 10) }}
 {% endfor %}
+
+
+Report created using OH Auto Statistical (open-hydrology.org). OH Auto Statistical is open source software implementing 
+the Flood Estimation Handbook statistical method.
+
+© Copyright 2014‒{{ report_date|default(None)|dateformat('%Y') }} Open Hydrology contributors.
