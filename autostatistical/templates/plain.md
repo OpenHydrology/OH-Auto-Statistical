@@ -51,15 +51,11 @@ Donor river         | Donor location                 | Sim. dist. | Rec. length 
 {% endfor %}
 Total/weighted avg. |                                |            | {{ gc.donors_record_length|intcolumn(11) }} | {{ gc.l_cv|floatcolumn(2, 10) }} |   1.00 | {{ gc.l_skew|floatcolumn(2, 6) }} |   1.00
 
-Heterogeneity measure (H2): {{ gc.heterogeneity }}  
-Interpretation: {{ gc.heterogeneity_text }}  
-
 Probability distribution:
 
 Selection: manual  
 Name: {{ gc.distr_name }}  
 Parameters: {{ gc.distr_params['loc']|round(2) }}, {{ gc.distr_params['scale']|round(2) }}, {{ gc.distr_params['c']|round(2) if gc.distr_params['c'] else gc.distr_params['k']|round(2)}}  
-Goodness of fit:  {{ gc.distr_fit }}
 
 Flood frequency curve:
 
