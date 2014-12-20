@@ -18,6 +18,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import sys
+from . import Analysis
 
 
 def main(argv):
@@ -27,7 +28,9 @@ def main(argv):
         print("A CD3-file must be specified.")
         sys.exit()
 
-    print(cd3_file_path)
+    analysis = Analysis(cd3_file_path)
+    analysis.run()
+    analysis.create_report()
 
 
 if __name__ == "__main__":
