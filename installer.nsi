@@ -13,7 +13,7 @@ Page components
 Page instfiles
 
 
-Section "Miniconda"
+Section "Miniconda Python package manager"
   SetOutPath "$TEMP\Miniconda"
   File "Miniconda3-3.7.0-Windows-x86_64.exe"
 
@@ -45,7 +45,9 @@ Section "Miniconda"
 SectionEnd
 
 
-Section "Virtual environment"
+Section "Python virtual environment"
+
+  ; Create virtual environment with conda and install packages
   SetOutPath $INSTDIR
   DetailPrint 'Execute: conda create -y -p "$INSTDIR\ohvenv" python pip numpy scipy sqlalchemy Jinja2'
   ${StdUtils.ExecShellWaitEx} $0 $1 "conda" "" 'create -y -p "$INSTDIR\ohvenv" python pip numpy scipy sqlalchemy Jinja2'
@@ -70,6 +72,7 @@ Section "Virtual environment"
 
   WaitDone1:
 
+  ; Install remaining packages with `pip`
   SetOutPath $INSTDIR\ohvenv\Scripts
   DetailPrint "Execute: pip install autostatistical"
   ${StdUtils.ExecShellWaitEx} $0 $1 "pip" "" "install autostatistical"
@@ -96,7 +99,8 @@ Section "Virtual environment"
 
 SectionEnd
 
-Section "Shortcuts"
+Section "Start and context menu items"
+  ; Context menu: right-click "Create OH Auto Statistical report"
   WriteRegStr HKCR ".cd3" "" "OH.CD3"
   WriteRegStr HKCR ".cd3" "PerceivedType" "text"
   WriteRegStr HKCR "OH.CD3" "" "Catchment descriptors file"
@@ -105,7 +109,12 @@ Section "Shortcuts"
     WriteRegStr HKCR "OH.CD3\shell" "" "open"
     WriteRegStr HKCR "OH.CD3\shell\open\command" "" 'notepad.exe "%1"'
   ${EndIf}
-  WriteRegStr HKCR "OH.CD3\shell\run" "" "Create flood estimation report"
+  WriteRegStr HKCR "OH.CD3\shell\run" "" "Create OH Auto Statistical report"
   WriteRegStr HKCR "OH.CD3\shell\run\command" "" '"$INSTDIR\ohvenv\python.exe" -m autostatistical "%1"'
+
+  ; Start menu: link to online documentation
+  SetOutPath "$SMPROGRAMS\Open Hydrology\OH Auto Statistical"
+  File "docs\source\*.url"
+
 
 SectionEnd
