@@ -1,5 +1,6 @@
 !include StdUtils.nsh  ; http://nsis.sourceforge.net/StdUtils_plug-in
 ; Requires AccessControl plugin http://nsis.sourceforge.net/AccessControl_plug-in
+!include "LogicLib.nsh"
 
 Name "OH Auto Statistical"
 caption "OH Auto Statistical"
@@ -46,8 +47,8 @@ SectionEnd
 
 Section "Virtual environment"
   SetOutPath $INSTDIR
-  DetailPrint 'Execute: conda create -y -p "$INSTDIR\ohvenv" python pip numpy scipy sqlalchemy'
-  ${StdUtils.ExecShellWaitEx} $0 $1 "conda" "" 'create -y -p "$INSTDIR\ohvenv" python pip numpy scipy sqlalchemy'
+  DetailPrint 'Execute: conda create -y -p "$INSTDIR\ohvenv" python pip numpy scipy sqlalchemy Jinja2'
+  ${StdUtils.ExecShellWaitEx} $0 $1 "conda" "" 'create -y -p "$INSTDIR\ohvenv" python pip numpy scipy sqlalchemy Jinja2'
 
   StrCmp $0 "error" ExecFailed1
   StrCmp $0 "no_wait" WaitNotPossible1
@@ -96,5 +97,15 @@ Section "Virtual environment"
 SectionEnd
 
 Section "Shortcuts"
+  WriteRegStr HKCR ".cd3" "" "OH.CD3"
+  WriteRegStr HKCR ".cd3" "PerceivedType" "text"
+  WriteRegStr HKCR "OH.CD3" "" "Catchment descriptors file"
+  ReadRegStr $R0 HKCR "OH.CD3\shell\open\command" ""
+  ${If} $R0 == ""
+    WriteRegStr HKCR "OH.CD3\shell" "" "open"
+    WriteRegStr HKCR "OH.CD3\shell\open\command" "" 'notepad.exe "%1"'
+  ${EndIf}
+  WriteRegStr HKCR "OH.CD3\shell\run" "" "Create flood estimation report"
+  WriteRegStr HKCR "OH.CD3\shell\run\command" "" '"$INSTDIR\ohvenv\python.exe" -m autostatistical "%1"'
 
 SectionEnd
