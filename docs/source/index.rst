@@ -9,7 +9,7 @@ Contents:
    :maxdepth: 2
 
    installation
-   usage
+   run
 
 
 

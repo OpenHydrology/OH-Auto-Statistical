@@ -1,6 +1,0 @@
-md "C:\Program Files\Open Hydrology\OH Auto Statistical\"
-cd "C:\Program Files\Open Hydrology\OH Auto Statistical\"
-conda create -p "C:\Program Files\Open Hydrology\OH Auto Statistical\ohvenv"
-conda install -p ohvenv -y pip numpy scipy sqlalchemy
-cd "ohvenv\Scripts"
-pip install floodestimation
