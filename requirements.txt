@@ -1,2 +1,7 @@
-floodestimation>=0.1.3
+numpy
+scipy
+sqlalchemy
+appdirs
 jinja2
+lmoments3>=1.0.1
+floodestimation>=0.1.3
