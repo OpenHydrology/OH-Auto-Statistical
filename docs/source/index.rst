@@ -1,10 +1,15 @@
-OH Auto Statistical documentation
-=================================
+OH Auto Statistical
+===================
+
+Fully automated flood estimation for UK catchments using the Flood Estimation Handbook Statistical Method.
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
+
+   installation
+   usage
 
 
 

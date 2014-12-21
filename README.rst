@@ -9,4 +9,4 @@ works like this:
 1. In a file explorer, right-click on a `CD3` catchment file and click `Flood estimation report`.
 2. Open the generated report file containing full calculation details and results.
 
-This package has been created to test the `floodestimation` library and develop it's reporting outputs.
+This package has been created to test the `floodestimation` library and develop its reporting outputs.
