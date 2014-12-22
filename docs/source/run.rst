@@ -26,5 +26,6 @@ To undertake an analysis:
 
 .. rubric:: Footnotes
 
-.. [#f1] This is in fact a `Markdown` (*.md) file or more precisely a GitHub Flavoured Markdown file. Markdown files are
-         plain text files that can be easily rendered as web pages or other formats.
+.. [#f1] This is in fact a `Markdown (*.md) file <http://daringfireball.net/projects/markdown/>`_ or more precisely a
+         `GitHub Flavoured Markdown file <https://help.github.com/articles/github-flavored-markdown/>`_. Markdown files
+         are plain text files that can be easily rendered as web pages or other formats.

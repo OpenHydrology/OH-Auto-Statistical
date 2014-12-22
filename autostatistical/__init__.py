@@ -111,10 +111,17 @@ class Report(object):
 
 
 class TemplateEnvironment(jj.Environment):
+    """
+    A jinja2 template environment with loader and filters setup.
+    """
     def __init__(self):
         jj.Environment.__init__(self)
         self.trim_blocks = True
+
+        # Load templates from within the package
         self.loader = jj.PackageLoader('autostatistical', 'templates')
+
+        # Custom formatting filters
         self.filters['dateformat'] = self.dateformat
         self.filters['round'] = self.round
         self.filters['signif'] = self.signif
@@ -125,6 +132,9 @@ class TemplateEnvironment(jj.Environment):
 
     @staticmethod
     def dateformat(value, format='%d/%m/%Y'):
+        """
+        Format a date
+        """
         try:
             return value.strftime(format)
         except AttributeError:
@@ -142,6 +152,20 @@ class TemplateEnvironment(jj.Environment):
 
     @staticmethod
     def floatcolumn(value, decimals=3, width=12, sep_pos=None):
+        """
+        Format number within a fixed-width column and specified number of decimal places.
+
+        The formatter assumes columns are right-aligned: padding to the left of the value are ordinary spaces (which may
+        collapse in HTML) and padding to the right are figure spaces (they have the same width as numerals in non
+        fixed-width fonts, they don't collapse in HTML). Some fixed-width fonts actually adjust the width of figure
+        spaces and punctuation spaces, which is silly.
+
+        :param value: Value to be formatted
+        :param decimals: Number of decimal places, default: 3
+        :param width: Column width, default: 12 characters
+        :param sep_pos: Position of the decimal point within the column
+        :return: Formatted string
+        """
         if not sep_pos:
             sep_pos = width - decimals
         number_width = sep_pos + decimals
@@ -158,6 +182,18 @@ class TemplateEnvironment(jj.Environment):
 
     @staticmethod
     def signif(value, significance=2):
+        """
+        Format a float with a certain number of significant figures.
+
+        E.g.:
+
+            signif(1.234) == '1.23'
+            signif(123.4) == '120'
+
+        :param value: Value to be formatted
+        :param significance: Number of significant figures
+        :return: Formatted string
+        """
         try:
             order = math.floor(math.log10(value))
             decimals = max(0, significance - order - 1)
