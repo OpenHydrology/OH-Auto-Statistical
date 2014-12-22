@@ -29,6 +29,13 @@ following Python packages:
  - lmoments3
  - floodestimation
  - Jinja2
+ - autostatistical
 
 The `Miniconda Python package manager <http://conda.pydata.org/miniconda.html>`_ is available for all major operation
 systems and can be used to install packages suchs as `numpy` and `scipy`.
+
+OH Auto Statistical is run as follows:
+
+.. code-block:: shell
+
+   python -m autostatistical "path/to/catchment.cd3"
