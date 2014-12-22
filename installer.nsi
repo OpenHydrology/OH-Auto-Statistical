@@ -4,7 +4,7 @@
 
 Name "OH Auto Statistical"
 caption "OH Auto Statistical"
-OutFile "dist\Setup-Win64.exe"
+OutFile "dist\ohautostatistical-win64-latest.exe"
 RequestExecutionLevel highest
 
 InstallDir "$PROGRAMFILES64\Open Hydrology\OH Auto Statistical"
