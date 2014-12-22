@@ -20,7 +20,7 @@ Section "Miniconda package manager"
   File "Miniconda3-3.7.0-Windows-x86_64.exe"
 
   DetailPrint "Run Miniconda installer"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "Miniconda3-3.7.0-Windows-x86_64.exe" "" '/D="$PROGRAMFILES64\Miniconda3"'
+  ${StdUtils.ExecShellWaitEx} $0 $1 "Miniconda3-3.7.0-Windows-x86_64.exe" "" "/S /D=$PROGRAMFILES64\Miniconda3"
   ${StdUtils.WaitForProcEx} $2 $1
   DetailPrint "Completed: Miniconda installer finished with exit code: $2"
 
@@ -35,20 +35,19 @@ Section "OH Auto Statistical packages"
 
   ; Update conda first
   DetailPrint "Updating conda"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "conda" "" "update -y conda"
+  ${StdUtils.ExecShellWaitEx} $0 $1 "$PROGRAMFILES64\Miniconda3\Scripts\conda" "" "update conda --yes"
   ${StdUtils.WaitForProcEx} $2 $1
 
   ; Create virtual environment with conda and install packages
   SetOutPath $INSTDIR
   DetailPrint "Creating virtual environment"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "conda" "" 'create -y -p "$INSTDIR\ohvenv" python pip numpy scipy sqlalchemy Jinja2'
+  ${StdUtils.ExecShellWaitEx} $0 $1 "$PROGRAMFILES64\Miniconda3\Scripts\conda" "" 'create -y -p "$INSTDIR\ohvenv" python pip numpy scipy sqlalchemy Jinja2'
   ${StdUtils.WaitForProcEx} $2 $1
   DetailPrint "Completed: Virtual environment installer finished with exit code: $2"
 
   ; Install remaining packages with `pip`
-  SetOutPath $INSTDIR\ohvenv\Scripts
   DetailPrint "Installing remaining packages"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "pip" "" "install autostatistical"
+  ${StdUtils.ExecShellWaitEx} $0 $1 "$INSTDIR\ohvenv\Scripts\pip" "" "install autostatistical"
   ${StdUtils.WaitForProcEx} $2 $1
   DetailPrint "Completed: Virtual environment installer finished with exit code: $2"
 

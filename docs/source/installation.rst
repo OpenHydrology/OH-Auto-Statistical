@@ -4,10 +4,8 @@ Installation
 Windows
 -------
 
- 1. `Download <https://github.com/OpenHydrology/OH-Auto-Statistical/releases>`_ and run the OH Auto Statistical
-    installer.
- 2. This will first run the Miniconda Python package manager. All options can be left to their defaults.
- 3. Next the required Python packages are installed. This requires an internet connection.
+`Download <https://github.com/OpenHydrology/OH-Auto-Statistical/releases>`_ and run the OH Auto Statistical installer.
+An internet connection is required during the installation process.
 
 .. attention::
 
