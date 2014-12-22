@@ -1,6 +1,9 @@
 Scientific background
 =====================
 
+Flood Estimation Handbook
+-------------------------
+
 The methodologies used by OH Auto Statistical are directly based on the Flood Estimation Handbook (FEH), *the* standard
 in the United Kingdom for flood flow estimation. The statistical methods for estimating flood flows in the FEH were
 revised in 2008. The revised methodologies and evidence are described in `Kjeldsen, Jones and Bayliss (2008)
@@ -28,18 +31,24 @@ The following assumptions are made by OH Auto Statistical:
    pooling.
  - QMED adjustment using donors always includes the `URBEXT` parameter (known as "urban adjustment") to estimate QMED
    from catchment descriptors. Both for the donor (may include urban catchments) and the subject location.
- - QMED donors are only considered in the same country (as in: UK mainland versus Northern Ireland).
- - QMED donors must have at least 10 years of data.
- - QMED donors are not more than 500 km from the subject location.
- - Up to 20 QMED donors are considered.
+ - QMED donor requirements:
+
+   - Suitable for QMED estimation
+   - Same country (as in: UK mainland versus Northern Ireland).
+   - At least 10 years of data
+   - Not more than 500 km from the subject location.
+
  - QMED donors' adjustment factors are weighted using an Inverse Distance Weighting scheme with a power of 3. This has
    been calibrated against all catchments used in `Kjeldsen, Jones and Bayliss (2008)
    <https://www.gov.uk/government/publications/improving-the-flood-estimation-handbook-feh-statistical-procedures-for-flood-frequency-estimation>`_
    and is shown to reduce the RMSE slightly compared with selecting the nearest donor only.
- - Growth curve donor catchments have an `URBEXT2000` less than 0.03, if provided.
- - Growth curve donors have at least 10 years of data.
+ - Growth curve donor requirements:
+
+   - Suitable for pooling
+   - `URBEXT2000` less than 0.03, if provided.
+   - At least 10 year of data
+
  - Pooled growth curve donors have at least 500 years of data in total.
- - Any correlation between pooled annual maximum flow data is ignored.
  - The Generalised Logistic statistical distribution is used to create a frequency curve. Future versions of OH Auto
    Statistical will choose the best fitting distribution.
 
