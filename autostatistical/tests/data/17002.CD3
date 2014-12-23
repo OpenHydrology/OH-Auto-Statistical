@@ -1,0 +1,50 @@
+[FILE FORMAT]
+TYPE,CD3
+VERSION,3.0
+[END]
+[STATION NUMBER]
+ 17002
+[END]
+[CDS DETAILS]
+NAME,River Leven
+LOCATION,Leven
+NOMINAL AREA,  424.00
+NOMINAL NGR,3369,7006
+[END]
+[DESCRIPTORS]
+IHDTM NGR,GB     ,336950,700550
+CENTROID NGR,GB,317325,699832
+DTM AREA,  416.56
+ALTBAR, 151
+ASPBAR,123
+ASPVAR,0.22
+BFIHOST,0.511
+DPLBAR, 26.93
+DPSBAR, 62.9
+FARL,0.824
+FPEXT,0.1009
+LDP, 48.74
+PROPWET,0.45
+RMED-1H,  8.8
+RMED-1D, 35.5
+RMED-2D, 47.1
+SAAR, 947
+SAAR4170, 951
+SPRHOST,34.62
+URBCONC1990, 0.754
+URBEXT1990,0.0173
+URBLOC1990, 0.738
+URBCONC2000, 0.830
+URBEXT2000,0.0361
+URBLOC2000, 0.702
+[END]
+[SUITABILITY]
+QMED,Yes
+POOLING,No
+[END]
+[COMMENTS]
+STATION,Velocity-area station on a straight reach of river with artificially heightened and steeped banks. The control was formerly a gravel bar, in Sep 1977 stabilised with gabions to form an irregular broad-crested weir. Possible movement in control, evident at low flows. Weir is thought to be modular throughout range. All flows contained to date. RATING COMMENTS:Rating derived from current meter gaugings up to 1.6m (about QMED), simple extrapolation beyond.
+CATCHMENT,Predominantly carboniferous rocks. Altitudes: 430mAOD (max), 8mAOD (min). Lower catchment agricultural. Forest cover 5%. Minimal floodplains. Relatively un-flashy. Hydrometric Register BFI= 0.65. ARTIFICIAL INFLUENCES:There are a number of small storage reservoirs in catchment and Loch Leven whose outflow is controlled by sluice gates. Effluent return and industrial/agricultural abstractions probably don't significantly influence flood peaks. CATCHMENT CHANGES:No significant changes known.
+Qmed Suitability,Rating review required for all periods (recommendation made in 2003 at time of HIFLOWS data compilation)
+Pooling Suitability,Rating review required for all periods (recommendation made in 2003 at time of HIFLOWS data compilation)
+[END]
