@@ -137,7 +137,7 @@ class TemplateEnvironment(jj.Environment):
         """
         try:
             return value.strftime(format)
-        except AttributeError:
+        except (ValueError, TypeError, AttributeError):
             return ""
 
     @staticmethod
@@ -147,7 +147,7 @@ class TemplateEnvironment(jj.Environment):
         """
         try:
             return "{value:.{decimals:d}f}".format(value=value, decimals=decimals)
-        except ValueError:
+        except (ValueError, TypeError):
             return ""
 
     @staticmethod
@@ -199,7 +199,7 @@ class TemplateEnvironment(jj.Environment):
             decimals = max(0, significance - order - 1)
             rounded_value = round(value, significance - order - 1)
             return "{value:.{decimals:d}f}".format(value=rounded_value, decimals=decimals)
-        except (ValueError, jinja2.exceptions.UndefinedError):
+        except (ValueError, TypeError, jinja2.exceptions.UndefinedError):
             return ""
 
     @staticmethod
@@ -213,9 +213,12 @@ class TemplateEnvironment(jj.Environment):
     def intcolumn(value, width=12):
         try:
             return "{value:>{width:d}.0f}".format(value=value, width=width)
-        except:
-            ValueError
+        except (ValueError, TypeError):
+            return ""
 
     @staticmethod
     def strcolumn(value, width=25):
-        return "{value:<{width:d}s}".format(value=value, width=width)
+        try:
+            return "{value:<{width:d}s}".format(value=value, width=width)
+        except (ValueError, TypeError):
+            return ""
