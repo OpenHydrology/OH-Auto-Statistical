@@ -60,7 +60,7 @@ def update_package_setup(new_version):
     file_name= 'setup.py'
 
     new_content = []
-    with open(file_name) as f:
+    with open(file_name, encoding='utf-8') as f:
         for line in f:
             if line.strip().startswith('version'):
                 line = "    version='{}.{}.{}',\n".format(*new_version)
@@ -73,7 +73,7 @@ def update_doc_conf(new_version):
     file_name = './docs/source/conf.py'
 
     new_content = []
-    with open(file_name) as f:
+    with open(file_name, encoding='utf-8') as f:
         for line in f:
             if line.strip().startswith('version'):
                 line = "version = '{}.{}'\n".format(*new_version[0:2])
@@ -89,7 +89,7 @@ def update_changelog(new_version):
 
     header = 'version {}.{}.{} ({})'.format(new_version[0], new_version[1], new_version[2], date.today())
     new_content = [header + '\n', '-' * len(header) + '\n']
-    with open(file_name) as f:
+    with open(file_name, encoding='utf-8') as f:
         for line in f:
             new_content.append(line)
 
