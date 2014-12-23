@@ -177,7 +177,7 @@ class TemplateEnvironment(jj.Environment):
         try:
             return "{value:>{width:d}.{decimals:d}f}{padding:s}". \
                 format(value=value, width=number_width, decimals=decimals, padding=padding)
-        except ValueError:
+        except (ValueError, TypeError):
             return ""
 
     @staticmethod
