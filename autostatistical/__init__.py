@@ -146,7 +146,7 @@ class TemplateEnvironment(jj.Environment):
         Override the default jinja round filter as it drops decimals.
         """
         try:
-            return "{value:.{decimals}f}".format(value=value, decimals=decimals)
+            return "{value:.{decimals:d}f}".format(value=value, decimals=decimals)
         except ValueError:
             return ""
 
@@ -175,7 +175,7 @@ class TemplateEnvironment(jj.Environment):
         else:
             padding = ' ' * (width - number_width)  # figure spaces
         try:
-            return "{value:>{width}.{decimals}f}{padding}". \
+            return "{value:>{width:d}.{decimals:d}f}{padding:s}". \
                 format(value=value, width=number_width, decimals=decimals, padding=padding)
         except ValueError:
             return ""
@@ -198,7 +198,7 @@ class TemplateEnvironment(jj.Environment):
             order = math.floor(math.log10(value))
             decimals = max(0, significance - order - 1)
             rounded_value = round(value, significance - order - 1)
-            return "{value:.{decimals}f}".format(value=rounded_value, decimals=decimals)
+            return "{value:.{decimals:d}f}".format(value=rounded_value, decimals=decimals)
         except (ValueError, jinja2.exceptions.UndefinedError):
             return ""
 
@@ -212,10 +212,10 @@ class TemplateEnvironment(jj.Environment):
     @staticmethod
     def intcolumn(value, width=12):
         try:
-            return "{value:>{width}.0f}".format(value=value, width=width)
+            return "{value:>{width:d}.0f}".format(value=value, width=width)
         except:
             ValueError
 
     @staticmethod
     def strcolumn(value, width=25):
-        return "{value:<{width}s}".format(value=value, width=width)
+        return "{value:<{width:d}s}".format(value=value, width=width)
