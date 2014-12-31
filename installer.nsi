@@ -55,6 +55,19 @@ Section "OH Auto Statistical packages"
   ${StdUtils.WaitForProcEx} $2 $1
   DetailPrint "Completed: remaining packages installation finished with exit code: $2"
 
+  ; Uninstaller
+  WriteUninstaller $INSTDIR\uninstall.exe
+  !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\OHAutoStatistical"
+  WriteRegStr HKLM "${UNINST_KEY}" "DisplayName" "OH Auto Statistical"
+  WriteRegStr HKLM "${UNINST_KEY}" "Publisher" "Open Hydrology"
+  WriteRegStr HKLM "${UNINST_KEY}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
+  WriteRegStr HKLM "${UNINST_KEY}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
+  WriteRegDWORD HKLM "${UNINST_KEY}" "NoModify" 1
+  WriteRegDWORD HKLM "${UNINST_KEY}" "NoRepair" 1
+  WriteRegStr HKLM "${UNINST_KEY}" "HelpLink" "http://docs.open-hydrology.org"
+  WriteRegStr HKLM "${UNINST_KEY}" "URLInfoAbout" "http://github.com/OpenHydrology"
+  WriteRegDWORD HKLM "${UNINST_KEY}" "EstimatedSize" 408964
+
 SectionEnd
 
 
@@ -79,7 +92,26 @@ Section "Start menu and context menu items"
 SectionEnd
 
 
+Section Uninstall
+
+  ; Start menu
+  RmDir /r "$SMPROGRAMS\Open Hydrology\OH Auto Statistical"
+  RmDir "$SMPROGRAMS\Open Hydrology"
+
+  ; Win context menu
+  DeleteRegKey HKCR "OH.CD3"
+  DeleteRegKey HKCR ".cd3"
+
+  ; OH Auto Statistical program files
+  RmDir /r $INSTDIR
+
+  ; Uninstaller registry
+  DeleteRegKey HKLM "${UNINST_KEY}"
+
+SectionEnd
+
 Function .onInit
+
   ; Check if Miniconda has already been installed
   IfFileExists $PROGRAMFILES64\Miniconda3\Uninstall-Anaconda.exe 0 +4
     SectionSetFlags ${miniconda_installer} 16 ; Unselected and read-only
