@@ -13,7 +13,7 @@ Page components
 Page instfiles
 
 
-Section "Miniconda package manager"
+Section "Miniconda package manager" miniconda_installer
 
   ; Install Miniconda
   SetOutPath "$TEMP\Miniconda"
@@ -32,6 +32,10 @@ SectionEnd
 
 
 Section "OH Auto Statistical packages"
+  IfFileExists $INSTDIR\*.* 0 +3
+    DetailPrint "Existing OH Auto Statistical packages detected"
+    DetailPrint "Existing files will be removed"
+    RMDir /r $INSTDIR
 
   ; Update conda first
   DetailPrint "Updating conda"
@@ -49,7 +53,7 @@ Section "OH Auto Statistical packages"
   DetailPrint "Installing remaining packages"
   ${StdUtils.ExecShellWaitEx} $0 $1 "$INSTDIR\ohvenv\Scripts\pip" "" "install autostatistical"
   ${StdUtils.WaitForProcEx} $2 $1
-  DetailPrint "Completed: Virtual environment installer finished with exit code: $2"
+  DetailPrint "Completed: remaining packages installation finished with exit code: $2"
 
 SectionEnd
 
@@ -73,3 +77,14 @@ Section "Start menu and context menu items"
   File "docs\source\*.url"
 
 SectionEnd
+
+
+Function .onInit
+  ; Check if Miniconda has already been installed
+  IfFileExists $PROGRAMFILES64\Miniconda3\Uninstall-Anaconda.exe 0 +4
+    SectionSetFlags ${miniconda_installer} 16 ; Unselected and read-only
+    SectionGetText ${miniconda_installer} $0
+    StrCpy $0 "$0 (already installed)"
+    SectionSetText ${miniconda_installer} $0
+
+FunctionEnd
