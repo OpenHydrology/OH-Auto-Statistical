@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # OH Auto Statistical
-# Copyright (C) 2014  Florenz A. P. Hollebrandse
+# Copyright (C) 2014-2015  Florenz A. P. Hollebrandse
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ class Analysis(object):
         self.results['gc'] = results
 
     def create_report(self):
-        rep = Report(self.name, self.results, template_name='plain.md')
+        rep = Report(self.name, self.results, template_name='normal.md')
         rep.save(self.folder)
 
 
