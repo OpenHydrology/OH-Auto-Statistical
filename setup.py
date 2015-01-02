@@ -32,7 +32,9 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules"
     ],
     install_requires=[
-        'floodestimation', 'Jinja2'
+        'floodestimation',
+        'Jinja2',
+        'appdirs'
     ],
     package_data={
         'autostatistical': ['templates/*.*'],
