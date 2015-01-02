@@ -7,6 +7,12 @@ Windows
 `Download <https://github.com/OpenHydrology/OH-Auto-Statistical/releases>`_ and run the OH Auto Statistical installer.
 An internet connection is required during the installation process.
 
+.. note::
+   During the installation process, a complete set of gauged catchment data will be downloaded from the
+   `National River Flow Archive (NRFA) <http://www.ceh.ac.uk/data/nrfa/>`_ for pooled analyses. This may take some time!
+   NRFA data are subject to `terms and conditions <http://www.ceh.ac.uk/data/nrfa/data/data_terms.html>`_.
+
+
 .. attention::
 
    No Windows Start Menu items are created, except for a link to the online documentation. This is intentionally. OH

@@ -114,6 +114,22 @@ Section "Start menu and context menu items"
   SetOutPath "$SMPROGRAMS\Open Hydrology\OH Auto Statistical"
   File "..\..\docs\source\*.url"
 
+  ; Start menu: download NRFA data
+  SetOutPath "$INSTDIR\icons"
+  File "images\download.ico"
+  SetOutPath "$SMPROGRAMS\Open Hydrology\OH Auto Statistical"
+  CreateShortcut "Reload NRFA data.lnk" "$INSTDIR\ohvenv\python.exe" '"$INSTDIR\ohvenv\Lib\site-packages\autostatistical\download_nrfa.py"' "$INSTDIR\icons\download.ico" 0
+
+SectionEnd
+
+
+Section "Download NRFA data"
+
+  DetailPrint "Downloading NRFA data"
+  ${StdUtils.ExecShellWaitEx} $0 $1 "$INSTDIR\ohvenv\python.exe" "" '"$INSTDIR\ohvenv\Lib\site-packages\autostatistical\download_nrfa.py"'
+  ${StdUtils.WaitForProcEx} $2 $1
+  DetailPrint "Completed: NRFA data downloaded completed with exit code: $2"
+
 SectionEnd
 
 

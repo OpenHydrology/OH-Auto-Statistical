@@ -1,3 +1,6 @@
+- Download NRFA during installation
+- Improvements to Windows installer
+
 version 0.1.0 (2014-12-23)
 --------------------------
 - First release
