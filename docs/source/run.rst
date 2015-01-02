@@ -32,6 +32,14 @@ update the data using the latest published NRFA dataset, select in the Windows S
 All existing data will be removed before downloading a complete new dataset. This may take a while.
 
 
+Customising the report template
+-------------------------------
+
+The report template can be customised by placing a file `normal.md` in the folder
+`C:\\Users\\<username>\\AppData\\Local\\Open Hydrology\\OH Auto Statistical\\templates`. It is recommended to copy and modify
+the content from the standard templates saved in
+`C:\\Program Files\\Open Hydrology\\OH Auto Statistical\\ohvenv\\Lib\\site-packages\\autostatistical\\templates\\plain.md`.
+
 .. rubric:: Footnotes
 
 .. [#f1] This is in fact a `Markdown (*.md) file <http://daringfireball.net/projects/markdown/>`_ or more precisely a

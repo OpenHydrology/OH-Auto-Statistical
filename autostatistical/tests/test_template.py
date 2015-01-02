@@ -1,9 +1,12 @@
 import unittest
 import autostatistical as astat
+import autostatistical.template as templ
 import os.path
+import shutil
 import jinja2.exceptions
 from tempfile import TemporaryDirectory
 from datetime import date
+from appdirs import AppDirs
 
 
 class TestReport(unittest.TestCase):
@@ -65,3 +68,26 @@ class TestReport(unittest.TestCase):
         analysis = astat.Analysis('./autostatistical/tests/data/17002.CD3')
         analysis.run()
         analysis.create_report()
+
+    def test_user_templates_empty(self):
+        env = templ.TemplateEnvironment()
+        loader = env.loader.loaders[0]
+        self.assertEqual(loader.list_templates(), [])
+
+    def test_user_template(self):
+        folder = os.path.join(AppDirs("OH Auto Statistical", "Open Hydrology").user_data_dir,
+                                'templates')
+        os.makedirs(folder, exist_ok=True)
+        filename = os.path.join(folder, 'normal.md')
+        with open(filename, mode='w') as f:
+            f.write("test template")
+        env = templ.TemplateEnvironment()
+        loader = env.loader.loaders[0]
+        self.assertEqual(loader.list_templates(), ['normal.md'])
+        self.assertEqual(env.get_template('normal.md').filename, filename)
+        shutil.rmtree(AppDirs("OH Auto Statistical", "Open Hydrology").user_data_dir)
+
+    def test_package_templates(self):
+        env = templ.TemplateEnvironment()
+        loader = env.loader.loaders[1]
+        self.assertEqual(loader.list_templates(), ['normal.md'])
