@@ -4,10 +4,8 @@ Usage
 OH Auto Statistical takes a **catchment descriptors (.CD3) file as input data**. The analyses are undertaken without any
 further user input and a report file is generated containing the calculation details and results.
 
-.. note::
-   The first time OH Auto Statistical is run, it will download a complete set of gauged catchment data from the
-   `National River Flow Archive (NRFA) <http://www.ceh.ac.uk/data/nrfa/>`_ for pooled analyses. This may take some time!
-   NRFA data are subject to `terms and conditions <http://www.ceh.ac.uk/data/nrfa/data/data_terms.html>`_.
+Flood estimation
+----------------
 
 To undertake an analysis:
 
@@ -23,6 +21,24 @@ To undertake an analysis:
 
     .. image:: _static/report.png
 
+
+Updating NRFA data
+------------------
+
+National River Flow Archive (NRFA) data are automatically downloaded during the installation of OH Auto Statistical. To
+update the data using the latest published NRFA dataset, select in the Windows Start Menu `Open Hydrology` →
+`OH Auto Statistical` → `Reload NRFA data`.
+
+All existing data will be removed before downloading a complete new dataset. This may take a while.
+
+
+Customising the report template
+-------------------------------
+
+The report template can be customised by placing a file `normal.md` in the folder
+`C:\\Users\\<username>\\AppData\\Local\\Open Hydrology\\OH Auto Statistical\\templates`. It is recommended to copy and modify
+the content from the standard templates saved in
+`C:\\Program Files\\Open Hydrology\\OH Auto Statistical\\ohvenv\\Lib\\site-packages\\autostatistical\\templates\\plain.md`.
 
 .. rubric:: Footnotes
 

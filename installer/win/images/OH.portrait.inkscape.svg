@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="164"
+   height="314"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="OH.portrait.inkscape.svg"
+   inkscape:export-filename="C:\Sync\M\General\Personal\FH\PycharmProjects\OH-Auto-Statistical\installer\win\images\OH.portrait.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <title
+     id="title2986">Open Hydrology logo</title>
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="-92.510032"
+     inkscape:cy="187.47807"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showguides="false"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1303"
+     inkscape:window-height="746"
+     inkscape:window-x="55"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2985"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       spacingx="5px"
+       spacingy="5px" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="200,157"
+       id="guide2997" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Open Hydrology logo</dc:title>
+        <dc:date>2014-12-10</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Florenz A. P. Hollebrandse</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Copyright Open Hydrology contributors</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Open Hydrology</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:description>Open Hydrology logo based on Egyption hieroglyph letter N water</dc:description>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by/4.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by/3.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-738.36218)">
+    <path
+       style="fill:#2e3436;fill-opacity:1;stroke:#2e3436;stroke-width:0.68012857;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 9.6062226,825.96263 c 0.5375174,-1.08822 6.0669164,-7.16907 8.0654144,-11.1675 1.699009,-3.39924 2.711165,-5.93925 4.342916,-6.08008 2.720968,-0.23485 5.459664,1.61308 7.817246,4.46699 2.357582,2.85393 6.452331,8.1895 9.05808,8.1895 2.605749,0 3.226166,-1.86124 6.204164,-5.0874 2.977999,-3.22619 5.831916,-7.94133 7.941331,-7.81726 2.109417,0.12408 4.963332,2.35759 6.700498,4.34292 1.737166,1.98534 6.452332,8.68583 8.809914,8.80991 2.357588,0.12408 5.750409,-4.3921 6.824584,-6.08008 1.737164,-2.72983 2.729832,-4.83925 5.459664,-5.58375 2.729832,-0.7445 3.737857,-0.33514 5.087416,0.7445 1.861254,1.489 6.204167,7.32092 7.569076,8.68584 1.364923,1.36491 4.218828,5.0874 6.080081,5.0874 1.861253,0 4.342923,-3.72249 6.948663,-7.32091 2.21341,-3.0566 4.32247,-5.19521 5.83192,-5.2115 2.02911,-0.0219 5.13468,3.20253 6.45234,5.33559 1.32043,2.13755 5.21149,6.94866 7.44499,7.07274 3.09977,0.17221 7.94133,-6.94866 9.67849,-8.93399 1.73717,-1.98534 3.4765,-4.42328 4.96334,-4.34292 2.29553,0.12409 13.57093,16.80506 13.52507,17.49574 -0.0578,0.87101 -2.40111,2.98536 -2.97799,3.10209 -0.63151,0.12778 -1.66505,-0.426 -2.60575,-1.61309 -2.60576,-3.28821 -6.31755,-10.66461 -8.43767,-10.91933 -1.29514,-0.1556 -9.80257,9.86463 -11.41566,11.29159 -0.95686,0.84644 -3.10208,0.99267 -4.467,0.6204 -1.36492,-0.37224 -3.78454,-2.2335 -5.02537,-3.84657 -1.53721,-1.88559 -5.75597,-8.01279 -6.63846,-8.06542 -1.67512,0.062 -9.18216,9.67849 -10.79525,10.54709 -1.61307,0.86858 -3.474324,0.99266 -4.963327,0.37224 -1.488998,-0.62041 -6.294249,-7.00358 -8.561744,-10.05075 -2.228081,-2.99417 -4.110329,-4.99239 -6.328243,-4.46699 -2.217926,0.5254 -12.16017,13.2769 -14.269587,13.40099 -2.109416,0.12409 -4.963332,-3.10208 -6.948663,-5.58375 -1.985333,-2.48166 -5.900013,-8.68803 -6.824582,-8.31357 -0.685919,0.27781 -7.444998,8.31357 -7.444998,8.31357 0,0 -3.350248,3.59843 -6.08008,4.467 -2.729833,0.8686 -4.715167,-1.24083 -5.831916,-1.86124 -1.116749,-0.62042 -7.072747,-7.56907 -7.817246,-8.31358 -0.7445,-0.7445 -2.233499,-2.978 -3.350249,-2.978 -1.11675,0 -2.729832,1.73716 -3.846582,3.59841 -1.116751,1.86125 -3.846582,6.32825 -4.963332,7.445 -1.116749,1.11675 -2.850145,2.86828 -3.102082,2.72984 -0.251937,-0.13845 -2.3402587,-2.01432 -2.1094164,-2.48167 z"
+       id="path3000"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ssssssssssssssssssssssssssccssszssscsssssszs" />
+    <text
+       xml:space="preserve"
+       style="font-size:22px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Calibri Bold"
+       x="10"
+       y="920.36218"
+       id="text3007"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3009"
+         x="10"
+         y="920.36218"
+         style="font-size:22px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#2e3436;fill-opacity:1;font-family:Calibri;-inkscape-font-specification:Calibri Bold">Open Hydrology</tspan></text>
+  </g>
+</svg>

@@ -1,1 +1,1 @@
-"c:\Program Files (x86)\NSIS\makensis.exe" installer.nsi
+"c:\Program Files (x86)\NSIS\makensis.exe" installer\win\installer.nsi
