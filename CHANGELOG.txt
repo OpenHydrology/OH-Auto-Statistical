@@ -1,3 +1,7 @@
+- Added NRFA metadata
+- Added urban adjustment for growthcurve
+- Fixed issue with installer (#3).
+
 version 0.2.0 (2015-01-02)
 --------------------------
 - Custom `normal.md` template can be specified in user's appdata folder
