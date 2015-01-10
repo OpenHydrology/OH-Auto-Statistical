@@ -5,9 +5,9 @@ Date:          {{ report_date|default(None)|dateformat }}
 ## Input data
 
 River:         {{ catchment.watercourse|default("Unnamed") }}  
-Location:      {{ catchment.location|default("Unknown") }}
-NGR outlet:    {{ catchment.point.x }}, {{ catchment.point.y }}  
-NGR centroid:  {{ catchment.descriptors.centroid_ngr.x }}, {{ catchment.descriptors.centroid_ngr.y }}    
+Location:      {{ catchment.location|default("Unknown") }}  
+NGR outlet:    {{ catchment.point.x }}, {{ catchment.point.y }}    
+NGR centroid:  {{ catchment.descriptors.centroid_ngr.x }}, {{ catchment.descriptors.centroid_ngr.y }}  
 
 ### Catchment descriptors:
 
@@ -24,16 +24,16 @@ FARL         | {{ catchment.descriptors.farl|floatcolumn(3, 10, 6) }} | SAAR4170
 
 ### National River Flow Archive (NRFA) data
 
-Source:        {{ nrfa.url }}
-Version:       {{ nrfa.version }}
-Published:     {{ nrfa.published_on|dateformat('%B %Y') }}
+Source:        {{ nrfa.url }}  
+Version:       {{ nrfa.version }}  
+Published:     {{ nrfa.published_on|dateformat('%B %Y') }}  
 Retrieved:     {{ nrfa.downloaded_on|dateformat }}
 
 ## Median annual flood (QMED) 
 
 QMED, rural:   {{ qmed.qmed_descr_rural|signif(3) }} m³/s  
 URBEXT, {{ report_date|default(None)|dateformat('%Y') }}:  {{ qmed.urban_extent|round(4) }}  
-Adj. factor:   {{ qmed.urban_adj_factor|round(3) }}   
+Adj. factor:   {{ qmed.urban_adj_factor|round(3) }}  
 QMED, urban:   {{ qmed.qmed_descr_urban|signif(3) }} m³/s
 
 ### QMED donor catchments
