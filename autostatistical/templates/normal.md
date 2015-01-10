@@ -9,7 +9,7 @@ Location:      {{ catchment.location|default("Unknown") }}
 NGR outlet:    {{ catchment.point.x }}, {{ catchment.point.y }}    
 NGR centroid:  {{ catchment.descriptors.centroid_ngr.x }}, {{ catchment.descriptors.centroid_ngr.y }}  
 
-### Catchment descriptors:
+### Catchment descriptors
 
 Descriptor   |      Value | Descriptor  |      Value | Descriptor  |      Value 
 :------------|-----------:|:------------|-----------:|:------------|----------:
