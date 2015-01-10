@@ -1,3 +1,5 @@
+version 0.2.1 (2015-01-10)
+--------------------------
 - Added NRFA metadata
 - Added urban adjustment for growthcurve
 - Fixed issue with installer (#3).
