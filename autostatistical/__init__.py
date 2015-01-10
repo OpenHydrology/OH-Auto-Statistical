@@ -21,9 +21,11 @@ import os.path
 from datetime import date
 from floodestimation.loaders import load_catchment
 from floodestimation import db
+from floodestimation import fehdata
 from floodestimation.collections import CatchmentCollections
 from floodestimation.analysis import QmedAnalysis, GrowthCurveAnalysis
 from .template import TemplateEnvironment
+
 
 class Analysis(object):
     def __init__(self, cd3_file_path):
@@ -35,6 +37,7 @@ class Analysis(object):
         self.results['catchment'] = self.catchment
         self.db_session = db.Session()
         self.gauged_catchments = CatchmentCollections(self.db_session)
+        self.results['nrfa'] = fehdata.nrfa_metadata()
         self.qmed = None
 
     def finish(self):

@@ -61,7 +61,7 @@ class TemplateEnvironment(jj.Environment):
         """
         try:
             return value.strftime(format)
-        except (ValueError, TypeError, AttributeError):
+        except (ValueError, TypeError, AttributeError, jinja2.exceptions.UndefinedError):
             return ""
 
     @staticmethod

@@ -11,6 +11,7 @@ from appdirs import AppDirs
 
 class TestReport(unittest.TestCase):
     empty_context = {'catchment': {'point': {}, 'descriptors': {'centroid_ngr': {}}},
+                     'nrfa': {},
                      'qmed': {},
                      'gc': {'distr_params': {}}}
 
@@ -62,7 +63,7 @@ class TestReport(unittest.TestCase):
                 for line in f:
                     if line.startswith("Date: "):
                         break
-        self.assertEqual(line, "Date: " + date.today().strftime('%d/%m/%Y') + "\n")
+        self.assertEqual(line, "Date:          " + date.today().strftime('%d/%m/%Y') + "\n")
 
     def test_results(self):
         analysis = astat.Analysis('./autostatistical/tests/data/17002.CD3')

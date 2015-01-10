@@ -1,14 +1,15 @@
 # Flood Estimation Report
 
-Date: {{ report_date|default(None)|dateformat }}
+Date:          {{ report_date|default(None)|dateformat }}
 
-River: {{ catchment.watercourse|default("Unnamed") }}  
-Location: {{ catchment.location|default("Unknown") }}
+## Input data
 
-Catchment outlet: {{ catchment.point.x }}, {{ catchment.point.y }}  
-Catchment centre: {{ catchment.descriptors.centroid_ngr.x }}, {{ catchment.descriptors.centroid_ngr.y }}    
+River:         {{ catchment.watercourse|default("Unnamed") }}  
+Location:      {{ catchment.location|default("Unknown") }}
+NGR outlet:    {{ catchment.point.x }}, {{ catchment.point.y }}  
+NGR centroid:  {{ catchment.descriptors.centroid_ngr.x }}, {{ catchment.descriptors.centroid_ngr.y }}    
 
-Catchment descriptors:
+### Catchment descriptors:
 
 Descriptor   |      Value | Descriptor  |      Value | Descriptor  |      Value 
 :------------|-----------:|:------------|-----------:|:------------|----------:
@@ -21,48 +22,56 @@ DPLBAR       | {{ catchment.descriptors.dplbar|floatcolumn(2, 10, 6) }} | RMED-2
 DPSBAR       | {{ catchment.descriptors.dpsbar|floatcolumn(1, 10, 6) }} | SAAR        | {{ catchment.descriptors.saar|floatcolumn(0, 10, 6) }} | URBLOC2000  | {{ catchment.descriptors.urbloc2000|floatcolumn(3, 10, 6) }}
 FARL         | {{ catchment.descriptors.farl|floatcolumn(3, 10, 6) }} | SAAR4170    | {{ catchment.descriptors.saar4170|floatcolumn(0, 10, 6) }}
 
+### National River Flow Archive (NRFA) data
+
+Source:        {{ nrfa.url }}
+Version:       {{ nrfa.version }}
+Published:     {{ nrfa.published_on|dateformat('%B %Y') }}
+Retrieved:     {{ nrfa.downloaded_on|dateformat }}
+
 ## Median annual flood (QMED) 
 
-QMED, rural: {{ qmed.qmed_descr_rural|signif(2) }} m³/s  
-Urban adjustment factor: {{ qmed.urban_adj_factor|round(2) }}   
-QMED, urban: {{ qmed.qmed_descr_urban|signif(2) }} m³/s
+QMED, rural:   {{ qmed.qmed_descr_rural|signif(3) }} m³/s  
+URBEXT, {{ report_date|default(None)|dateformat('%Y') }}:  {{ qmed.urban_extent|round(4) }}  
+Adj. factor:   {{ qmed.urban_adj_factor|round(3) }}   
+QMED, urban:   {{ qmed.qmed_descr_urban|signif(3) }} m³/s
 
-QMED donor catchments:
+### QMED donor catchments
 
 Donor river         | Donor location                 | Distance (km)| Adjustment factor | Weight
 :-------------------|:-------------------------------|-------------:|------------------:|------:
 {% for d in qmed.donors %}
-{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.dist|intcolumn(12) }} | {{ d.factor|floatcolumn(2, 17) }} | {{ d.weight|floatcolumn(2, 6) }}
+{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.dist|intcolumn(12) }} | {{ d.factor|floatcolumn(3, 17) }} | {{ d.weight|floatcolumn(3, 6) }}
 {% endfor %}
-Total/weighted avg. |                                |              | {{ qmed.donor_adj_factor|floatcolumn(2, 17) }} |   1.00
+Total/weighted avg. |                                |              | {{ qmed.donor_adj_factor|floatcolumn(3, 17) }} |  1.000
 
-QMED, adjusted: {{ qmed.qmed|signif(2) }} m³/s
+QMED:          {{ qmed.qmed|signif(2) }} m³/s
 
 ## Growth curve
 
 Analysis type: ungauged, pooling group
 
-Growth curve donor catchments (pooling group):
+### Growth curve donor catchments (pooling group)
 
 Donor river         | Donor location                 | Sim. dist. | Rec. length | L-variance | Weight | L-skew | Weight
 :-------------------|:-------------------------------|-----------:|------------:|-----------:|-------:|-------:|------:
 {% for d in gc.donors %}
-{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.similarity_dist|floatcolumn(2, 10) }} | {{ d.record_length|intcolumn(11) }} | {{ d.l_cv|floatcolumn(2, 10) }} | {{ d.l_cv_weight|floatcolumn(2, 6) }} | {{ d.l_skew|floatcolumn(2, 6) }} | {{ d.l_skew_weight|floatcolumn(2, 6) }}
+{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.similarity_dist|floatcolumn(2, 10) }} | {{ d.record_length|intcolumn(11) }} | {{ d.l_cv|floatcolumn(3, 10) }} | {{ d.l_cv_weight|floatcolumn(3, 6) }} | {{ d.l_skew|floatcolumn(3, 6) }} | {{ d.l_skew_weight|floatcolumn(3, 6) }}
 {% endfor %}
-Total/weighted avg. |                                |            | {{ gc.donors_record_length|intcolumn(11) }} | {{ gc.l_cv|floatcolumn(2, 10) }} |   1.00 | {{ gc.l_skew|floatcolumn(2, 6) }} |   1.00
+Total/weighted avg. |                                |            | {{ gc.donors_record_length|intcolumn(11) }} | {{ gc.l_cv_rural|floatcolumn(3, 10) }} |  1.000 | {{ gc.l_skew_rural|floatcolumn(3, 6) }} |  1.000
 
-Probability distribution:
+L-var., urban: {{ gc.l_cv|round(3) }}  
+L-skew, urban: {{ gc.l_skew|round(3) }}
 
-Selection: manual  
-Name: {{ gc.distr_name }}  
-Parameters: {{ gc.distr_params['loc']|round(2) }}, {{ gc.distr_params['scale']|round(2) }}, {{ gc.distr_params['c']|round(2) if gc.distr_params['c'] else gc.distr_params['k']|round(2)}}  
+### Flood frequency curve
 
-Flood frequency curve:
+Distribution:  {{ gc.distr_name }}  
+Parameters:    {{ gc.distr_params['loc']|round(3) }}, {{ gc.distr_params['scale']|round(3) }}, {{ gc.distr_params['c']|round(3) if gc.distr_params['c'] else gc.distr_params['k']|round(3)}}  
 
 AEP (%) | Growth factor | Flow (m³/s)
 -------:|--------------:|-----------:
 {% for aep in gc.aeps %}
-{{ (aep * 100)|floatcolumn(1, 7) }} | {{ gc.growth_factors[loop.index0]|floatcolumn(1, 13) }} | {{ gc.flows[loop.index0]|signifcolumn(2, 11, 10) }}
+{{ (aep * 100)|floatcolumn(1, 7) }} | {{ gc.growth_factors[loop.index0]|floatcolumn(2, 13) }} | {{ gc.flows[loop.index0]|signifcolumn(2, 11, 10) }}
 {% endfor %}
 
 
