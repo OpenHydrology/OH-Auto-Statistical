@@ -154,7 +154,7 @@ SectionEnd
 Function .onInit
 
   ; Check if Miniconda has already been installed
-  IfFileExists $PROGRAMFILES64\Miniconda3\Uninstall-Anaconda.exe 0 +4
+  IfFileExists $PROGRAMFILES64\Miniconda3\Uninstall-Anaconda.exe 0 +5
     SectionSetFlags ${miniconda_installer} 16 ; Unselected and read-only
     SectionGetText ${miniconda_installer} $0
     StrCpy $0 "$0 (already installed)"
