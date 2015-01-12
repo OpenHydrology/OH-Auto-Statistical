@@ -8,7 +8,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='autostatistical',
-    version='0.2.0',
+    version='0.2.1',
     packages=['autostatistical'],
     url='https://github.com/OpenHydrology/OH-Auto-Statistical',
     license='GPLv3',
@@ -32,9 +32,9 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules"
     ],
     install_requires=[
-        'Jinja2>=2.7.3',
-        'appdirs>=1.4.0',
-        'floodestimation>=0.2.0'
+        'Jinja2>=2.7.3,<2.8',
+        'appdirs>=1.4,<1.5',
+        'floodestimation==0.2.1'
     ],
     package_data={
         'autostatistical': ['templates/*.*'],
