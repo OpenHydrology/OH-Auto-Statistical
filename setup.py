@@ -8,7 +8,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='autostatistical',
-    version='0.2.1',
+    version='0.2.0',
     packages=['autostatistical'],
     url='https://github.com/OpenHydrology/OH-Auto-Statistical',
     license='GPLv3',
