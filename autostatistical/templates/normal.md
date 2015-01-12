@@ -20,7 +20,7 @@ ASPVAR       | {{ catchment.descriptors.aspvar|floatcolumn(2, 10, 6) }} | RMED-1
 BFIHOST      | {{ catchment.descriptors.bfihost|floatcolumn(3, 10, 6) }} | RMED-1D     | {{ catchment.descriptors.rmed_1d|floatcolumn(1, 10, 6) }} | URBCONC2000 | {{ catchment.descriptors.urbconc2000|floatcolumn(3, 10, 6) }}
 DPLBAR       | {{ catchment.descriptors.dplbar|floatcolumn(2, 10, 6) }} | RMED-2D     | {{ catchment.descriptors.rmed_2d|floatcolumn(1, 10, 6) }} | URBEXT2000  | {{ catchment.descriptors.urbext2000|floatcolumn(4, 10, 6) }}
 DPSBAR       | {{ catchment.descriptors.dpsbar|floatcolumn(1, 10, 6) }} | SAAR        | {{ catchment.descriptors.saar|floatcolumn(0, 10, 6) }} | URBLOC2000  | {{ catchment.descriptors.urbloc2000|floatcolumn(3, 10, 6) }}
-FARL         | {{ catchment.descriptors.farl|floatcolumn(3, 10, 6) }} | SAAR4170    | {{ catchment.descriptors.saar4170|floatcolumn(0, 10, 6) }}
+FARL         | {{ catchment.descriptors.farl|floatcolumn(3, 10, 6) }} | SAAR4170    | {{ catchment.descriptors.saar4170|floatcolumn(0, 10, 6) }} |             | {{ None|floatcolumn(4, 10, 6) }}
 
 ### National River Flow Archive (NRFA) data
 
@@ -53,12 +53,12 @@ Analysis type: ungauged, pooling group
 
 ### Growth curve donor catchments (pooling group)
 
-Donor river         | Donor location                 | Sim. dist. | Rec. length | L-variance | Weight | L-skew | Weight
-:-------------------|:-------------------------------|-----------:|------------:|-----------:|-------:|-------:|------:
+Donor river         | Donor location                 | Sim. dist. | Rec. length | L-var. | Weight | L-skew | Weight
+:-------------------|:-------------------------------|-----------:|------------:|-------:|-------:|-------:|------:
 {% for d in gc.donors %}
-{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.similarity_dist|floatcolumn(2, 10) }} | {{ d.record_length|intcolumn(11) }} | {{ d.l_cv|floatcolumn(3, 10) }} | {{ d.l_cv_weight|floatcolumn(3, 6) }} | {{ d.l_skew|floatcolumn(3, 6) }} | {{ d.l_skew_weight|floatcolumn(3, 6) }}
+{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.similarity_dist|floatcolumn(2, 10) }} | {{ d.record_length|intcolumn(11) }} | {{ d.l_cv|floatcolumn(3, 6) }} | {{ d.l_cv_weight|floatcolumn(3, 6) }} | {{ d.l_skew|floatcolumn(3, 6) }} | {{ d.l_skew_weight|floatcolumn(3, 6) }}
 {% endfor %}
-Total/weighted avg. |                                |            | {{ gc.donors_record_length|intcolumn(11) }} | {{ gc.l_cv_rural|floatcolumn(3, 10) }} |  1.000 | {{ gc.l_skew_rural|floatcolumn(3, 6) }} |  1.000
+Total/weighted avg. |                                |            | {{ gc.donors_record_length|intcolumn(11) }} | {{ gc.l_cv_rural|floatcolumn(3, 6) }} |  1.000 | {{ gc.l_skew_rural|floatcolumn(3, 6) }} |  1.000
 
 L-var., urban: {{ gc.l_cv|round(3) }}  
 L-skew, urban: {{ gc.l_skew|round(3) }}
