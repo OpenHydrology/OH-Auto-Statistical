@@ -92,3 +92,8 @@ class TestReport(unittest.TestCase):
         env = templ.TemplateEnvironment()
         loader = env.loader.loaders[1]
         self.assertEqual(loader.list_templates(), ['normal.md'])
+
+    def test_empty_floatcolumn(self):
+        env = templ.TemplateEnvironment()
+        content = env.floatcolumn(None, 3, 12)
+        self.assertEqual(content, '            ')

@@ -102,7 +102,7 @@ class TemplateEnvironment(jj.Environment):
             return "{value:>{width:d}.{decimals:d}f}{padding:s}". \
                 format(value=value, width=number_width, decimals=decimals, padding=padding)
         except (ValueError, TypeError):
-            return ""
+            return ' ' * (width - decimals - 1) + ' ' + ' ' * decimals
 
     @staticmethod
     def signif(value, significance=2):
@@ -138,11 +138,11 @@ class TemplateEnvironment(jj.Environment):
         try:
             return "{value:>{width:d}.0f}".format(value=value, width=width)
         except (ValueError, TypeError):
-            return ""
+            return ' ' * width
 
     @staticmethod
     def strcolumn(value, width=25):
         try:
             return "{value:<{width:d}s}".format(value=value, width=width)
         except (ValueError, TypeError):
-            return ""
+            return ' ' * width
