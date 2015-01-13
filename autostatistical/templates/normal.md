@@ -11,6 +11,8 @@ NGR centroid:  {{ catchment.descriptors.centroid_ngr.x }}, {{ catchment.descript
 
 ### Catchment descriptors
 
+Source: CEH (2009)
+
 Descriptor   |      Value | Descriptor  |      Value | Descriptor  |      Value 
 :------------|-----------:|:------------|-----------:|:------------|----------:
 AREA         | {{ catchment.descriptors.dtm_area|floatcolumn(2, 10, 6) }} | FPEXT       | {{ catchment.descriptors.fpext|floatcolumn(4, 10, 6) }} | SPRHOST     | {{ catchment.descriptors.sprhost|floatcolumn(2, 10, 6) }}
@@ -29,7 +31,9 @@ Version:       {{ nrfa.version }}
 Published:     {{ nrfa.published_on|dateformat('%B %Y') }}  
 Retrieved:     {{ nrfa.downloaded_on|dateformat }}
 
-## Median annual flood (QMED) 
+## Median annual flood (QMED)
+
+Methology:     Kjeldsen, Jones & Bayliss (2008, eqs. 8.1 & 8.2), Kjeldsen (2010, eq. 8)
 
 QMED, rural:   {{ qmed.qmed_descr_rural|signif(3) }} m³/s  
 URBEXT, {{ report_date|default(None)|dateformat('%Y') }}:  {{ qmed.urban_extent|round(4) }}  
@@ -48,6 +52,8 @@ Total/weighted avg. |                                |              | {{ qmed.do
 QMED:          {{ qmed.qmed|signif(2) }} m³/s
 
 ## Growth curve
+
+Methology:     Kjeldsen, Jones & Bayliss (2008, eqs. 8.3‒8.12 & 8.16), Kjeldsen (2010, eq. 10 & 11)
 
 Analysis type: ungauged, pooling group
 
@@ -73,6 +79,19 @@ AEP (%) | Growth factor | Flow (m³/s)
 {% for aep in gc.aeps %}
 {{ (aep * 100)|floatcolumn(1, 7) }} | {{ gc.growth_factors[loop.index0]|floatcolumn(2, 13) }} | {{ gc.flows[loop.index0]|signifcolumn(2, 11, 10) }}
 {% endfor %}
+
+## References
+
+CEH (2009). FEH CD-ROM 3 (Software). Wallingford: Centre for Ecology & Hydrology.
+
+Kjeldsen, T. R., Jones, D. A. & Bayliss, A. C. (2008). *Improving the FEH statistical procedures for flood frequency 
+estimation* (No. SC050050). Bristol: Environment Agency.
+
+Kjeldsen, T. R. (2010). *Modelling the impact of urbanization on flood frequency relationships in the UK*. Hydrology 
+Research, 41 (5). pp. 391‒405
+
+Kjeldsen, T. R., Jones, D. A. & Morris, D. G. (2014). *Using multiple donor sites for enhanced flood estimation in 
+ungauged catchments*. Water Resour. Res., 50, pp. 6646‒6657
 
 
 Report created using OH Auto Statistical (open-hydrology.org). OH Auto Statistical is open source software implementing 
