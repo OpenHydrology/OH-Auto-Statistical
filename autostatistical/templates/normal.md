@@ -53,7 +53,7 @@ QMED:          {{ qmed.qmed|signif(2) }} m³/s
 
 ## Growth curve
 
-Methology:     Kjeldsen, Jones & Bayliss (2008, eqs. 8.3‒8.12 & 8.16), Kjeldsen (2010, eq. 10 & 11)
+Methology:     Kjeldsen, Jones & Bayliss (2008, eqs. 8.3‒8.12 & 8.16), Kjeldsen (2010, eqs. 10 & 11)
 
 Analysis type: ungauged, pooling group
 
