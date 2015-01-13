@@ -11,7 +11,7 @@ NGR centroid:  {{ catchment.descriptors.centroid_ngr.x }}, {{ catchment.descript
 
 ### Catchment descriptors
 
-Source: CEH (2009)
+Source:        CEH (2009)
 
 Descriptor   |      Value | Descriptor  |      Value | Descriptor  |      Value 
 :------------|-----------:|:------------|-----------:|:------------|----------:
