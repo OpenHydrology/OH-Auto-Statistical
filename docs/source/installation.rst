@@ -4,8 +4,8 @@ Installation
 Windows
 -------
 
-`Download <https://github.com/OpenHydrology/OH-Auto-Statistical/releases>`_ and run the OH Auto Statistical installer.
-An internet connection is required during the installation process.
+`Download <https://github.com/OpenHydrology/OH-Auto-Statistical/releases/latest>`_ and run the OH Auto Statistical
+installer. An internet connection is required during the installation process.
 
 .. note::
    During the installation process, a complete set of gauged catchment data will be downloaded from the
