@@ -1,3 +1,5 @@
+version 0.2.2 (2015-01-14)
+--------------------------
 - References in report
 - 3 Significant figures in intermediate results
 - Added NRFA metadata
