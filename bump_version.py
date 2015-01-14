@@ -40,6 +40,9 @@ def main(argv):
     update_changelog(new_version)
     print("CHANGELOG.txt updated.")
 
+    update_nsis_installer(new_version)
+    print("NSIS installer updated.")
+
 
 def existing_version():
     with open('setup.py') as setup_file:
@@ -91,6 +94,19 @@ def update_changelog(new_version):
     new_content = [header + '\n', '-' * len(header) + '\n']
     with open(file_name, encoding='utf-8') as f:
         for line in f:
+            new_content.append(line)
+
+    replace_file_content(file_name, new_content)
+
+
+def update_nsis_installer(new_version):
+    file_name = './installer/win/installer.nsi'
+
+    new_content = []
+    with open(file_name, encoding='utf-8') as f:
+        for line in f:
+            if line.strip().startswith('!define VERSION'):
+                line = '!define VERSION "{}.{}.{}"\n'.format(*new_version)
             new_content.append(line)
 
     replace_file_content(file_name, new_content)
