@@ -3,8 +3,12 @@
 ; Requires AccessControl plugin http://nsis.sourceforge.net/AccessControl_plug-in
 !include "LogicLib.nsh"
 
+!define VERSION "0.2.2"
+!define REQUIREMENTS_CONDA "numpy=1.9.* scipy=0.14.* sqlalchemy=0.9.* Jinja2=2.7.*"
+
+
 Name "OH Auto Statistical"
-OutFile "..\..\dist\ohautostatistical-win64-latest.exe"
+OutFile "..\..\dist\ohautostatistical-win64-${VERSION}.exe"
 RequestExecutionLevel highest
 
 InstallDir "$PROGRAMFILES64\Open Hydrology\OH Auto Statistical"
@@ -71,13 +75,13 @@ Section "OH Auto Statistical packages"
   SetOutPath $INSTDIR
   DetailPrint "Creating virtual environment"
   ${StdUtils.ExecShellWaitEx} $0 $1 "$PROGRAMFILES64\Miniconda3\Scripts\conda" "" \
-    'create -y -p "$INSTDIR\ohvenv" python pip numpy=1.9.* scipy=0.14.* sqlalchemy=0.9.* Jinja2=2.7.*'
+    'create -y -p "$INSTDIR\ohvenv" python pip ${REQUIREMENTS_CONDA}'
   ${StdUtils.WaitForProcEx} $2 $1
   DetailPrint "Completed: Virtual environment installer finished with exit code: $2"
 
   ; Install remaining packages with `pip`
   DetailPrint "Installing remaining packages"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "$INSTDIR\ohvenv\Scripts\pip" "" "install autostatistical"
+  ${StdUtils.ExecShellWaitEx} $0 $1 "$INSTDIR\ohvenv\Scripts\pip" "" "install autostatistical==${VERSION}"
   ${StdUtils.WaitForProcEx} $2 $1
   DetailPrint "Completed: remaining packages installation finished with exit code: $2"
 
