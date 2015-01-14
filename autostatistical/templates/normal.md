@@ -33,7 +33,8 @@ Retrieved:     {{ nrfa.downloaded_on|dateformat }}
 
 ## Median annual flood (QMED)
 
-Methology:     Kjeldsen, Jones & Bayliss (2008, eqs. 8.1 & 8.2), Kjeldsen (2010, eq. 8)
+Methology:     Kjeldsen, Jones & Bayliss (2008, eqs. 8.1 & 8.2), Kjeldsen (2010, eq. 8), Open Hydrology Contributors 
+               (2015)
 
 QMED, rural:   {{ qmed.qmed_descr_rural|signif(3) }} m³/s  
 URBEXT, {{ report_date|default(None)|dateformat('%Y') }}:  {{ qmed.urban_extent|round(4) }}  
@@ -53,7 +54,8 @@ QMED:          {{ qmed.qmed|signif(2) }} m³/s
 
 ## Growth curve
 
-Methology:     Kjeldsen, Jones & Bayliss (2008, eqs. 8.3‒8.12 & 8.16), Kjeldsen (2010, eqs. 10 & 11)
+Methology:     Kjeldsen, Jones & Bayliss (2008, eqs. 8.3‒8.12 & 8.16), Kjeldsen (2010, eqs. 10 & 11), Open Hydrology 
+               Contributors (2015)
 
 Analysis type: ungauged, pooling group
 
@@ -93,8 +95,4 @@ Research, 41 (5). pp. 391‒405
 Kjeldsen, T. R., Jones, D. A. & Morris, D. G. (2014). *Using multiple donor sites for enhanced flood estimation in 
 ungauged catchments*. Water Resour. Res., 50, pp. 6646‒6657
 
-
-Report created using OH Auto Statistical (open-hydrology.org). OH Auto Statistical is open source software implementing 
-the Flood Estimation Handbook statistical method.
-
-© Copyright 2014‒{{ report_date|default(None)|dateformat('%Y') }} Open Hydrology contributors.
+Open Hydrology Contributors (2015). OH Auto Statistical. http://docs.open-hydrology.org/projects/oh-auto-statistical
