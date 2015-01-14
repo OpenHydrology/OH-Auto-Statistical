@@ -11,6 +11,7 @@ from appdirs import AppDirs
 
 class TestReport(unittest.TestCase):
     empty_context = {'catchment': {'point': {}, 'descriptors': {'centroid_ngr': {}}},
+                     'nrfa': {},
                      'qmed': {},
                      'gc': {'distr_params': {}}}
 
@@ -62,7 +63,7 @@ class TestReport(unittest.TestCase):
                 for line in f:
                     if line.startswith("Date: "):
                         break
-        self.assertEqual(line, "Date: " + date.today().strftime('%d/%m/%Y') + "\n")
+        self.assertEqual(line, "Date:          " + date.today().strftime('%d/%m/%Y') + "\n")
 
     def test_results(self):
         analysis = astat.Analysis('./autostatistical/tests/data/17002.CD3')
@@ -91,3 +92,8 @@ class TestReport(unittest.TestCase):
         env = templ.TemplateEnvironment()
         loader = env.loader.loaders[1]
         self.assertEqual(loader.list_templates(), ['normal.md'])
+
+    def test_empty_floatcolumn(self):
+        env = templ.TemplateEnvironment()
+        content = env.floatcolumn(None, 3, 12)
+        self.assertEqual(content, '            ')

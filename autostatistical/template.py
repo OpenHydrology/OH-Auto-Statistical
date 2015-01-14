@@ -61,7 +61,7 @@ class TemplateEnvironment(jj.Environment):
         """
         try:
             return value.strftime(format)
-        except (ValueError, TypeError, AttributeError):
+        except (ValueError, TypeError, AttributeError, jinja2.exceptions.UndefinedError):
             return ""
 
     @staticmethod
@@ -102,7 +102,7 @@ class TemplateEnvironment(jj.Environment):
             return "{value:>{width:d}.{decimals:d}f}{padding:s}". \
                 format(value=value, width=number_width, decimals=decimals, padding=padding)
         except (ValueError, TypeError):
-            return ""
+            return ' ' * (sep_pos - 1) + ' ' + ' ' * (width - sep_pos)
 
     @staticmethod
     def signif(value, significance=2):
@@ -138,11 +138,11 @@ class TemplateEnvironment(jj.Environment):
         try:
             return "{value:>{width:d}.0f}".format(value=value, width=width)
         except (ValueError, TypeError):
-            return ""
+            return ' ' * width
 
     @staticmethod
     def strcolumn(value, width=25):
         try:
             return "{value:<{width:d}s}".format(value=value, width=width)
         except (ValueError, TypeError):
-            return ""
+            return ' ' * width
