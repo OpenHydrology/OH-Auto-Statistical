@@ -1,8 +1,12 @@
-version 0.2.1 (2015-01-10)
---------------------------
+- References in report
+- 3 Significant figures in intermediate results
 - Added NRFA metadata
 - Added urban adjustment for growthcurve
-- Fixed issue with installer (#3).
+- Windows installer fixes
+
+version 0.2.1 (2015-01-12)
+--------------------------
+- Fix issue with Windows installer
 
 version 0.2.0 (2015-01-02)
 --------------------------
