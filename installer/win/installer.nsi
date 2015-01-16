@@ -6,8 +6,10 @@
 !define VERSION "0.2.2"
 !define REQUIREMENTS_CONDA "numpy=1.9.* scipy=0.14.* sqlalchemy=0.9.* Jinja2=2.7.*"
 
+!define CONDA_URL "http://repo.continuum.io/miniconda/Miniconda3-3.7.3-Windows-x86_64.exe"
 
 Name "OH Auto Statistical"
+
 OutFile "..\..\dist\ohautostatistical-${VERSION}-win64.exe"
 RequestExecutionLevel highest
 
@@ -32,7 +34,7 @@ InstallDir "$PROGRAMFILES64\Open Hydrology\OH Auto Statistical"
 !insertmacro MUI_PAGE_LICENSE LICENSE
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_INSTFILES
-!insertmacro MUI_PAGE_FINISH
+;!insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
 !insertmacro MUI_UNPAGE_CONFIRM
@@ -46,10 +48,16 @@ Section "Miniconda package manager" miniconda_installer
 
   ; Install Miniconda
   SetOutPath "$TEMP\Miniconda"
-  File "bin\Miniconda3-3.7.0-Windows-x86_64.exe"
+  DetailPrint "Downloading Miniconda installer"
+  NSISdl::download /TIMEOUT=1800000 ${CONDA_URL} Miniconda3_setup.exe
+  Pop $R0
+  StrCmp $R0 "success" +3
+    MessageBox MB_OK "Download failed: $R0"
+    Quit
 
-  DetailPrint "Run Miniconda installer"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "Miniconda3-3.7.0-Windows-x86_64.exe" "" "/S /D=$PROGRAMFILES64\Miniconda3"
+
+  DetailPrint "Running Miniconda installer"
+  ${StdUtils.ExecShellWaitEx} $0 $1 "Miniconda3_setup.exe" "" "/S /D=$PROGRAMFILES64\Miniconda3"
   ${StdUtils.WaitForProcEx} $2 $1
   DetailPrint "Completed: Miniconda installer finished with exit code: $2"
 
@@ -60,7 +68,7 @@ Section "Miniconda package manager" miniconda_installer
 SectionEnd
 
 
-Section "OH Auto Statistical packages"
+Section "OH Auto Statistical packages" application_packages
   IfFileExists $INSTDIR\*.* 0 +3
     DetailPrint "Existing OH Auto Statistical packages detected"
     DetailPrint "Existing files will be removed"
@@ -68,22 +76,30 @@ Section "OH Auto Statistical packages"
 
   ; Update conda first
   DetailPrint "Updating conda"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "$PROGRAMFILES64\Miniconda3\Scripts\conda" "" "update conda --yes"
-  ${StdUtils.WaitForProcEx} $2 $1
+  ExecDos::exec /DETAILED '"$PROGRAMFILES64\Miniconda3\Scripts\conda" update conda --yes' "" ""
+  Pop $0
+  ExecDos::wait $0
+  Pop $0
+  DetailPrint "Conda updated (exit code $0)"
 
   ; Create virtual environment with conda and install packages
   SetOutPath $INSTDIR
-  DetailPrint "Creating virtual environment"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "$PROGRAMFILES64\Miniconda3\Scripts\conda" "" \
-    'create -y -p "$INSTDIR\ohvenv" python pip ${REQUIREMENTS_CONDA}'
-  ${StdUtils.WaitForProcEx} $2 $1
-  DetailPrint "Completed: Virtual environment installer finished with exit code: $2"
+
+  DetailPrint "Creating application environment"
+  ExecDos::exec /DETAILED '"$PROGRAMFILES64\Miniconda3\Scripts\conda" \
+    create -y -p "$INSTDIR\ohvenv" python pip ${REQUIREMENTS_CONDA}' "" ""
+  Pop $0
+  ExecDos::wait $0
+  Pop $0
+  DetailPrint "Application environment created (exit code $0)"
 
   ; Install remaining packages with `pip`
-  DetailPrint "Installing remaining packages"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "$INSTDIR\ohvenv\Scripts\pip" "" "install autostatistical==${VERSION}"
-  ${StdUtils.WaitForProcEx} $2 $1
-  DetailPrint "Completed: remaining packages installation finished with exit code: $2"
+  DetailPrint "Installing application packages"
+  ExecDos::exec /DETAILED '"$INSTDIR\ohvenv\Scripts\pip" install autostatistical==${VERSION}' "" ""
+  Pop $0
+  ExecDos::wait $0
+  Pop $0
+  DetailPrint "Application packages installed (exit code $0)"
 
   ; Uninstaller
   WriteUninstaller $INSTDIR\uninstall.exe
@@ -131,9 +147,9 @@ SectionEnd
 Section "Download NRFA data"
 
   DetailPrint "Downloading NRFA data"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "$INSTDIR\ohvenv\python.exe" "" '"$INSTDIR\ohvenv\Lib\site-packages\autostatistical\download_nrfa.py"'
-  ${StdUtils.WaitForProcEx} $2 $1
-  DetailPrint "Completed: NRFA data downloaded completed with exit code: $2"
+  ExecDos::exec /DETAILED '"$INSTDIR\ohvenv\python.exe" \
+    "$INSTDIR\ohvenv\Lib\site-packages\autostatistical\download_nrfa.py"'
+  DetailPrint "Completed: NRFA data downloaded completed."
 
 SectionEnd
 
@@ -157,6 +173,9 @@ Section Uninstall
 SectionEnd
 
 Function .onInit
+
+  SectionSetFlags ${miniconda_installer} 17 ; Selected and read-only
+  SectionSetFlags ${application_packages} 17
 
   ; Check if Miniconda has already been installed
   IfFileExists $PROGRAMFILES64\Miniconda3\Uninstall-Anaconda.exe 0 +5
