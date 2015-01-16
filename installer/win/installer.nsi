@@ -24,6 +24,7 @@
 !include "LogicLib.nsh"
 !include ".\includes\dumplog.nsi"
 
+
 ; Constants
 
 !define APP_NAME "OH Auto Statistical"
@@ -49,6 +50,7 @@
 !define MUI_HEADERIMAGE_RIGHT
 !define MUI_HEADERIMAGE_BITMAP "images\OH.landscape.bmp"
 !define MUI_HEADERIMAGE_BITMAP_STRETCH "AspectFitHeight"
+!define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PACKAGE_NAME}"
 
 Name "${APP_NAME}"
 OutFile "..\..\dist\${PACKAGE_NAME}-${VERSION}-win64.exe"
@@ -62,10 +64,7 @@ RequestExecutionLevel highest
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
-; Uninstaller pages
-!insertmacro MUI_UNPAGE_CONFIRM
-!insertmacro MUI_UNPAGE_COMPONENTS
-!insertmacro MUI_UNPAGE_INSTFILES
+!include uninstaller.nsi
 
 ; Language settings
 !insertmacro MUI_LANGUAGE "English"
@@ -118,7 +117,6 @@ Section "${APP_NAME} packages" application_packages
 
   ; Uninstaller
   WriteUninstaller $INSTDIR\uninstall.exe
-  !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PACKAGE_NAME}"
   WriteRegStr HKLM "${UNINST_KEY}" "DisplayName" "${APP_NAME}"
   WriteRegStr HKLM "${UNINST_KEY}" "Publisher" "${ORG_NAME}"
   WriteRegStr HKLM "${UNINST_KEY}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
@@ -174,38 +172,6 @@ Section -Log
   StrCpy $0 "$INSTDIR\install.log"
   Push $0
   Call DumpLog
-SectionEnd
-
-
-Section "un.${APP_NAME}" uninstall_app_packages
-
-  ; Start menu
-  RmDir /r "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
-  RmDir "$SMPROGRAMS\${ORG_NAME}"
-
-  ; Win context menu
-  DeleteRegKey HKCR "OH.CD3"
-  DeleteRegKey HKCR ".cd3"
-
-  ; OH Auto Statistical program files
-  RmDir /r $INSTDIR
-  RmDir "$PROGRAMFILES64\${ORG_NAME}"
-
-  ; Uninstaller registry
-  DeleteRegKey HKLM "${UNINST_KEY}"
-
-SectionEnd
-
-
-Section "un.NRFA data" uninstall_nrfa
-
-  RmDir /r "$LOCALAPPDATA\${ORG_NAME}\fehdata"
-
-SectionEnd
-
-
-Section "un.Miniconda package manager" uninstall_miniconda
-  ;"$PROGRAMFILES64\Miniconda3\Uninstall-Anaconda.exe /S
 SectionEnd
 
 
