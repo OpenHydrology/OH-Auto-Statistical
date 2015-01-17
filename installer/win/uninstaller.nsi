@@ -53,6 +53,7 @@ SectionEnd
 Section "un.Miniconda package manager" uninstall_miniconda
 
   ExecDos::exec /DETAILED '"$PROGRAMFILES64\Miniconda3\Uninstall-Anaconda.exe" /S'
+  RmDir /r "$PROFILE\.conda"
 
 SectionEnd
 

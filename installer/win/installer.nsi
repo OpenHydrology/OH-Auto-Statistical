@@ -34,7 +34,8 @@
 !define ORG_URL "http://open-hydrology.org"
 !define HELP_URL "http://docs.open-hydrology.org"
 !define PACKAGE_NAME "autostatistical"
-!define REQUIREMENTS_CONDA "numpy=1.9.* scipy=0.14.* sqlalchemy=0.9.* Jinja2=2.7.*"
+!define REQUIREMENTS_CONDA "numpy=1.9.* scipy=0.14.* sqlalchemy=0.9.* Jinja2=2.7.* appdirs=1.4.*"
+!define CONDA_CHANNEL "https://conda.binstar.org/openhydrology"
 !define CONDA_URL "http://repo.continuum.io/miniconda/Miniconda3-3.7.3-Windows-x86_64.exe"
 
 ; Interface settings
@@ -102,10 +103,11 @@ Section "${APP_NAME} packages" application_packages
 
   ; Create virtual environment with conda and install packages
   SetOutPath $INSTDIR
+  !define CONDA "$PROGRAMFILES64\Miniconda3\Scripts\conda"
 
   DetailPrint "Creating application environment"
-  ExecDos::exec /DETAILED '"$PROGRAMFILES64\Miniconda3\Scripts\conda" \
-    create -y -p "$INSTDIR\ohvenv" python pip ${REQUIREMENTS_CONDA}' "" ""
+  ExecDos::exec /DETAILED '"${CONDA}" config --add channels ${CONDA_CHANNEL}' "" ""
+  ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" python pip ${REQUIREMENTS_CONDA}' "" ""
   Pop $0
   DetailPrint "Application environment created (exit code $0)"
 
@@ -115,7 +117,7 @@ Section "${APP_NAME} packages" application_packages
   Pop $0
   DetailPrint "Application packages installed (exit code $0)"
 
-  ; Uninstaller
+  ; Uninstaller details
   WriteUninstaller $INSTDIR\uninstall.exe
   WriteRegStr HKLM "${UNINST_KEY}" "DisplayName" "${APP_NAME}"
   WriteRegStr HKLM "${UNINST_KEY}" "Publisher" "${ORG_NAME}"
