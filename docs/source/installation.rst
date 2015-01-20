@@ -23,8 +23,6 @@ installation process.
    No Windows Start Menu items are created, except for a link to the online documentation. This is intentionally. OH
    Auto Statistical is run by **right-clicking on a .CD3-file**.
 
-Alternatively, if a Python (>=3.3) installation including the packages `numpy` and `scipy` already exists, OH Auto
-Statistical can be installed from the `Python Package Index <https://pypi.python.org/pypi/autostatistical>`_.
 
 Other operation systems
 -----------------------

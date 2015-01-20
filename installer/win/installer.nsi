@@ -34,7 +34,6 @@
 !define ORG_URL "http://open-hydrology.org"
 !define HELP_URL "http://docs.open-hydrology.org"
 !define PACKAGE_NAME "autostatistical"
-!define REQUIREMENTS_CONDA "numpy=1.9.* scipy=0.14.* sqlalchemy=0.9.* Jinja2=2.7.* appdirs=1.4.*"
 !define CONDA_CHANNEL "https://conda.binstar.org/openhydrology"
 !define CONDA_URL "http://repo.continuum.io/miniconda/Miniconda3-3.7.3-Windows-x86_64.exe"
 
@@ -77,11 +76,11 @@ Section "Miniconda package manager" miniconda_installer
   SetOutPath "$TEMP\Miniconda"
   DetailPrint "Downloading Miniconda installer"
   NSISdl::download /TIMEOUT=1800000 ${CONDA_URL} Miniconda3_setup.exe
-  Pop $R0
-  StrCmp $R0 "success" +3
-    MessageBox MB_OK "Download failed: $R0"
-    Quit
-
+  StrCmp $R0 "success" +4
+    MessageBox MB_OK "Miniconda could not be downloaded."
+    DetailPrint "Miniconda could not be downloaded (exit code $R0)."
+    Goto .finally
+  DetailPrint "Miniconda successfully downloaded."
 
   DetailPrint "Running Miniconda installer"
   ${StdUtils.ExecShellWaitEx} $0 $1 "Miniconda3_setup.exe" "" "/S /D=$PROGRAMFILES64\Miniconda3"
@@ -96,25 +95,28 @@ SectionEnd
 
 
 Section "${APP_NAME} packages" application_packages
+
+  ; Remove any existing application files
   IfFileExists $INSTDIR\*.* 0 +3
     DetailPrint "Existing ${APP_NAME} packages detected"
     DetailPrint "Existing files will be removed"
     RMDir /r $INSTDIR
 
-  ; Create virtual environment with conda and install packages
+  ; Create python environment with conda and install packages
   SetOutPath $INSTDIR
   !define CONDA "$PROGRAMFILES64\Miniconda3\Scripts\conda"
 
-  DetailPrint "Creating application environment"
-  ExecDos::exec /DETAILED '"${CONDA}" config --add channels ${CONDA_CHANNEL}' "" ""
-  ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" python pip ${REQUIREMENTS_CONDA}' "" ""
-  Pop $0
-  DetailPrint "Application environment created (exit code $0)"
-
-  ; Install remaining packages with `pip`
   DetailPrint "Installing application packages"
-  ExecDos::exec /DETAILED '"$INSTDIR\ohvenv\Scripts\pip" install ${PACKAGE_NAME}==${VERSION}' "" ""
+
+  ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" \
+    -c ${CONDA_CHANNEL} -c ${CONDA_CHANNEL}/channel/dev \
+    python ${PACKAGE_NAME}=${VERSION}' "" ""
+
   Pop $0
+  IntCmp $0 0 +4 0 0
+    MessageBox MB_OK "Application packages could not be installed."
+    DetailPrint "Application packages could not be installed (exit code $0)."
+    Goto .finally
   DetailPrint "Application packages installed (exit code $0)"
 
   ; Uninstaller details
@@ -171,6 +173,9 @@ SectionEnd
 
 
 Section -Log
+
+.finally:
+
   StrCpy $0 "$INSTDIR\install.log"
   Push $0
   Call DumpLog
