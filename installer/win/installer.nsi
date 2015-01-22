@@ -76,6 +76,7 @@ Section "Miniconda package manager" miniconda_installer
   SetOutPath "$TEMP\Miniconda"
   DetailPrint "Downloading Miniconda installer"
   NSISdl::download /TIMEOUT=1800000 ${CONDA_URL} Miniconda3_setup.exe
+  Pop $R0
   StrCmp $R0 "success" +4
     MessageBox MB_OK "Miniconda could not be downloaded."
     DetailPrint "Miniconda could not be downloaded (exit code $R0)."
