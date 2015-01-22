@@ -9,7 +9,7 @@ HELP_TEXT = \
 """One of the following arguments must be supplied:
 - 'major': to increase major version number, e.g. from 1.2.3 to 2.0.0
 - 'minor': to increase minor version number, e.g. from 1.2.3 to 1.3.0
-- 'patch': to increase patch number, e..g from 1.2.3 to 1.2.4"""
+- 'patch': to increase patch number, e.g. from 1.2.3 to 1.2.4"""
 
 LEVELS = ['major', 'minor', 'patch']
 

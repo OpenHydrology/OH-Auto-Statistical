@@ -1,23 +1,47 @@
+# -*- coding: utf-8 -*-
+
+# OH Auto Statistical
+# Copyright (C) 2014-2015  Florenz A. P. Hollebrandse
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+; Imports
+
 !include MUI2.nsh
 !include StdUtils.nsh  ; http://nsis.sourceforge.net/StdUtils_plug-in
-; Requires AccessControl plugin http://nsis.sourceforge.net/AccessControl_plug-in
 !include "LogicLib.nsh"
-
-!define VERSION "0.2.2"
-!define REQUIREMENTS_CONDA "numpy=1.9.* scipy=0.14.* sqlalchemy=0.9.* Jinja2=2.7.*"
+!include ".\includes\dumplog.nsi"
 
 
-Name "OH Auto Statistical"
-OutFile "..\..\dist\ohautostatistical-${VERSION}-win64.exe"
-RequestExecutionLevel highest
+; Constants
 
-InstallDir "$PROGRAMFILES64\Open Hydrology\OH Auto Statistical"
+!define APP_NAME "OH Auto Statistical"
+!define VERSION "0.2.3"
+
+!define ORG_NAME "Open Hydrology"
+!define ORG_URL "http://open-hydrology.org"
+!define HELP_URL "http://docs.open-hydrology.org"
+!define PACKAGE_NAME "autostatistical"
+!define CONDA_CHANNEL "https://conda.binstar.org/openhydrology"
+!define CONDA_URL "http://repo.continuum.io/miniconda/Miniconda3-3.7.3-Windows-x86_64.exe"
 
 ; Interface settings
-!define MUI_WELCOMEPAGE_TITLE "OH Auto Statistical setup"
+!define MUI_WELCOMEPAGE_TITLE "${APP_NAME} ${VERSION} setup"
 !define MUI_WELCOMEPAGE_TEXT "Fully automated flood estimation for UK catchments using the latest revisions to the Flood Estimation Handbook Statistical Method.$\r$\n$\r$\nThis installer requires an internet connection."
-!define MUI_FINISHPAGE_LINK "Open Hydrology website"
-!define MUI_FINISHPAGE_LINK_LOCATION "http://open-hydrology.org"
+!define MUI_FINISHPAGE_LINK "${ORG_NAME} website"
+!define MUI_FINISHPAGE_LINK_LOCATION "${ORG_URL}"
 !define MUI_FINISHPAGE_SHOWREADME "http://docs.open-hydrology.org/projects/oh-auto-statistical/en/latest/"
 !define MUI_FINISHPAGE_SHOWREADME_TEXT "Read the manual"
 !define MUI_COMPONENTSPAGE_NODESC
@@ -26,6 +50,12 @@ InstallDir "$PROGRAMFILES64\Open Hydrology\OH Auto Statistical"
 !define MUI_HEADERIMAGE_RIGHT
 !define MUI_HEADERIMAGE_BITMAP "images\OH.landscape.bmp"
 !define MUI_HEADERIMAGE_BITMAP_STRETCH "AspectFitHeight"
+!define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PACKAGE_NAME}"
+
+Name "${APP_NAME}"
+OutFile "..\..\dist\${PACKAGE_NAME}-${VERSION}-win64.exe"
+InstallDir "$PROGRAMFILES64\${ORG_NAME}\${APP_NAME}"
+RequestExecutionLevel highest
 
 ; Installer pages
 !insertmacro MUI_PAGE_WELCOME
@@ -34,9 +64,7 @@ InstallDir "$PROGRAMFILES64\Open Hydrology\OH Auto Statistical"
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
-; Uninstaller pages
-!insertmacro MUI_UNPAGE_CONFIRM
-!insertmacro MUI_UNPAGE_INSTFILES
+!include uninstaller.nsi
 
 ; Language settings
 !insertmacro MUI_LANGUAGE "English"
@@ -46,10 +74,17 @@ Section "Miniconda package manager" miniconda_installer
 
   ; Install Miniconda
   SetOutPath "$TEMP\Miniconda"
-  File "bin\Miniconda3-3.7.0-Windows-x86_64.exe"
+  DetailPrint "Downloading Miniconda installer"
+  NSISdl::download /TIMEOUT=1800000 ${CONDA_URL} Miniconda3_setup.exe
+  Pop $R0
+  StrCmp $R0 "success" +4
+    MessageBox MB_OK "Miniconda could not be downloaded."
+    DetailPrint "Miniconda could not be downloaded (exit code $R0)."
+    Goto .finally
+  DetailPrint "Miniconda successfully downloaded."
 
-  DetailPrint "Run Miniconda installer"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "Miniconda3-3.7.0-Windows-x86_64.exe" "" "/S /D=$PROGRAMFILES64\Miniconda3"
+  DetailPrint "Running Miniconda installer"
+  ${StdUtils.ExecShellWaitEx} $0 $1 "Miniconda3_setup.exe" "" "/S /D=$PROGRAMFILES64\Miniconda3"
   ${StdUtils.WaitForProcEx} $2 $1
   DetailPrint "Completed: Miniconda installer finished with exit code: $2"
 
@@ -60,42 +95,41 @@ Section "Miniconda package manager" miniconda_installer
 SectionEnd
 
 
-Section "OH Auto Statistical packages"
+Section "${APP_NAME} packages" application_packages
+
+  ; Remove any existing application files
   IfFileExists $INSTDIR\*.* 0 +3
-    DetailPrint "Existing OH Auto Statistical packages detected"
+    DetailPrint "Existing ${APP_NAME} packages detected"
     DetailPrint "Existing files will be removed"
     RMDir /r $INSTDIR
 
-  ; Update conda first
-  DetailPrint "Updating conda"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "$PROGRAMFILES64\Miniconda3\Scripts\conda" "" "update conda --yes"
-  ${StdUtils.WaitForProcEx} $2 $1
-
-  ; Create virtual environment with conda and install packages
+  ; Create python environment with conda and install packages
   SetOutPath $INSTDIR
-  DetailPrint "Creating virtual environment"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "$PROGRAMFILES64\Miniconda3\Scripts\conda" "" \
-    'create -y -p "$INSTDIR\ohvenv" python pip ${REQUIREMENTS_CONDA}'
-  ${StdUtils.WaitForProcEx} $2 $1
-  DetailPrint "Completed: Virtual environment installer finished with exit code: $2"
+  !define CONDA "$PROGRAMFILES64\Miniconda3\Scripts\conda"
 
-  ; Install remaining packages with `pip`
-  DetailPrint "Installing remaining packages"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "$INSTDIR\ohvenv\Scripts\pip" "" "install autostatistical==${VERSION}"
-  ${StdUtils.WaitForProcEx} $2 $1
-  DetailPrint "Completed: remaining packages installation finished with exit code: $2"
+  DetailPrint "Installing application packages"
 
-  ; Uninstaller
+  ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" \
+    -c ${CONDA_CHANNEL} -c ${CONDA_CHANNEL}/channel/dev \
+    python ${PACKAGE_NAME}=${VERSION}' "" ""
+
+  Pop $0
+  IntCmp $0 0 +4 0 0
+    MessageBox MB_OK "Application packages could not be installed."
+    DetailPrint "Application packages could not be installed (exit code $0)."
+    Goto .finally
+  DetailPrint "Application packages installed (exit code $0)"
+
+  ; Uninstaller details
   WriteUninstaller $INSTDIR\uninstall.exe
-  !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\OHAutoStatistical"
-  WriteRegStr HKLM "${UNINST_KEY}" "DisplayName" "OH Auto Statistical"
-  WriteRegStr HKLM "${UNINST_KEY}" "Publisher" "Open Hydrology"
+  WriteRegStr HKLM "${UNINST_KEY}" "DisplayName" "${APP_NAME}"
+  WriteRegStr HKLM "${UNINST_KEY}" "Publisher" "${ORG_NAME}"
   WriteRegStr HKLM "${UNINST_KEY}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
   WriteRegStr HKLM "${UNINST_KEY}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
   WriteRegDWORD HKLM "${UNINST_KEY}" "NoModify" 1
   WriteRegDWORD HKLM "${UNINST_KEY}" "NoRepair" 1
-  WriteRegStr HKLM "${UNINST_KEY}" "HelpLink" "http://docs.open-hydrology.org"
-  WriteRegStr HKLM "${UNINST_KEY}" "URLInfoAbout" "http://open-hydrology.org"
+  WriteRegStr HKLM "${UNINST_KEY}" "HelpLink" "${HELP_URL}"
+  WriteRegStr HKLM "${UNINST_KEY}" "URLInfoAbout" "${ORG_URL}"
   WriteRegDWORD HKLM "${UNINST_KEY}" "EstimatedSize" 408964
 
 SectionEnd
@@ -103,7 +137,7 @@ SectionEnd
 
 Section "Start menu and context menu items"
 
-  ; Context menu: right-click "Create OH Auto Statistical report"
+  ; Context menu: right-click create report
   WriteRegStr HKCR ".cd3" "" "OH.CD3"
   WriteRegStr HKCR ".cd3" "PerceivedType" "text"
   WriteRegStr HKCR "OH.CD3" "" "Catchment descriptors file"
@@ -112,18 +146,19 @@ Section "Start menu and context menu items"
     WriteRegStr HKCR "OH.CD3\shell" "" "open"
     WriteRegStr HKCR "OH.CD3\shell\open\command" "" 'notepad.exe "%1"'
   ${EndIf}
-  WriteRegStr HKCR "OH.CD3\shell\run" "" "Create OH Auto Statistical report"
-  WriteRegStr HKCR "OH.CD3\shell\run\command" "" '"$INSTDIR\ohvenv\python.exe" -m autostatistical "%1"'
+  WriteRegStr HKCR "OH.CD3\shell\run" "" "Create ${APP_NAME} report"
+  WriteRegStr HKCR "OH.CD3\shell\run\command" "" '"$INSTDIR\ohvenv\python.exe" -m ${PACKAGE_NAME} "%1"'
 
   ; Start menu: link to online documentation
-  SetOutPath "$SMPROGRAMS\Open Hydrology\OH Auto Statistical"
+  SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
   File "..\..\docs\source\*.url"
 
   ; Start menu: download NRFA data
   SetOutPath "$INSTDIR\icons"
   File "images\download.ico"
-  SetOutPath "$SMPROGRAMS\Open Hydrology\OH Auto Statistical"
-  CreateShortcut "Reload NRFA data.lnk" "$INSTDIR\ohvenv\python.exe" '"$INSTDIR\ohvenv\Lib\site-packages\autostatistical\download_nrfa.py"' "$INSTDIR\icons\download.ico" 0
+  SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
+  CreateShortcut "Reload NRFA data.lnk" "$INSTDIR\ohvenv\python.exe" \
+     '"$INSTDIR\ohvenv\Lib\site-packages\${PACKAGE_NAME}\download_nrfa.py"' "$INSTDIR\icons\download.ico" 0
 
 SectionEnd
 
@@ -131,32 +166,27 @@ SectionEnd
 Section "Download NRFA data"
 
   DetailPrint "Downloading NRFA data"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "$INSTDIR\ohvenv\python.exe" "" '"$INSTDIR\ohvenv\Lib\site-packages\autostatistical\download_nrfa.py"'
-  ${StdUtils.WaitForProcEx} $2 $1
-  DetailPrint "Completed: NRFA data downloaded completed with exit code: $2"
+  ExecDos::exec /DETAILED '"$INSTDIR\ohvenv\python.exe" \
+    "$INSTDIR\ohvenv\Lib\site-packages\autostatistical\download_nrfa.py"'
+  DetailPrint "Completed: NRFA data downloaded completed."
 
 SectionEnd
 
 
-Section Uninstall
+Section -Log
 
-  ; Start menu
-  RmDir /r "$SMPROGRAMS\Open Hydrology\OH Auto Statistical"
-  RmDir "$SMPROGRAMS\Open Hydrology"
+.finally:
 
-  ; Win context menu
-  DeleteRegKey HKCR "OH.CD3"
-  DeleteRegKey HKCR ".cd3"
-
-  ; OH Auto Statistical program files
-  RmDir /r $INSTDIR
-
-  ; Uninstaller registry
-  DeleteRegKey HKLM "${UNINST_KEY}"
-
+  StrCpy $0 "$INSTDIR\install.log"
+  Push $0
+  Call DumpLog
 SectionEnd
+
 
 Function .onInit
+
+  SectionSetFlags ${miniconda_installer} 17 ; Selected and read-only
+  SectionSetFlags ${application_packages} 17
 
   ; Check if Miniconda has already been installed
   IfFileExists $PROGRAMFILES64\Miniconda3\Uninstall-Anaconda.exe 0 +5
