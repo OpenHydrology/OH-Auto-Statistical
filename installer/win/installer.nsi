@@ -140,14 +140,25 @@ Section "Start menu and context menu items"
   ; Context menu: right-click create report
   WriteRegStr HKCR ".cd3" "" "OH.CD3"
   WriteRegStr HKCR ".cd3" "PerceivedType" "text"
+  WriteRegStr HKCR ".cd3" "Content Type" "text/plain"
   WriteRegStr HKCR "OH.CD3" "" "Catchment descriptors file"
-  ReadRegStr $R0 HKCR "OH.CD3\shell\open\command" ""
-  ${If} $R0 == ""
-    WriteRegStr HKCR "OH.CD3\shell" "" "open"
-    WriteRegStr HKCR "OH.CD3\shell\open\command" "" 'notepad.exe "%1"'
-  ${EndIf}
+  WriteRegStr HKCR "OH.CD3\shell" "" "open"
+  WriteRegStr HKCR "OH.CD3\shell\open\command" "" 'notepad.exe "%1"'
   WriteRegStr HKCR "OH.CD3\shell\run" "" "Create ${APP_NAME} report"
   WriteRegStr HKCR "OH.CD3\shell\run\command" "" '"$INSTDIR\ohvenv\python.exe" -m ${PACKAGE_NAME} "%1"'
+
+  ReadRegStr $R0 HKCR ".md" ""
+  ${If} $R0 == ""
+    WriteRegStr HKCR ".md" "" "OH.md"
+    WriteRegStr HKCR ".md" "PerceivedType" "text"
+    WriteRegStr HKCR ".md" "Content Type" "text/plain"
+    WriteRegStr HKCR "OH.md" "" "Markdown formatted text file"
+    WriteRegStr HKCR "OH.md\shell" "" "open"
+    WriteRegStr HKCR "OH.md\shell\open\command" "" 'notepad.exe "%1"'
+  ${Else}
+    WriteRegStr HKCR ".md\OpenWithList\notepad.exe" "" ""
+  ${EndIf}
+
 
   ; Start menu: link to online documentation
   SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
