@@ -4,13 +4,14 @@ Installation
 Windows
 -------
 
-To install OH Auto Statistical, simply download and run the installer. An internet connection is required during the
-installation process.
+To install OH Auto Statistical, simply download and run the installer.
 
    Download OH Auto Statistical for Windows:
 
    .. image:: https://img.shields.io/github/release/openhydrology/oh-auto-statistical.svg?style=flat-square
       :target: https://github.com/OpenHydrology/OH-Auto-Statistical/releases/latest
+
+An internet connection is required during the installation process.
 
 .. note::
    During the installation process, a complete set of gauged catchment data will be downloaded from the
@@ -24,23 +25,25 @@ installation process.
    Auto Statistical is run by **right-clicking on a .CD3-file**.
 
 
-Other operation systems
------------------------
+Mac OS and Linux
+----------------
 
-There are many ways to install OH Auto Statistical on Linux and Mac operating systems. OH Auto Statistical requires the
-following Python packages:
+OH Auto Statistical can be installed on Mac OS and Linux operating systems from binstar.org using the `Conda package
+manager <http://conda.pydata.org/miniconda.html>`_:
 
- - numpy
- - scipy
- - sqlalchemy
- - appdirs
- - lmoments3
- - floodestimation
- - Jinja2
- - autostatistical
+   .. image:: https://binstar.org/openhydrology/autostatistical/badges/version.svg
+      :target: https://binstar.org/openhydrology/autostatistical
 
-The `Miniconda Python package manager <http://conda.pydata.org/miniconda.html>`_ is available for all major operation
-systems and can be used to install packages suchs as `numpy` and `scipy`.
+.. code-block:: shell
+
+   conda install -c https://conda.binstar.org/openhydrology autostatistical
+
+Or alternatively directly from the source code:
+
+   .. image:: https://img.shields.io/github/release/openhydrology/oh-auto-statistical.svg?style=flat-square
+      :target: https://github.com/OpenHydrology/OH-Auto-Statistical/releases/latest
+
+
 
 OH Auto Statistical is run as follows:
 
