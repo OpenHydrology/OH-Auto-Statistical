@@ -1,3 +1,5 @@
+- Windows installer registers .md files if needed
+
 version 0.2.3 (2015-01-22)
 --------------------------
 - Windows installer fixes (all packages installed using conda)
