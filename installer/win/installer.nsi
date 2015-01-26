@@ -108,7 +108,7 @@ Section "${APP_NAME} packages" application_packages
   SetOutPath $INSTDIR
   !define CONDA "$PROGRAMFILES64\Miniconda3\Scripts\conda"
 
-  DetailPrint "Installing application packages"
+  DetailPrint "Installing application packages (version ${VERSION})"
 
   ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" \
     -c ${CONDA_CHANNEL} -c ${CONDA_CHANNEL}/channel/dev \
