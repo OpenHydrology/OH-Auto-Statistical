@@ -84,7 +84,8 @@ Section "Miniconda package manager" miniconda_installer
   DetailPrint "Miniconda successfully downloaded."
 
   DetailPrint "Running Miniconda installer"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "Miniconda3_setup.exe" "" "/S /D=$PROGRAMFILES64\Miniconda3"
+  ${StdUtils.ExecShellWaitEx} $0 $1 "Miniconda3_setup.exe" "" \
+    "/InstallationType=AllUsers /AddtoPath=0 /RegisterPython=0 /S /D=$PROGRAMFILES64\Miniconda3"
   ${StdUtils.WaitForProcEx} $2 $1
   DetailPrint "Completed: Miniconda installer finished with exit code: $2"
 
