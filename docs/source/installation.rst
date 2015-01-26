@@ -4,14 +4,16 @@ Installation
 Windows
 -------
 
-To install OH Auto Statistical, simply download and run the installer.
+To install OH Auto Statistical, simply download and run the installer. An internet connection is required during the
+installation process.
 
    Download OH Auto Statistical for Windows:
 
    .. image:: https://img.shields.io/github/release/openhydrology/oh-auto-statistical.svg?style=flat-square
       :target: https://github.com/OpenHydrology/OH-Auto-Statistical/releases/latest
 
-An internet connection is required during the installation process.
+OH Auto Statistical is completely stand-alone software: it does not require Python to be installed first and it does not
+interfere with any existing Python installation.
 
 .. note::
    During the installation process, a complete set of gauged catchment data will be downloaded from the
