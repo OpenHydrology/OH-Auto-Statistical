@@ -28,7 +28,7 @@
 ; Constants
 
 !define APP_NAME "OH Auto Statistical"
-!define VERSION "0.2.3"
+!define VERSION "0.2.4"
 
 !define ORG_NAME "Open Hydrology"
 !define ORG_URL "http://open-hydrology.org"
@@ -84,7 +84,8 @@ Section "Miniconda package manager" miniconda_installer
   DetailPrint "Miniconda successfully downloaded."
 
   DetailPrint "Running Miniconda installer"
-  ${StdUtils.ExecShellWaitEx} $0 $1 "Miniconda3_setup.exe" "" "/S /D=$PROGRAMFILES64\Miniconda3"
+  ${StdUtils.ExecShellWaitEx} $0 $1 "Miniconda3_setup.exe" "" \
+    "/InstallationType=AllUsers /AddtoPath=0 /RegisterPython=0 /S /D=$PROGRAMFILES64\Miniconda3"
   ${StdUtils.WaitForProcEx} $2 $1
   DetailPrint "Completed: Miniconda installer finished with exit code: $2"
 
@@ -107,7 +108,7 @@ Section "${APP_NAME} packages" application_packages
   SetOutPath $INSTDIR
   !define CONDA "$PROGRAMFILES64\Miniconda3\Scripts\conda"
 
-  DetailPrint "Installing application packages"
+  DetailPrint "Installing application packages (version ${VERSION})"
 
   ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" \
     -c ${CONDA_CHANNEL} -c ${CONDA_CHANNEL}/channel/dev \
@@ -140,14 +141,25 @@ Section "Start menu and context menu items"
   ; Context menu: right-click create report
   WriteRegStr HKCR ".cd3" "" "OH.CD3"
   WriteRegStr HKCR ".cd3" "PerceivedType" "text"
+  WriteRegStr HKCR ".cd3" "Content Type" "text/plain"
   WriteRegStr HKCR "OH.CD3" "" "Catchment descriptors file"
-  ReadRegStr $R0 HKCR "OH.CD3\shell\open\command" ""
-  ${If} $R0 == ""
-    WriteRegStr HKCR "OH.CD3\shell" "" "open"
-    WriteRegStr HKCR "OH.CD3\shell\open\command" "" 'notepad.exe "%1"'
-  ${EndIf}
+  WriteRegStr HKCR "OH.CD3\shell" "" "open"
+  WriteRegStr HKCR "OH.CD3\shell\open\command" "" 'notepad.exe "%1"'
   WriteRegStr HKCR "OH.CD3\shell\run" "" "Create ${APP_NAME} report"
   WriteRegStr HKCR "OH.CD3\shell\run\command" "" '"$INSTDIR\ohvenv\python.exe" -m ${PACKAGE_NAME} "%1"'
+
+  ReadRegStr $R0 HKCR ".md" ""
+  ${If} $R0 == ""
+    WriteRegStr HKCR ".md" "" "OH.md"
+    WriteRegStr HKCR ".md" "PerceivedType" "text"
+    WriteRegStr HKCR ".md" "Content Type" "text/plain"
+    WriteRegStr HKCR "OH.md" "" "Markdown formatted text file"
+    WriteRegStr HKCR "OH.md\shell" "" "open"
+    WriteRegStr HKCR "OH.md\shell\open\command" "" 'notepad.exe "%1"'
+  ${Else}
+    WriteRegStr HKCR ".md\OpenWithList\notepad.exe" "" ""
+  ${EndIf}
+
 
   ; Start menu: link to online documentation
   SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"

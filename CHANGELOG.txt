@@ -1,3 +1,8 @@
+version 0.2.4 (2015-01-26)
+--------------------------
+- Miniconda python no longer registered as default python on Windows
+- Windows installer registers .md files if needed
+
 version 0.2.3 (2015-01-22)
 --------------------------
 - Windows installer fixes (all packages installed using conda)
