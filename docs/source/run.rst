@@ -62,9 +62,9 @@ Customising the report template
 -------------------------------
 
 The report template can be customised by placing a file `normal.md` in the folder
-`C:\\Users\\<username>\\AppData\\Local\\Open Hydrology\\OH Auto Statistical\\templates`. It is recommended to copy and modify
+``C:\Users\<username>\AppData\Local\Open Hydrology\OH Auto Statistical\templates``. It is recommended to copy and modify
 the content from the standard templates saved in
-`C:\\Program Files\\Open Hydrology\\OH Auto Statistical\\ohvenv\\Lib\\site-packages\\autostatistical\\templates\\plain.md`.
+``C:\Program Files\Open Hydrology\OH Auto Statistical\ohvenv\Lib\site-packages\autostatistical\templates\plain.md``.
 
 .. rubric:: Footnotes
 
