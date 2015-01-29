@@ -1,0 +1,50 @@
+[FILE FORMAT]
+TYPE,CD3
+VERSION,3.0
+[END]
+[STATION NUMBER]
+ 37017
+[END]
+[CDS DETAILS]
+NAME,Blackwater
+LOCATION,Stisted
+NOMINAL AREA,  139.20
+NOMINAL NGR,5793,2243
+[END]
+[DESCRIPTORS]
+IHDTM NGR,GB     ,579250,224300
+CENTROID NGR,GB,567758,232355
+DTM AREA,  140.38
+ALTBAR,  84
+ASPBAR,134
+ASPVAR,0.16
+BFIHOST,0.493
+DPLBAR, 22.16
+DPSBAR, 29.5
+FARL,0.994
+FPEXT,0.0688
+LDP, 40.00
+PROPWET,0.31
+RMED-1H, 11.4
+RMED-1D, 28.4
+RMED-2D, 35.3
+SAAR, 579
+SAAR4170, 604
+SPRHOST,39.11
+URBCONC1990, 0.573
+URBEXT1990,0.0217
+URBLOC1990, 0.639
+URBCONC2000, 0.765
+URBEXT2000,0.0255
+URBLOC2000, 0.551
+[END]
+[SUITABILITY]
+QMED,YES
+POOLING,NO
+[END]
+[COMMENTS]
+STATION,'Essex' profile (modified Flat V Crump) weir with crest tapping. No spillway. Modest modular limit affected by weed growth. Naturalised flows 1969-1976. Minor adjustments needed to correct for artificial influences. RATING COMMENTS:Essex weir with VA rating for high flows. One rating applied across period of record. Some of the gaugings were based on float-runs and may not be reliable. Modular limit approximately 0.62m.
+CATCHMENT,Predominantly rural, plus Braintree. Upper two-thirds of catchment Chalk, remainder London Clay (exposed in valleys), all overlain with Boulder Clay and glacial gravel. ARTIFICIAL INFLUENCES:. CATCHMENT CHANGES:No information available
+Qmed Suitability,Some scatter in gaugings evident but QMED estimates are thought to be reasonable.
+Pooling Suitability,Although gauged to within 2% of AMAX3, significant scatter and no gaugings above bank full reduces confidence in rating for high flows.
+[END]

@@ -97,3 +97,8 @@ class TestReport(unittest.TestCase):
         env = templ.TemplateEnvironment()
         content = env.floatcolumn(None, 3, 12)
         self.assertEqual(content, '            ')
+
+    def test_gauged_report(self):
+        analysis = astat.Analysis('./autostatistical/tests/data/37017.CD3')
+        analysis.run()
+        analysis.create_report()

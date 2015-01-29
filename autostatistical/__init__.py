@@ -54,7 +54,7 @@ class Analysis(object):
         results = {}
 
         analysis = QmedAnalysis(self.catchment, self.gauged_catchments, results_log=results)
-        self.qmed = analysis.qmed(method='descriptors')
+        self.qmed = analysis.qmed()
 
         results['qmed'] = self.qmed
         self.results['qmed'] = results
