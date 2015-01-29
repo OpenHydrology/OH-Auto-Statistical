@@ -1,6 +1,7 @@
 Installation
 ============
 
+
 Windows
 -------
 
@@ -16,10 +17,10 @@ OH Auto Statistical is completely stand-alone software: it does not require Pyth
 interfere with any existing Python installation.
 
 .. note::
+
    During the installation process, a complete set of gauged catchment data will be downloaded from the
    `National River Flow Archive (NRFA) <http://www.ceh.ac.uk/data/nrfa/>`_ for pooled analyses. This may take some time!
    NRFA data are subject to `terms and conditions <http://www.ceh.ac.uk/data/nrfa/data/data_terms.html>`_.
-
 
 .. attention::
 
@@ -44,8 +45,6 @@ Or alternatively directly from the source code:
 
    .. image:: https://img.shields.io/github/release/openhydrology/oh-auto-statistical.svg?style=flat-square
       :target: https://github.com/OpenHydrology/OH-Auto-Statistical/releases/latest
-
-
 
 OH Auto Statistical is run as follows:
 
