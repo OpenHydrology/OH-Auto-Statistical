@@ -24,6 +24,16 @@ DPLBAR       | {{ catchment.descriptors.dplbar|floatcolumn(2, 10, 6) }} | RMED-2
 DPSBAR       | {{ catchment.descriptors.dpsbar|floatcolumn(1, 10, 6) }} | SAAR        | {{ catchment.descriptors.saar|floatcolumn(0, 10, 6) }} | URBLOC2000  | {{ catchment.descriptors.urbloc2000|floatcolumn(3, 10, 6) }}
 FARL         | {{ catchment.descriptors.farl|floatcolumn(3, 10, 6) }} | SAAR4170    | {{ catchment.descriptors.saar4170|floatcolumn(0, 10, 6) }} |             | {{ None|floatcolumn(4, 10, 6) }}
 
+{% if qmed.method == 'amax_records' %}
+### Annual maximum flow data
+
+  Water year |       Date |  Flow (m³/s)
+------------:|-----------:|------------:
+{% for amax in catchment.amax_records %}
+{{ amax.water_year|intcolumn(12) }} | {{ amax.date|dateformat }} | {{ amax.flow|signifcolumn(2, 12, 11) }}
+{% endfor%}
+
+{% endif %}
 ### National River Flow Archive (NRFA) data
 
 Source:        {{ nrfa.url }}  
@@ -32,9 +42,13 @@ Published:     {{ nrfa.published_on|dateformat('%B %Y') }}
 Retrieved:     {{ nrfa.downloaded_on|dateformat }}
 
 ## Median annual flood (QMED)
+{% set methods = {'descriptors': "Catchment descriptors regression model with nearby catchments adjustment", 
+                  'amax_records': "Median of annual maximum flow data"} %}
 
+{% if qmed.method == 'descriptors' %}
 Methology:     Kjeldsen, Jones & Bayliss (2008, eqs. 8.1 & 8.2), Kjeldsen (2010, eq. 8), Open Hydrology Contributors 
-               (2015)
+               (2015)  
+Analysis type: {{ methods[qmed.method] }}
 
 QMED, rural:   {{ qmed.qmed_descr_rural|signif(3) }} m³/s  
 URBEXT, {{ report_date|default(None)|dateformat('%Y') }}:  {{ qmed.urban_extent|round(4) }}  
@@ -50,14 +64,18 @@ Donor river         | Donor location                 | Distance (km)| Adjustment
 {% endfor %}
 Total/weighted avg. |                                |              | {{ qmed.donor_adj_factor|floatcolumn(3, 17) }} |  1.000
 
+{% else %}
+Analysis type: {{ methods[qmed.method] }}  
+{% endif %}
 QMED:          {{ qmed.qmed|signif(2) }} m³/s
 
 ## Growth curve
+{% set methods = {'pooling_group': "Pooled catchments analysis (ungauged)", 
+                  'enhanced_single_site': "Pooled catchments analysis (gauged)"} %}
 
 Methology:     Kjeldsen, Jones & Bayliss (2008, eqs. 8.3‒8.12 & 8.16), Kjeldsen (2010, eqs. 10 & 11), Open Hydrology 
-               Contributors (2015)
-
-Analysis type: ungauged, pooling group
+               Contributors (2015)  
+Analysis type: {{ methods[gc.method] }}
 
 ### Growth curve donor catchments (pooling group)
 

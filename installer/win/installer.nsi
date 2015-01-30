@@ -28,7 +28,7 @@
 ; Constants
 
 !define APP_NAME "OH Auto Statistical"
-!define VERSION "0.2.4"
+!define VERSION "0.3.0"
 
 !define ORG_NAME "Open Hydrology"
 !define ORG_URL "http://open-hydrology.org"
