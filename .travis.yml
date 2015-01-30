@@ -14,7 +14,7 @@ before_install:
 - sudo ln -s /run/shm /dev/shm
 
 install:
-- conda install --yes python=$TRAVIS_PYTHON_VERSION pip nose numpy=1.9.* scipy=0.14.* sqlalchemy=0.9.* Jinja2=2.7.*
+- conda install --yes -c https://conda.binstar.org/openhydrology python=$TRAVIS_PYTHON_VERSION pip nose appdirs=1.4.* Jinja2=2.7.* floodestimation=0.2.2
 - python setup.py install
  
 script:
