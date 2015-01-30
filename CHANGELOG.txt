@@ -1,3 +1,5 @@
+version 0.3.0 (2015-01-30)
+--------------------------
 - Added gauged catchments support
 
 version 0.2.4 (2015-01-26)
