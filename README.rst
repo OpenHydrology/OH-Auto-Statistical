@@ -3,10 +3,12 @@ OH Auto Statistical
 
 Fully automated flood estimation for UK catchments.
 
-This package is a simple front-end for the OH `floodestimation` library for rapid estimation of flood flow rates. It 
-works like this:
+Step 1
+------
 
-1. In a file explorer, right-click on a `.CD3` catchment file and click `Create OH Auto Statistical report`.
-2. Open the generated report file containing full calculation details and results.
+`Read the manual <http://docs.open-hydrology.org/projects/oh-auto-statistical>`_, please.
 
-This package has been created to test the `floodestimation` library and develop its reporting outputs.
+Step 2
+------
+
+`Install OH Auto Statistical <https://github.com/OpenHydrology/OH-Auto-Statistical/releases/latest>`_ (Windows, OS X and Linux)
