@@ -19,7 +19,7 @@
 
 import os.path
 from datetime import date
-from floodestimation.loaders import load_catchment
+from floodestimation import loaders
 from floodestimation import db
 from floodestimation import fehdata
 from floodestimation.collections import CatchmentCollections
@@ -33,7 +33,7 @@ class Analysis(object):
         self.name = os.path.basename(os.path.splitext(cd3_file_path)[0])
         self.folder = os.path.dirname(cd3_file_path)
         self.results = {'report_date': date.today()}
-        self.catchment = load_catchment(cd3_file_path)
+        self.catchment = loaders.from_file(cd3_file_path)
         self.results['catchment'] = self.catchment
         self.db_session = db.Session()
         self.gauged_catchments = CatchmentCollections(self.db_session)

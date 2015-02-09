@@ -26,7 +26,7 @@ db.reset_db_tables()
 
 print("Loading new data.")
 db_session = db.Session()
-loaders.gauged_catchments_to_db(db_session)
+loaders.nrfa_to_db(db_session, incl_pot=False)
 
 try:
     print("Saving new data.")
