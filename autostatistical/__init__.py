@@ -37,8 +37,10 @@ class Analysis(object):
         self.catchment = loaders.from_file(cd3_file_path)
         self.results['catchment'] = self.catchment
         self.db_session = db.Session()
+        # Add subject catchment to db
         if len(self.catchment.amax_records) > 0:
             loaders.to_db(self.catchment, self.db_session, method='update', autocommit=True)
+        # Add additional catchment data
         loaders.userdata_to_db(self.db_session, autocommit=True)
 
         self.gauged_catchments = CatchmentCollections(self.db_session)
