@@ -33,9 +33,14 @@ class Analysis(object):
         self.name = os.path.basename(os.path.splitext(cd3_file_path)[0])
         self.folder = os.path.dirname(cd3_file_path)
         self.results = {'report_date': date.today()}
+
         self.catchment = loaders.from_file(cd3_file_path)
         self.results['catchment'] = self.catchment
         self.db_session = db.Session()
+        if len(self.catchment.amax_records) > 0:
+            loaders.to_db(self.catchment, self.db_session, method='update', autocommit=True)
+        loaders.userdata_to_db(self.db_session, autocommit=True)
+
         self.gauged_catchments = CatchmentCollections(self.db_session)
         self.results['nrfa'] = fehdata.nrfa_metadata()
         self.qmed = None
