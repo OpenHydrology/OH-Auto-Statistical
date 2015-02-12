@@ -110,8 +110,7 @@ Section "${APP_NAME} packages" application_packages
 
   DetailPrint "Installing application packages (version ${VERSION})"
 
-  ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" \
-    -c ${CONDA_CHANNEL} -c ${CONDA_CHANNEL}/channel/dev \
+  ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" -c ${CONDA_CHANNEL} \
     python ${PACKAGE_NAME}=${VERSION}' "" ""
 
   Pop $0
