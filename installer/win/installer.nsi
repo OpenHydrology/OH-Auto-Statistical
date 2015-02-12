@@ -170,7 +170,8 @@ Section "Start menu and context menu items"
   File "images\download.ico"
   SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
   CreateShortcut "Reload NRFA data.lnk" "$INSTDIR\ohvenv\python.exe" \
-     '"$INSTDIR\ohvenv\Lib\site-packages\${PACKAGE_NAME}\download_nrfa.py"' "$INSTDIR\icons\download.ico" 0
+     '"$INSTDIR\ohvenv\Lib\site-packages\${PACKAGE_NAME}-${VERSION}-py3.4.egg\${PACKAGE_NAME}\download_nrfa.py"' \
+     "$INSTDIR\icons\download.ico" 0
 
 SectionEnd
 
