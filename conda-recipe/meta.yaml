@@ -1,0 +1,33 @@
+package:
+  name: autostatistical
+  version: {{ environ.get('GIT_DESCRIBE_TAG', '0.0.0')[1:] }}
+
+build:
+  number: {{ environ.get('GIT_DESCRIBE_NUMBER', 0) }}
+  
+source:
+  git_url: ..
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - appdirs 1.4*
+    - jinja2 2.7*
+    - floodestimation 0.3.1
+
+  run:
+    - python
+    - appdirs 1.4*
+    - jinja2 2.7*
+    - floodestimation 0.3.1
+
+test:
+  # Python imports
+  imports:
+    - autostatistical
+
+about:
+  home: https://github.com/OpenHydrology/OH-Auto-Statistical
+  license: GPLv3
+  summary: Fully automated flood estimation for UK catchments

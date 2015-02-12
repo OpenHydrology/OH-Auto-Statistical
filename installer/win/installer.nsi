@@ -28,7 +28,7 @@
 ; Constants
 
 !define APP_NAME "OH Auto Statistical"
-!define VERSION "0.3.0"
+!define VERSION "0.4.0"
 
 !define ORG_NAME "Open Hydrology"
 !define ORG_URL "http://open-hydrology.org"
@@ -170,7 +170,8 @@ Section "Start menu and context menu items"
   File "images\download.ico"
   SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
   CreateShortcut "Reload NRFA data.lnk" "$INSTDIR\ohvenv\python.exe" \
-     '"$INSTDIR\ohvenv\Lib\site-packages\${PACKAGE_NAME}\download_nrfa.py"' "$INSTDIR\icons\download.ico" 0
+     '"$INSTDIR\ohvenv\Lib\site-packages\${PACKAGE_NAME}-${VERSION}-py3.4.egg\${PACKAGE_NAME}\download_nrfa.py"' \
+     "$INSTDIR\icons\download.ico" 0
 
 SectionEnd
 
@@ -179,7 +180,7 @@ Section "Download NRFA data"
 
   DetailPrint "Downloading NRFA data"
   ExecDos::exec /DETAILED '"$INSTDIR\ohvenv\python.exe" \
-    "$INSTDIR\ohvenv\Lib\site-packages\autostatistical\download_nrfa.py"'
+     "$INSTDIR\ohvenv\Lib\site-packages\${PACKAGE_NAME}-${VERSION}-py3.4.egg\${PACKAGE_NAME}\download_nrfa.py"' \
   DetailPrint "Completed: NRFA data downloaded completed."
 
 SectionEnd

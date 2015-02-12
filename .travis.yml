@@ -9,13 +9,14 @@ before_install:
 - ./miniconda.sh -b
 - export PATH=/home/travis/miniconda/bin:$PATH
 - conda update --yes conda
+- conda config --add channels https://conda.binstar.org/openhydrology
 # The next couple lines fix a crash with multiprocessing on Travis and are not specific to using Miniconda
 - sudo rm -rf /dev/shm
 - sudo ln -s /run/shm /dev/shm
 
 install:
-- conda install --yes -c https://conda.binstar.org/openhydrology python=$TRAVIS_PYTHON_VERSION pip nose appdirs=1.4.* Jinja2=2.7.* floodestimation=0.2.2
+- conda install --yes python=$TRAVIS_PYTHON_VERSION nose appdirs=1.4 Jinja2=2.7 floodestimation=0.3.1
 - python setup.py install
- 
+
 script:
 - nosetests
