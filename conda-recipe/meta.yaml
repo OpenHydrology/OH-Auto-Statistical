@@ -4,8 +4,7 @@ package:
 
 build:
   number: {{ environ.get('GIT_DESCRIBE_NUMBER', 0) }}
-  preserve_egg_dir: no
-  
+
 source:
   git_url: ..
 
