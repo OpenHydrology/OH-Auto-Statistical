@@ -180,7 +180,7 @@ Section "Download NRFA data"
 
   DetailPrint "Downloading NRFA data"
   ExecDos::exec /DETAILED '"$INSTDIR\ohvenv\python.exe" \
-    "$INSTDIR\ohvenv\Lib\site-packages\autostatistical\download_nrfa.py"'
+     "$INSTDIR\ohvenv\Lib\site-packages\${PACKAGE_NAME}-${VERSION}-py3.4.egg\${PACKAGE_NAME}\download_nrfa.py"' \
   DetailPrint "Completed: NRFA data downloaded completed."
 
 SectionEnd
