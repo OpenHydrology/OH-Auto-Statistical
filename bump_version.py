@@ -42,7 +42,7 @@ def main(argv):
 
 
 def existing_version():
-    return open('VERSION').read()
+    return [int(s) for s in open('VERSION').read().split('.')]
 
 
 def replace_file_content(file_name, content):
@@ -54,8 +54,9 @@ def replace_file_content(file_name, content):
 
 
 def update_version_file(new_version):
-    file_name= 'VERSION'
-    replace_file_content(file_name, new_version)
+    file_name = 'VERSION'
+    new_content = '.'.join([str(i) for i in new_version])
+    replace_file_content(file_name, new_content)
 
 
 def update_changelog(new_version):
