@@ -1,5 +1,9 @@
 version 0.4.0 (2015-02-10)
 --------------------------
+- Conda package fixes
+- Gauged catchments work even if not in NRFA database
+- Import user data
+
 version 0.3.0 (2015-01-30)
 --------------------------
 - Added gauged catchments support
