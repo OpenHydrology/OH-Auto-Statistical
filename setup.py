@@ -13,4 +13,5 @@ setup(
     package_data={
         'autostatistical': ['templates/*.*'],
     },
+    zip_safe=False
 )
