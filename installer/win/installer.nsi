@@ -28,7 +28,7 @@
 ; Constants
 
 !define APP_NAME "OH Auto Statistical"
-!define VERSION "0.4.0"
+!define VERSION "0.4.1"
 
 !define ORG_NAME "Open Hydrology"
 !define ORG_URL "http://open-hydrology.org"
@@ -110,8 +110,7 @@ Section "${APP_NAME} packages" application_packages
 
   DetailPrint "Installing application packages (version ${VERSION})"
 
-  ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" \
-    -c ${CONDA_CHANNEL} -c ${CONDA_CHANNEL}/channel/dev \
+  ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" -c ${CONDA_CHANNEL} \
     python ${PACKAGE_NAME}=${VERSION}' "" ""
 
   Pop $0

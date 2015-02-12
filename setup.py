@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='autostatistical',
-    version='0.4.0',
+    version='0.4.1',
     packages=['autostatistical'],
     install_requires=[
         'Jinja2>=2.7,<2.8',
@@ -13,4 +13,5 @@ setup(
     package_data={
         'autostatistical': ['templates/*.*'],
     },
+    zip_safe=False
 )
