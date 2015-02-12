@@ -31,11 +31,8 @@ def main(argv):
     print("Previous version: {}.{}.{}".format(*old_version))
     print("Current version:  {}.{}.{}".format(*new_version))
 
-    update_package_setup(new_version)
-    print("Packup setup.py updated.")
-
-    update_doc_conf(new_version)
-    print("Documentation conf.py updated.")
+    update_version_file(new_version)
+    print("VERSION file updated.")
 
     update_changelog(new_version)
     print("CHANGELOG.txt updated.")
@@ -45,10 +42,7 @@ def main(argv):
 
 
 def existing_version():
-    with open('setup.py') as setup_file:
-        for line in setup_file:
-            if line.strip().startswith('version'):
-                return [int(s) for s in line.strip().split('=')[1].strip("',").split('.')]
+    return open('VERSION').read()
 
 
 def replace_file_content(file_name, content):
@@ -59,32 +53,9 @@ def replace_file_content(file_name, content):
     os.remove(temp_file.name)
 
 
-def update_package_setup(new_version):
-    file_name= 'setup.py'
-
-    new_content = []
-    with open(file_name, encoding='utf-8') as f:
-        for line in f:
-            if line.strip().startswith('version'):
-                line = "    version='{}.{}.{}',\n".format(*new_version)
-            new_content.append(line)
-
-    replace_file_content(file_name, new_content)
-
-
-def update_doc_conf(new_version):
-    file_name = './docs/source/conf.py'
-
-    new_content = []
-    with open(file_name, encoding='utf-8') as f:
-        for line in f:
-            if line.strip().startswith('version'):
-                line = "version = '{}.{}'\n".format(*new_version[0:2])
-            elif line.strip().startswith('release'):
-                line = "release = '{}.{}.{}'\n".format(*new_version)
-            new_content.append(line)
-
-    replace_file_content(file_name, new_content)
+def update_version_file(new_version):
+    file_name= 'VERSION'
+    replace_file_content(file_name, new_version)
 
 
 def update_changelog(new_version):
