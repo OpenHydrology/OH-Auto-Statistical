@@ -1,3 +1,5 @@
+- Setuptools fix
+
 version 0.4.0 (2015-02-10)
 --------------------------
 - Conda package fixes
