@@ -6,7 +6,7 @@ import version
 version.update()
 
 here = path.abspath(path.dirname(__file__))
-version = open(path.join(here, 'VERSION')).read().split('-')[0]
+version = open(path.join(here, 'autostatistical', 'VERSION')).read().split('-')[0]
 
 setup(
     name='autostatistical',
@@ -18,8 +18,8 @@ setup(
         'floodestimation==0.3.1'
     ],
     package_data={
-        '': ['VERSION'],
-        'autostatistical': ['templates/*.*']
+        'autostatistical': ['VERSION',
+                            'templates/*.*']
     },
     zip_safe=False
 )

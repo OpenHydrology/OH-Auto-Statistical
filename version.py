@@ -17,7 +17,7 @@ def update():
             raise ValueError("Tag `{}` must start with `{}`.".format(tag, TAG_PREFIX))
         version = tag[len(TAG_PREFIX):]
 
-        with open('VERSION', mode='w', encoding='utf-8') as version_file:
+        with open('autostatistical/VERSION', mode='w', encoding='utf-8') as version_file:
             version_file.write('-'.join([version, number]))
 
     except CalledProcessError:

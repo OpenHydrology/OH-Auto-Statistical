@@ -69,7 +69,7 @@ copyright = '2014‒{}, Open Hydrology contributors'.format(date.today().year)
 # built documents.
 #
 # The short X.Y version.
-full_version = open('..\..\VERSION').read()
+full_version = open('../../autostatistical/VERSION').read().split('-')[0]  # Ignore build number
 version = '.'.join(full_version.split('.')[0:2])
 # The full version, including alpha/beta/rc tags.
 release = full_version
