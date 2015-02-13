@@ -15,10 +15,10 @@ if len(full_version) == 1:  # Public release version
     number = 0
     out_file_name = 'autostatistical-{}-win64.exe'.format(version)
 else:  # Private build version
-    number = full_version[1]
+    number = int(full_version[1])
     out_file_name = 'autostatistical-{}-win64_{}.exe'.format(version, number)
     conda_channel = conda_channel + '/channel/dev -c ' + conda_channel  # Add dev channel
-build = 'py34_' + number
+build = 'py34_' + str(number)
 
 nsis_args = [r'c:\Program Files (x86)\NSIS\makensis.exe',
              '/DVERSION=' + version,

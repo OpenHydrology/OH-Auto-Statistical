@@ -1,4 +1,4 @@
-version 0.4.2 (2015-02-13)
+version 0.4.4 (2015-02-13)
 --------------------------
 - Doc updates
 - Refactored version management scripts based on git tags
