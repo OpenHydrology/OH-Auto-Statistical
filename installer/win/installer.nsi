@@ -109,10 +109,10 @@ Section "${APP_NAME} packages" application_packages
   SetOutPath $INSTDIR
   !define CONDA "$PROGRAMFILES64\Miniconda3\Scripts\conda"
 
-  DetailPrint "Installing application packages (version ${VERSION})"
+  DetailPrint "Installing application packages (version ${VERSION}-${BUILD})"
 
   ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" -c ${CONDA_CHANNEL} \
-    python ${PACKAGE_NAME}=${VERSION}' "" ""
+    python ${PACKAGE_NAME}=${VERSION}=${BUILD}' "" ""
 
   Pop $0
   IntCmp $0 0 +4 0 0
