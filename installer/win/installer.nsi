@@ -28,13 +28,13 @@
 ; Constants
 
 !define APP_NAME "OH Auto Statistical"
-!define VERSION "0.4.1"
+; !define VERSION "0.0.0" ; should be set by `makensis` argument e.g. `/DVERSION=0.0.0`
 
 !define ORG_NAME "Open Hydrology"
 !define ORG_URL "http://open-hydrology.org"
 !define HELP_URL "http://docs.open-hydrology.org"
 !define PACKAGE_NAME "autostatistical"
-!define CONDA_CHANNEL "https://conda.binstar.org/openhydrology"
+; !define CONDA_CHANNEL "https://conda.binstar.org/openhydrology"  ; should be set by `makensis` argument
 !define CONDA_URL "http://repo.continuum.io/miniconda/Miniconda3-3.7.3-Windows-x86_64.exe"
 
 ; Interface settings
@@ -53,7 +53,8 @@
 !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PACKAGE_NAME}"
 
 Name "${APP_NAME}"
-OutFile "..\..\dist\${PACKAGE_NAME}-${VERSION}-win64.exe"
+; !define OUTFILENAME "${PACKAGE_NAME}-${VERSION}-win64.exe"  ; Should be set from makensis argument
+OutFile "..\..\dist\${OUTFILENAME}"
 InstallDir "$PROGRAMFILES64\${ORG_NAME}\${APP_NAME}"
 RequestExecutionLevel highest
 
@@ -108,10 +109,11 @@ Section "${APP_NAME} packages" application_packages
   SetOutPath $INSTDIR
   !define CONDA "$PROGRAMFILES64\Miniconda3\Scripts\conda"
 
-  DetailPrint "Installing application packages (version ${VERSION})"
+  DetailPrint "Search in channel(s) -c ${CONDA_CHANNEL}"
+  DetailPrint "Installing application packages (version ${VERSION}-${BUILD})"
 
   ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" -c ${CONDA_CHANNEL} \
-    python ${PACKAGE_NAME}=${VERSION}' "" ""
+    python ${PACKAGE_NAME}=${VERSION}=${BUILD}' "" ""
 
   Pop $0
   IntCmp $0 0 +4 0 0
