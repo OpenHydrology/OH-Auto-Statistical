@@ -53,7 +53,8 @@
 !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PACKAGE_NAME}"
 
 Name "${APP_NAME}"
-OutFile "..\..\dist\${PACKAGE_NAME}-${VERSION}-win64.exe"
+; !define OUTFILENAME "${PACKAGE_NAME}-${VERSION}-win64.exe"  ; Should be set from makensis argument
+OutFile "..\..\dist\${OUTFILENAME}"
 InstallDir "$PROGRAMFILES64\${ORG_NAME}\${APP_NAME}"
 RequestExecutionLevel highest
 
