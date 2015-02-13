@@ -26,9 +26,6 @@ from floodestimation.collections import CatchmentCollections
 from floodestimation.analysis import QmedAnalysis, GrowthCurveAnalysis
 from .template import TemplateEnvironment
 
-here = os.path.abspath(os.path.dirname(__file__))
-__version__ = open('VERSION').read()
-
 
 class Analysis(object):
     def __init__(self, cd3_file_path):

@@ -109,6 +109,7 @@ Section "${APP_NAME} packages" application_packages
   SetOutPath $INSTDIR
   !define CONDA "$PROGRAMFILES64\Miniconda3\Scripts\conda"
 
+  DetailPrint "Search in channel(s) -c ${CONDA_CHANNEL}"
   DetailPrint "Installing application packages (version ${VERSION}-${BUILD})"
 
   ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" -c ${CONDA_CHANNEL} \

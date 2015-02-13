@@ -7,7 +7,7 @@ import version
 version.update()
 
 # Parse version and build number from VERSION file
-full_version = open('autostatistical/VERSION').read().split('-')
+full_version = open('VERSION').read().split('-')
 version = full_version[0]
 conda_channel = 'https://conda.binstar.org/openhydrology'
 
