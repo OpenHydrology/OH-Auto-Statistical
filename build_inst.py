@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from subprocess import call
+import version
 
+# Update version from GIT tags if possible
+version.update()
+
+# Parse version and build number from VERSION file
 full_version = open('VERSION').read().split('-')
 version = full_version[0]
 if len(full_version) > 1:
