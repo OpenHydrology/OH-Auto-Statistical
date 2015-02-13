@@ -2,7 +2,7 @@ from setuptools import setup
 from os import path
 import version
 
-# Update version from GIT tags if possible
+# Update version from GIT tags if possible and create version file
 version.update()
 
 here = path.abspath(path.dirname(__file__))
@@ -18,8 +18,8 @@ setup(
         'floodestimation==0.3.1'
     ],
     package_data={
-        'autostatistical': ['VERSION',
-                            'templates/*.*']
+        '.': ['VERSION'],
+        'autostatistical': ['templates/*.*']
     },
     zip_safe=False
 )

@@ -3,7 +3,7 @@
 from subprocess import call
 import version
 
-# Update version from GIT tags if possible
+# Update version from GIT tags if possible and create version file
 version.update()
 
 # Parse version and build number from VERSION file
