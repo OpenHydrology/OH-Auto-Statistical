@@ -18,7 +18,6 @@ setup(
         'floodestimation==0.3.1'
     ],
     package_data={
-        '.': ['VERSION'],
         'autostatistical': ['templates/*.*']
     },
     zip_safe=False
