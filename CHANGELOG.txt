@@ -1,3 +1,8 @@
+version 0.4.2 (2015-02-13)
+--------------------------
+- Doc updates
+- Refactored version management scripts based on git tags
+
 version 0.4.1 (2015-02-12)
 --------------------------
 - Setuptools fix

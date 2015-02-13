@@ -18,7 +18,7 @@ To undertake an analysis:
     .. image:: _static/context-menu.png
 
  3. A report is generated which has the same file name as the .CD3-file but ending with
-    `Flood estimation report.yyyy-mm-dd.md`. This is a simple text file [#f1]_ and can be opened with `notepad`.
+    ``Flood estimation report.yyyy-mm-dd.md``. This is a simple text file [#f1]_ and can be opened with `notepad`.
 
     .. image:: _static/report.png
 
@@ -29,17 +29,6 @@ Gauged catchments flood estimation
 A statistical flood estimation for gauged catchments ("enhanced single site analysis") is undertaken when an .AM file is
 saved alongside the .CD3 file. The files should have the same name (except for the file extension) and be located in the
 same folder. The process is otherwise exactly the same as for ungauged catchments.
-
-The following restrictions/assumptions apply:
-
- - The annual maximum flow data in the .AM file is used for estimating QMED.
- - The annual maximum flow data in the NRFA dataset is used for estimating the growth curve (based on all pooled
-   catchments including the subject catchment).
- - The subject catchment is only included in the pooling group (as the first catchment) if the catchment is included
-   in the NRFA dataset. The matching catchment in the NRFA dataset is found by comparing the ``[STATION NUMBER]``
-   section in the .CD3 file.
- - The subject catchment is included in the pooling group regardless wheter suitability for pooled analyses is set in
-   the NRFA dataset or not.
 
 .. tip::
 
@@ -61,7 +50,7 @@ All existing data will be removed before downloading a complete new dataset. Thi
 Customising the report template
 -------------------------------
 
-The report template can be customised by placing a file `normal.md` in the folder
+The report template can be customised by placing a file ``normal.md`` in the folder
 ``C:\Users\<username>\AppData\Local\Open Hydrology\OH Auto Statistical\templates``. It is recommended to copy and modify
 the content from the standard templates saved in
 ``C:\Program Files\Open Hydrology\OH Auto Statistical\ohvenv\Lib\site-packages\autostatistical\templates\plain.md``.
