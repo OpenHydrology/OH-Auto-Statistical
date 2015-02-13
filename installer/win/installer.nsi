@@ -28,7 +28,7 @@
 ; Constants
 
 !define APP_NAME "OH Auto Statistical"
-!define VERSION "0.4.1"
+; !define VERSION "0.0.0" should be set by `makensis` argument e.g. `/DVERSION=0.0.0`
 
 !define ORG_NAME "Open Hydrology"
 !define ORG_URL "http://open-hydrology.org"
