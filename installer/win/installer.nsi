@@ -28,13 +28,13 @@
 ; Constants
 
 !define APP_NAME "OH Auto Statistical"
-; !define VERSION "0.0.0" should be set by `makensis` argument e.g. `/DVERSION=0.0.0`
+; !define VERSION "0.0.0" ; should be set by `makensis` argument e.g. `/DVERSION=0.0.0`
 
 !define ORG_NAME "Open Hydrology"
 !define ORG_URL "http://open-hydrology.org"
 !define HELP_URL "http://docs.open-hydrology.org"
 !define PACKAGE_NAME "autostatistical"
-!define CONDA_CHANNEL "https://conda.binstar.org/openhydrology"
+; !define CONDA_CHANNEL "https://conda.binstar.org/openhydrology"  ; should be set by `makensis` argument
 !define CONDA_URL "http://repo.continuum.io/miniconda/Miniconda3-3.7.3-Windows-x86_64.exe"
 
 ; Interface settings
