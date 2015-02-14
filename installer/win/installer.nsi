@@ -170,7 +170,7 @@ Section "Start menu and context menu items"
   SetOutPath "$INSTDIR\icons"
   File "images\download.ico"
   SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
-  CreateShortcut "Reload NRFA data.lnk" "$INSTDIR\ohvenv\Scripts\download_nrfa.exe" "$INSTDIR\icons\download.ico" 0
+  CreateShortcut "Reload NRFA data.lnk" "$INSTDIR\ohvenv\Scripts\download_nrfa.exe" "" "$INSTDIR\icons\download.ico" 0
 
 SectionEnd
 
