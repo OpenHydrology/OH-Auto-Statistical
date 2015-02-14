@@ -21,16 +21,22 @@ from floodestimation import db
 from floodestimation import loaders
 
 
-print("Removing existing data.")
-db.reset_db_tables()
+def main():
 
-print("Loading new data.")
-db_session = db.Session()
-loaders.nrfa_to_db(db_session, incl_pot=False)
+    print("Removing existing data.")
+    db.reset_db_tables()
 
-try:
-    print("Saving new data.")
-    db_session.commit()
-    print("Data loaded successfully.")
-finally:
-    db_session.close()
+    print("Loading new data.")
+    db_session = db.Session()
+    loaders.nrfa_to_db(db_session, incl_pot=False)
+
+    try:
+        print("Saving new data.")
+        db_session.commit()
+        print("Data loaded successfully.")
+    finally:
+        db_session.close()
+
+
+if __name__ == "__main__":
+    main()
