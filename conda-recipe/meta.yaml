@@ -7,7 +7,7 @@ build:
 
   entry_points:
     - autostatistical = autostatistical.__main__:main
-    - loadnrfa = autostatistical.download_nrfa:main
+    - download_nrfa = autostatistical.download_nrfa:main
 
 source:
   git_url: ..

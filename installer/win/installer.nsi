@@ -147,7 +147,7 @@ Section "Start menu and context menu items"
   WriteRegStr HKCR "OH.CD3\shell" "" "open"
   WriteRegStr HKCR "OH.CD3\shell\open\command" "" 'notepad.exe "%1"'
   WriteRegStr HKCR "OH.CD3\shell\run" "" "Create ${APP_NAME} report"
-  WriteRegStr HKCR "OH.CD3\shell\run\command" "" '"$INSTDIR\ohvenv\python.exe" -m ${PACKAGE_NAME} "%1"'
+  WriteRegStr HKCR "OH.CD3\shell\run\command" "" '"$INSTDIR\ohvenv\Scripts\${PACKAGE_NAME}.exe" "%1"'
 
   ReadRegStr $R0 HKCR ".md" ""
   ${If} $R0 == ""
@@ -170,9 +170,7 @@ Section "Start menu and context menu items"
   SetOutPath "$INSTDIR\icons"
   File "images\download.ico"
   SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
-  CreateShortcut "Reload NRFA data.lnk" "$INSTDIR\ohvenv\python.exe" \
-     '"$INSTDIR\ohvenv\Lib\site-packages\${PACKAGE_NAME}-${VERSION}-py3.4.egg\${PACKAGE_NAME}\download_nrfa.py"' \
-     "$INSTDIR\icons\download.ico" 0
+  CreateShortcut "Reload NRFA data.lnk" "$INSTDIR\ohvenv\Scripts\download_nrfa.exe" "$INSTDIR\icons\download.ico" 0
 
 SectionEnd
 
@@ -180,8 +178,7 @@ SectionEnd
 Section "Download NRFA data"
 
   DetailPrint "Downloading NRFA data"
-  ExecDos::exec /DETAILED '"$INSTDIR\ohvenv\python.exe" \
-     "$INSTDIR\ohvenv\Lib\site-packages\${PACKAGE_NAME}-${VERSION}-py3.4.egg\${PACKAGE_NAME}\download_nrfa.py"' \
+  ExecDos::exec /DETAILED "$INSTDIR\ohvenv\Scripts\download_nrfa.exe" "" ""
   DetailPrint "Completed: NRFA data downloaded completed."
 
 SectionEnd
