@@ -5,6 +5,10 @@ package:
 build:
   number: {{ environ.get('GIT_DESCRIBE_NUMBER', 0) }}
 
+  entry_points:
+    - autostatistical = autostatistical:main
+    - loadnrfa = autostatistical.download_nrfa:main
+
 source:
   git_url: ..
 

@@ -17,21 +17,19 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import sys
+import argparse
 from . import Analysis
 
 
-def main(argv):
-    try:
-        cd3_file_path = argv[0]
-    except IndexError:
-        print("A CD3-file must be specified.")
-        sys.exit()
+def main():
+    parser = argparse.ArgumentParser(description='Create OH Auto Statistical flood estimation report.')
+    parser.add_argument('cd3_file_path', help='Location of catchment CD3-file.')
+    args = parser.parse_args()
 
-    analysis = Analysis(cd3_file_path)
+    analysis = Analysis(args.cd3_file_path)
     analysis.run()
     analysis.create_report()
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()
