@@ -15,7 +15,7 @@ setup(
     install_requires=[
         'Jinja2>=2.7,<2.8',
         'appdirs>=1.4,<1.5',
-        'floodestimation==0.3.2'
+        'floodestimation==0.3.3'
     ],
     package_data={
         'autostatistical': ['templates/*.*']

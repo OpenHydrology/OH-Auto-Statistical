@@ -15,7 +15,7 @@ before_install:
 - sudo ln -s /run/shm /dev/shm
 
 install:
-- conda install --yes python=$TRAVIS_PYTHON_VERSION nose appdirs=1.4 Jinja2=2.7 floodestimation=0.3.2
+- conda install --yes python=$TRAVIS_PYTHON_VERSION nose appdirs=1.4 Jinja2=2.7 floodestimation=0.3.3
 - python setup.py install
 
 script:
