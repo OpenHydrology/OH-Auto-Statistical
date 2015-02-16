@@ -1,3 +1,7 @@
+version 0.4.6 (2015-02-16)
+--------------------------
+- Upgrade to floodestimation library v0.3.3
+
 version 0.4.5 (2015-02-14)
 --------------------------
 - Use entry point scripts
