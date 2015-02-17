@@ -35,3 +35,4 @@ about:
   home: https://github.com/OpenHydrology/OH-Auto-Statistical
   license: GPLv3
   summary: Fully automated flood estimation for UK catchments
+  readme: README.md
