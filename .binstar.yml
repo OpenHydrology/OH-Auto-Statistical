@@ -1,3 +1,4 @@
+package: autostatistical
 build_targets: conda
 
 platform:
