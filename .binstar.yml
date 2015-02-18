@@ -8,4 +8,4 @@ engine:
   - python=3.4
 
 script:
-  - conda build .
+  - conda build conda-recipe
