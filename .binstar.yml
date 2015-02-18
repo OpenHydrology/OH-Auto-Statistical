@@ -1,4 +1,5 @@
 package: autostatistical
+user: openhydrology
 build_targets: conda
 
 platform:
