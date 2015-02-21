@@ -46,8 +46,8 @@ Retrieved:     {{ nrfa.downloaded_on|dateformat }}
                   'amax_records': "Median of annual maximum flow data"} %}
 
 {% if qmed.method == 'descriptors' %}
-Methology:     Kjeldsen, Jones & Bayliss (2008, eqs. 8.1 & 8.2), Kjeldsen (2010, eq. 8), Open Hydrology Contributors 
-               (2015)  
+Methology:     Kjeldsen, Jones & Bayliss (2008, eqs. 8.1 & 8.2), Kjeldsen (2010, eq. 8), Kjeldsen, Jones & Morris 
+               (2014), Open Hydrology Contributors (2015)  
 Analysis type: {{ methods[qmed.method] }}
 
 QMED, rural:   {{ qmed.qmed_descr_rural|signif(3) }} m³/s  
@@ -57,13 +57,13 @@ QMED, urban:   {{ qmed.qmed_descr_urban|signif(3) }} m³/s
 
 ### QMED donor catchments
 
-Donor river         | Donor location                 | Distance (km)| Adjustment factor | Weight
-:-------------------|:-------------------------------|-------------:|------------------:|------:
+Donor river         | Donor location                 | Distance (km)| Adjustment factor | Power
+:-------------------|:-------------------------------|-------------:|------------------:|-----:
 {% for d in qmed.donors %}
-{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.dist|intcolumn(12) }} | {{ d.factor|floatcolumn(3, 17) }} | {{ d.weight|floatcolumn(3, 6) }}
+{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.dist|intcolumn(12) }} | {{ d.factor|floatcolumn(3, 17) }} | {{ d.weight|floatcolumn(3, 5) }}
 {% endfor %}
-Total/weighted avg. |                                |              | {{ qmed.donor_adj_factor|floatcolumn(3, 17) }} |  1.000
 
+Adj. factor:   {{ qmed.donor_adj_factor|round(3) }}
 {% else %}
 Analysis type: {{ methods[qmed.method] }}  
 {% endif %}
