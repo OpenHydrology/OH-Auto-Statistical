@@ -1,3 +1,8 @@
+version 0.5.0 (2015-02-24)
+--------------------------
+- Upgrade to floodestimation library v0.4.0
+- Update to QMED donor part of the repor template
+
 version 0.4.6 (2015-02-16)
 --------------------------
 - Upgrade to floodestimation library v0.3.3
