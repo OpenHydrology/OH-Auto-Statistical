@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# Script to build the Windows installer
+#
+# Requires NSIS including some extensions.
 
 from subprocess import call
 import version

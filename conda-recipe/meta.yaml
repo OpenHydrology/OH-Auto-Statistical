@@ -18,13 +18,13 @@ requirements:
     - setuptools
     - appdirs 1.4*
     - jinja2 2.7*
-    - floodestimation 0.3.3
+    - floodestimation 0.4.0
 
   run:
     - python
     - appdirs 1.4*
     - jinja2 2.7*
-    - floodestimation 0.3.3
+    - floodestimation 0.4.0
 
 test:
   # Python imports
@@ -35,3 +35,4 @@ about:
   home: https://github.com/OpenHydrology/OH-Auto-Statistical
   license: GPLv3
   summary: Fully automated flood estimation for UK catchments
+  readme: README.md

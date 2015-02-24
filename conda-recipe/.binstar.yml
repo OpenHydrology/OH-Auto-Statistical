@@ -1,0 +1,17 @@
+package: autostatistical
+user: openhydrology
+build_targets: conda
+
+platform:
+  - linux-64
+
+engine:
+  - python=3.3
+  - python=3.4
+
+before_script:
+  - conda update --name=root conda conda-build
+  - conda config --add channels https://conda.binstar.org/openhydrology
+
+script:
+  - conda build .
