@@ -26,10 +26,13 @@ def main():
     parser.add_argument('cd3_file_path', help='Location of catchment CD3-file.')
     args = parser.parse_args()
 
-    analysis = Analysis(args.cd3_file_path)
-    analysis.run()
-    analysis.create_report()
-
+    try:
+        analysis = Analysis(args.cd3_file_path)
+        analysis.run()
+        analysis.create_report()
+    except Exception as e:
+        print(e)
+        input("Press Enter to close this window.")
 
 if __name__ == "__main__":
     main()
