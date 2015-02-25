@@ -19,13 +19,14 @@ from datetime import date
 from unittest.mock import MagicMock
 
 
-# Mock packages that cannot be installed on readthedocs.org.
+# Mock packages that cannot (or we dont need to) be installed on readthedocs.org.
 class Mock(MagicMock):
     @classmethod
     def __getattr__(cls, name):
             return Mock()
 
-MOCK_MODULES = ['numpy', 'scipy', 'scipy.misc', 'scipy.stats', 'scipy.stats._continuous_distns', 'scipy.special']
+MOCK_MODULES = ['numpy', 'scipy', 'scipy.misc', 'scipy.stats', 'scipy.stats._continuous_distns', 'scipy.special',
+                'jinja2']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 
