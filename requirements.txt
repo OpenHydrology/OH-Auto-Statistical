@@ -1,2 +1,3 @@
 # Use this only for readthedocs.org
 appdirs
+jinja2
