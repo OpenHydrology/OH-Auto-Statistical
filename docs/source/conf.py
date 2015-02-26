@@ -26,7 +26,7 @@ class Mock(MagicMock):
             return Mock()
 
 MOCK_MODULES = ['numpy', 'scipy', 'scipy.misc', 'scipy.stats', 'scipy.stats._continuous_distns', 'scipy.special',
-                'jinja2']
+                'jinja2', 'jinja2.exceptions']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 
