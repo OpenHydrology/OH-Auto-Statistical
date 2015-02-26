@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # OH Auto Statistical
-# Copyright (C) 2014  Florenz A. P. Hollebrandse
+# Copyright (C) 2014-2015 Florenz A. P. Hollebrandse
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,9 +26,14 @@ def main():
     parser.add_argument('cd3_file_path', help='Location of catchment CD3-file.')
     args = parser.parse_args()
 
-    analysis = Analysis(args.cd3_file_path)
-    analysis.run()
-    analysis.create_report()
+    try:
+        analysis = Analysis(args.cd3_file_path)
+        analysis.run()
+        analysis.create_report()
+
+    except Exception as e:
+        print(e)
+        input("Press Enter to close this window.")
 
 
 if __name__ == "__main__":

@@ -57,10 +57,10 @@ QMED, urban:   {{ qmed.qmed_descr_urban|signif(3) }} m³/s
 
 ### QMED donor catchments
 
-Donor river         | Donor location                 | Distance (km)| QMED CD/QMED AMAX | Power
-:-------------------|:-------------------------------|-------------:|------------------:|-----:
+Donor river         | Donor location                 | Distance (km)| Observed/Model | Power
+:-------------------|:-------------------------------|-------------:|---------------:|-----:
 {% for d in qmed.donors %}
-{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.dist|intcolumn(12) }} | {{ d.factor|floatcolumn(3, 17) }} | {{ d.weight|floatcolumn(3, 5) }}
+{{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.dist|intcolumn(12) }} | {{ d.factor|floatcolumn(3, 14) }} | {{ d.weight|floatcolumn(3, 5) }}
 {% endfor %}
 
 Adj. factor:   {{ qmed.donor_adj_factor|round(3) }}
