@@ -1,3 +1,7 @@
+version 0.5.2 (2015-02-26)
+--------------------------
+- Doc config fixes
+
 version 0.5.1 (2015-02-26)
 --------------------------
 - Correct QMED table column header
