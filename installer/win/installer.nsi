@@ -35,7 +35,7 @@
 !define HELP_URL "http://docs.open-hydrology.org"
 !define PACKAGE_NAME "autostatistical"
 ; !define CONDA_CHANNEL "https://conda.binstar.org/openhydrology"  ; should be set by `makensis` argument
-!define CONDA_URL "http://repo.continuum.io/miniconda/Miniconda3-3.8.3-Windows-x86_64.exe"
+!define CONDA_URL "http://repo.continuum.io/miniconda/Miniconda3-3.9.1-Windows-x86_64.exe"
 
 ; Interface settings
 !define MUI_WELCOMEPAGE_TITLE "${APP_NAME} ${VERSION} setup"
@@ -108,6 +108,12 @@ Section "${APP_NAME} packages" application_packages
   ; Create python environment with conda and install packages
   SetOutPath $INSTDIR
   !define CONDA "$PROGRAMFILES64\Miniconda3\Scripts\conda"
+
+  ; Update miniconda package manager only if we haven't just installed it
+  SectionGetFlags ${miniconda_installer} $0
+  IntCmp $0 16 0 +3 +3
+    DetailPrint "Update miniconda package manager"
+    ExecDos::exec /DETAILED '"${CONDA}" update conda' "" ""
 
   DetailPrint "Search in channel(s) -c ${CONDA_CHANNEL}"
   DetailPrint "Installing application packages (version ${VERSION}-${BUILD})"
