@@ -1,3 +1,7 @@
+version 0.5.3 (2015-02-27)
+--------------------------
+- Use version 3.9.1 of miniconda in win installer
+
 version 0.5.2 (2015-02-26)
 --------------------------
 - Doc config fixes
