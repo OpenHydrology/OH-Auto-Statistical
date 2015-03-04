@@ -10,6 +10,7 @@ Contents:
 
    installation
    run
+   comparison
    science
 
 
