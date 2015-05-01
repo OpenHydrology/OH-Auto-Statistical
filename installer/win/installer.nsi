@@ -42,7 +42,7 @@
 !define MUI_WELCOMEPAGE_TEXT "Fully automated flood estimation for UK catchments using the latest revisions to the Flood Estimation Handbook Statistical Method.$\r$\n$\r$\nThis installer requires an internet connection."
 !define MUI_FINISHPAGE_LINK "${ORG_NAME} website"
 !define MUI_FINISHPAGE_LINK_LOCATION "${ORG_URL}"
-!define MUI_FINISHPAGE_SHOWREADME "http://docs.open-hydrology.org/projects/oh-auto-statistical/en/latest/"
+!define MUI_FINISHPAGE_SHOWREADME "http://docs.open-hydrology.org/projects/oh-auto-statistical/"
 !define MUI_FINISHPAGE_SHOWREADME_TEXT "Read the manual"
 !define MUI_COMPONENTSPAGE_NODESC
 !define MUI_WELCOMEFINISHPAGE_BITMAP "images\OH.portrait.bmp"
