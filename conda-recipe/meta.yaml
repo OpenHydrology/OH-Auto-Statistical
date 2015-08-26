@@ -31,6 +31,13 @@ test:
   imports:
     - autostatistical
 
+app:
+  entry: autostatistical
+  type: desk
+  icon:
+  own_environment: true
+  summary: Fully automated flood estimation for UK catchments
+
 about:
   home: https://github.com/OpenHydrology/OH-Auto-Statistical
   license: GPLv3
