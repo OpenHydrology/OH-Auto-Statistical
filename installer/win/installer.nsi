@@ -35,7 +35,7 @@
 !define HELP_URL "http://docs.open-hydrology.org"
 !define PACKAGE_NAME "autostatistical"
 ; !define CONDA_CHANNEL "https://conda.binstar.org/openhydrology"  ; should be set by `makensis` argument
-!define CONDA_URL "http://repo.continuum.io/miniconda/Miniconda3-3.9.1-Windows-x86_64.exe"
+!define CONDA_URL "http://repo.continuum.io/miniconda/Miniconda3-3.16.0-Windows-x86_64.exe"
 
 ; Interface settings
 !define MUI_WELCOMEPAGE_TITLE "${APP_NAME} ${VERSION} setup"

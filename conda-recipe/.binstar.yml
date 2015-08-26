@@ -11,7 +11,7 @@ engine:
 
 before_script:
   - conda update --name=root conda conda-build
-  - conda config --add channels https://conda.binstar.org/openhydrology
+  - conda config --add channels https://conda.anaconda.org/openhydrology
 
 script:
   - conda build .

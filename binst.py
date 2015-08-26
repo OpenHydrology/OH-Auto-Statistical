@@ -13,7 +13,7 @@ version.update()
 # Parse version and build number from VERSION file
 full_version = open('VERSION').read().split('-')
 version = full_version[0]
-conda_channel = 'https://conda.binstar.org/openhydrology'
+conda_channel = 'https://conda.anaconda.org/openhydrology'
 
 if len(full_version) == 1:  # Public release version
     number = 0
