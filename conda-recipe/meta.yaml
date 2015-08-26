@@ -18,13 +18,13 @@ requirements:
     - setuptools
     - appdirs 1.4*
     - jinja2 2.7*
-    - floodestimation 0.4.0
+    - floodestimation 0.4.2
 
   run:
     - python
     - appdirs 1.4*
     - jinja2 2.7*
-    - floodestimation 0.4.0
+    - floodestimation 0.4.2
 
 test:
   # Python imports
