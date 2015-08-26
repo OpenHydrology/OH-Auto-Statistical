@@ -34,12 +34,12 @@ Mac OS and Linux
 OH Auto Statistical can be installed on Mac OS and Linux operating systems from binstar.org using the `Conda package
 manager <http://conda.pydata.org/miniconda.html>`_:
 
-   .. image:: https://binstar.org/openhydrology/autostatistical/badges/version.svg
-      :target: https://binstar.org/openhydrology/autostatistical
+   .. image:: https://anaconda.org/openhydrology/autostatistical/badges/version.svg
+      :target: https://anaconda.org/openhydrology/autostatistical
 
 .. code-block:: shell
 
-   conda install -c https://conda.binstar.org/openhydrology autostatistical
+   conda install -c https://conda.anaconda.org/openhydrology autostatistical
 
 Or alternatively directly from the source code:
 
