@@ -23,14 +23,25 @@ from . import Analysis
 
 def main():
     parser = argparse.ArgumentParser(description='Create OH Auto Statistical flood estimation report.')
-    parser.add_argument('cd3_file_path', help='Location of catchment CD3-file.')
+    parser.add_argument('file_path', nargs='?', default=None, help='Location of catchment CD3-file.')
     args = parser.parse_args()
 
+    if not args.file_path:
+        import tkinter as tk
+        import tkinter.filedialog as tkfd
+        root = tk.Tk()
+        root.withdraw()  # No main window, just the file dialog
+        args.file_path = tkfd.askopenfilename(filetypes=[
+            ("Catchment descriptor files", "*.cd3 *.xml"),
+            ("All files", "*.*")
+        ])
+    if not args.file_path:
+        return  # User cancelled
+
     try:
-        analysis = Analysis(args.cd3_file_path)
+        analysis = Analysis(args.file_path)
         analysis.run()
         analysis.create_report()
-
     except Exception as e:
         print(e)
         input("Press Enter to close this window.")
