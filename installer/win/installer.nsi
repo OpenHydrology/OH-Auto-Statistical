@@ -113,7 +113,7 @@ Section "${APP_NAME} packages" application_packages
   SectionGetFlags ${miniconda_installer} $0
   IntCmp $0 16 0 +3 +3
     DetailPrint "Update miniconda package manager"
-    ExecDos::exec /DETAILED '"${CONDA}" update -y conda' "" ""
+    ExecDos::exec /DETAILED '"${CONDA}" update -y -f conda' "" ""
 
   DetailPrint "Search in channel(s) -c ${CONDA_CHANNEL}"
   DetailPrint "Installing application packages (version ${VERSION}-${BUILD})"
