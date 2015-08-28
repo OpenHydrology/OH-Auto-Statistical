@@ -4,7 +4,7 @@ Date:          {{ report_date|default(None)|dateformat }}
 
 ## Input data
 
-River:         {{ catchment.watercourse|default("Unnamed") }}  
+River:         {{ catchment.watercourse|default("Unknown") }}  
 Location:      {{ catchment.location|default("Unknown") }}  
 NGR outlet:    {{ catchment.point.x }}, {{ catchment.point.y }}    
 NGR centroid:  {{ catchment.descriptors.centroid_ngr.x }}, {{ catchment.descriptors.centroid_ngr.y }}  
