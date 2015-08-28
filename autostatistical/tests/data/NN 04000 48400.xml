@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Created by FEH CD-ROM 3 at 13:05:09 GMT on Wed 10-Jun-2015 -->
+<FEHCDROMExportedDescriptors version="2.0.000" appVersion="3.0.000">
+   <CatchmentDescriptors grid="GB" x="204000" y="748400" mgr="NN 04000 48400">
+      <CatchmentCentroid grid="GB" x="207378" y="751487" mgr="NN 07378 51487" />
+      <area>30.09</area>
+      <altbar>367</altbar>
+      <aspbar>247</aspbar>
+      <aspvar>0.17</aspvar>
+      <bfihost>0.394</bfihost>
+      <dplbar>6.56</dplbar>
+      <dpsbar>356.3</dpsbar>
+      <farl>0.986</farl>
+      <fpext>0.0369</fpext>
+      <fpdbar>0.825</fpdbar>
+      <fploc>0.676</fploc>
+      <ldp>11.5</ldp>
+      <propwet>0.79</propwet>
+      <rmed_1h>13.9</rmed_1h>
+      <rmed_1d>72.0</rmed_1d>
+      <rmed_2d>112.4</rmed_2d>
+      <saar>2810</saar>
+      <saar4170>2969</saar4170>
+      <sprhost>53.35</sprhost>
+      <urbconc1990>NaN</urbconc1990>
+      <urbext1990>0.0</urbext1990>
+      <urbloc1990>NaN</urbloc1990>
+      <urbconc2000>NaN</urbconc2000>
+      <urbext2000>0.0</urbext2000>
+      <urbloc2000>NaN</urbloc2000>
+   </CatchmentDescriptors>
+   <CatchmentAverageDDFValues grid="GB" x="204000" y="748400" mgr="NN 04000 48400">
+      <c>-0.01884</c>
+      <d1>0.53527</d1>
+      <d2>0.5086</d2>
+      <d3>0.49952</d3>
+      <e>0.25011</e>
+      <f>2.69933</f>
+   </CatchmentAverageDDFValues>
+   <PointDDFValues grid="GB" x="204000" yx="748000" mgr="NN 04000 48000">
+      <c_1_km>-0.019</c_1_km>
+      <d1_1_km>0.566</d1_1_km>
+      <d2_1_km>0.54</d2_1_km>
+      <d3_1_km>0.602</d3_1_km>
+      <e_1_km>0.251</e_1_km>
+      <f_1_km>2.608</f_1_km>
+   </PointDDFValues>
+</FEHCDROMExportedDescriptors>

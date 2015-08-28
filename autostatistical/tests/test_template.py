@@ -102,3 +102,8 @@ class TestReport(unittest.TestCase):
         analysis = astat.Analysis('./autostatistical/tests/data/37017.CD3')
         analysis.run()
         analysis.create_report()
+
+    def test_xml_catchment(self):
+        analysis = astat.Analysis('./autostatistical/tests/data/NN 04000 48400.xml')
+        analysis.run()
+        analysis.create_report()
