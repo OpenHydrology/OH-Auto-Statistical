@@ -173,7 +173,7 @@ Section "Start menu and context menu items"
 
   ; Start menu: run program
   SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
-  CreateShortcut "OH Auto Statistical.lnk" "$INSTDIR\ohvenv\Scripts\autostatistical.exe" "" "$INSTDIR\icons\Command Prompt.ico" 0
+  CreateShortcut "OH Auto Statistical.lnk" "$INSTDIR\ohvenv\pythonw.exe" "-m autostatistical" "$INSTDIR\icons\Command Prompt.ico" 0
 
   ; Start menu: link to online documentation
   File "..\..\docs\source\*.url"
