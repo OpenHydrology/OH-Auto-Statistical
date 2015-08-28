@@ -18,17 +18,19 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import argparse
+import tkinter as tk
+import tkinter.messagebox as tkmb
+import tkinter.filedialog as tkfd
 from . import Analysis
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Create OH Auto Statistical flood estimation report.')
+    parser = argparse.ArgumentParser(description='OH Auto Statistical')
     parser.add_argument('file_path', nargs='?', default=None, help='Location of catchment CD3-file.')
     args = parser.parse_args()
 
+    # If no file provided, show file dialog
     if not args.file_path:
-        import tkinter as tk
-        import tkinter.filedialog as tkfd
         root = tk.Tk()
         root.withdraw()  # No main window, just the file dialog
         args.file_path = tkfd.askopenfilename(filetypes=[
@@ -38,13 +40,15 @@ def main():
     if not args.file_path:
         return  # User cancelled
 
+    # Run analysis
     try:
         analysis = Analysis(args.file_path)
         analysis.run()
         analysis.create_report()
     except Exception as e:
-        print(e)
-        input("Press Enter to close this window.")
+        tkmb.showerror(parser.description, e)
+    else:
+        tkmb.showinfo(parser.description, 'OH Auto Statistical report successfully created.')
 
 
 if __name__ == "__main__":
