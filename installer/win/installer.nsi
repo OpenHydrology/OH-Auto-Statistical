@@ -167,16 +167,19 @@ Section "Start menu and context menu items"
     WriteRegStr HKCR ".md\OpenWithList\notepad.exe" "" ""
   ${EndIf}
 
+  ; Icons
+  SetOutPath "$INSTDIR\icons"
+  File "images\*.ico"
+
+  ; Start menu: run program
+  SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
+  CreateShortcut "OH Auto Statistical.lnk" "$INSTDIR\ohvenv\Scripts\autostatistical.exe" "" "$INSTDIR\icons\Command Prompt.ico" 0
 
   ; Start menu: link to online documentation
-  SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
   File "..\..\docs\source\*.url"
 
   ; Start menu: download NRFA data
-  SetOutPath "$INSTDIR\icons"
-  File "images\download.ico"
-  SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
-  CreateShortcut "Download NRFA data.lnk" "$INSTDIR\ohvenv\Scripts\download_nrfa.exe" "" "$INSTDIR\icons\download.ico" 0
+  CreateShortcut "Download NRFA data.lnk" "$INSTDIR\ohvenv\Scripts\download_nrfa.exe" "" "$INSTDIR\icons\Downloads.ico" 0
 
 SectionEnd
 
