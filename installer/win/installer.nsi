@@ -97,7 +97,7 @@ Section "Miniconda package manager" miniconda_installer
 SectionEnd
 
 
-Section "${APP_NAME} packages" application_packages
+Section "${APP_NAME} program files" application_packages
 
   ; Remove any existing application files
   IfFileExists $INSTDIR\*.* 0 +3
@@ -143,7 +143,25 @@ Section "${APP_NAME} packages" application_packages
 SectionEnd
 
 
-Section "Start menu and context menu items"
+Section "Start menu"
+
+  SetOutPath "$INSTDIR\icons"
+  File "images\*.ico"
+
+  ; Start menu: run program
+  SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
+  CreateShortcut "OH Auto Statistical.lnk" "$INSTDIR\ohvenv\pythonw.exe" "-m autostatistical" "$INSTDIR\icons\Command Prompt.ico" 0
+
+  ; Start menu: link to online documentation
+  File "..\..\docs\source\*.url"
+
+  ; Start menu: download NRFA data
+  CreateShortcut "Download NRFA data.lnk" "$INSTDIR\ohvenv\Scripts\download_nrfa.exe" "" "$INSTDIR\icons\Downloads.ico" 0
+
+SectionEnd
+
+
+Section /o "Context menu items"
 
   ; Context menu: right-click create report
   WriteRegStr HKCR ".cd3" "" "OH.CD3"
@@ -166,20 +184,6 @@ Section "Start menu and context menu items"
   ${Else}
     WriteRegStr HKCR ".md\OpenWithList\notepad.exe" "" ""
   ${EndIf}
-
-  ; Icons
-  SetOutPath "$INSTDIR\icons"
-  File "images\*.ico"
-
-  ; Start menu: run program
-  SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
-  CreateShortcut "OH Auto Statistical.lnk" "$INSTDIR\ohvenv\pythonw.exe" "-m autostatistical" "$INSTDIR\icons\Command Prompt.ico" 0
-
-  ; Start menu: link to online documentation
-  File "..\..\docs\source\*.url"
-
-  ; Start menu: download NRFA data
-  CreateShortcut "Download NRFA data.lnk" "$INSTDIR\ohvenv\Scripts\download_nrfa.exe" "" "$INSTDIR\icons\Downloads.ico" 0
 
 SectionEnd
 
