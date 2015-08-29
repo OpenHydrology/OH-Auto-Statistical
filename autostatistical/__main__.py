@@ -28,11 +28,11 @@ def main():
     parser = argparse.ArgumentParser(description='OH Auto Statistical')
     parser.add_argument('file_path', nargs='?', default=None, help='Location of catchment CD3-file.')
     args = parser.parse_args()
+    root = tk.Tk()
+    root.withdraw()  # Hide main window to show dialogs only
 
     # If no file provided, show file dialog
     if not args.file_path:
-        root = tk.Tk()
-        root.withdraw()  # No main window, just the file dialog
         args.file_path = tkfd.askopenfilename(filetypes=[
             ("Catchment descriptor files", "*.cd3 *.xml"),
             ("All files", "*.*")
