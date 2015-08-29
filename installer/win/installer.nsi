@@ -150,7 +150,7 @@ Section "Start menu"
 
   ; Start menu: run program
   SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
-  CreateShortcut "OH Auto Statistical.lnk" "$INSTDIR\ohvenv\pythonw.exe" "-m autostatistical" "$INSTDIR\icons\Command Prompt.ico" 0
+  CreateShortcut "OH Auto Statistical.lnk" "$INSTDIR\ohvenv\pythonw.exe" "-m ${PACKAGE_NAME}" "$INSTDIR\icons\Command Prompt.ico" 0
 
   ; Start menu: link to online documentation
   File "..\..\docs\source\*.url"
@@ -171,7 +171,7 @@ Section /o "Context menu items"
   WriteRegStr HKCR "OH.CD3\shell" "" "open"
   WriteRegStr HKCR "OH.CD3\shell\open\command" "" 'notepad.exe "%1"'
   WriteRegStr HKCR "OH.CD3\shell\run" "" "Create ${APP_NAME} report"
-  WriteRegStr HKCR "OH.CD3\shell\run\command" "" '"$INSTDIR\ohvenv\Scripts\${PACKAGE_NAME}.exe" "%1"'
+  WriteRegStr HKCR "OH.CD3\shell\run\command" "" '"$INSTDIR\ohvenv\pythonw.exe" -m ${PACKAGE_NAME} "%1"'
 
   ReadRegStr $R0 HKCR ".md" ""
   ${If} $R0 == ""
