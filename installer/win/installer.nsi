@@ -118,7 +118,7 @@ Section "${APP_NAME} program files" application_packages
   DetailPrint "Search in channel(s) -c ${CONDA_CHANNEL}"
   DetailPrint "Installing application packages (version ${VERSION}-${BUILD})"
 
-  ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\ohvenv" -c ${CONDA_CHANNEL} \
+  ExecDos::exec /DETAILED '"${CONDA}" create -y -p "$INSTDIR\env" -c ${CONDA_CHANNEL} \
     python ${PACKAGE_NAME}=${VERSION}=${BUILD}' "" ""
 
   Pop $0
@@ -150,13 +150,13 @@ Section "Start menu"
 
   ; Start menu: run program
   SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
-  CreateShortcut "OH Auto Statistical.lnk" "$INSTDIR\ohvenv\pythonw.exe" "-m ${PACKAGE_NAME}" "$INSTDIR\icons\Command Prompt.ico" 0
+  CreateShortcut "OH Auto Statistical.lnk" "$INSTDIR\env\pythonw.exe" "-m ${PACKAGE_NAME}" "$INSTDIR\icons\Koding.ico" 0
 
   ; Start menu: link to online documentation
   File "..\..\docs\source\*.url"
 
   ; Start menu: download NRFA data
-  CreateShortcut "Download NRFA data.lnk" "$INSTDIR\ohvenv\Scripts\download_nrfa.exe" "" "$INSTDIR\icons\Downloads.ico" 0
+  CreateShortcut "Download NRFA data.lnk" "$INSTDIR\env\Scripts\download_nrfa.exe" "" "$INSTDIR\icons\Downloads.ico" 0
 
 SectionEnd
 
@@ -171,7 +171,7 @@ Section /o "Context menu items"
   WriteRegStr HKCR "OH.CD3\shell" "" "open"
   WriteRegStr HKCR "OH.CD3\shell\open\command" "" 'notepad.exe "%1"'
   WriteRegStr HKCR "OH.CD3\shell\run" "" "Create ${APP_NAME} report"
-  WriteRegStr HKCR "OH.CD3\shell\run\command" "" '"$INSTDIR\ohvenv\pythonw.exe" -m ${PACKAGE_NAME} "%1"'
+  WriteRegStr HKCR "OH.CD3\shell\run\command" "" '"$INSTDIR\env\pythonw.exe" -m ${PACKAGE_NAME} "%1"'
 
   ReadRegStr $R0 HKCR ".md" ""
   ${If} $R0 == ""
@@ -191,7 +191,7 @@ SectionEnd
 Section "Download NRFA data"
 
   DetailPrint "Downloading NRFA data"
-  ExecDos::exec /DETAILED "$INSTDIR\ohvenv\Scripts\download_nrfa.exe" "" ""
+  ExecDos::exec /DETAILED "$INSTDIR\env\Scripts\download_nrfa.exe" "" ""
   DetailPrint "Completed: NRFA data downloaded completed."
 
 SectionEnd
