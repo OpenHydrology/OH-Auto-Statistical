@@ -100,10 +100,10 @@ SectionEnd
 Section "${APP_NAME} program files" application_packages
 
   ; Remove any existing application files
-  IfFileExists $INSTDIR\*.* 0 +3
+  IfFileExists "$INSTDIR\*.*" 0 +3
     DetailPrint "Existing ${APP_NAME} program files detected"
-    DetailPrint "Existing files will be removed"
-    RMDir /r $INSTDIR
+    DetailPrint "Existing files in $INSTDIR will be removed"
+    RMDir /r "$INSTDIR"
 
   ; Create python environment with conda and install packages
   !define CONDA "$LOCALAPPDATA\Continuum\Miniconda3\Scripts\conda"
