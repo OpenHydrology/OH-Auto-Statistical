@@ -160,33 +160,6 @@ Section "Start menu"
 SectionEnd
 
 
-Section /o "Context menu items"
-
-  ; Context menu: right-click create report
-  WriteRegStr HKCR ".cd3" "" "OH.CD3"
-  WriteRegStr HKCR ".cd3" "PerceivedType" "text"
-  WriteRegStr HKCR ".cd3" "Content Type" "text/plain"
-  WriteRegStr HKCR "OH.CD3" "" "Catchment descriptors file"
-  WriteRegStr HKCR "OH.CD3\shell" "" "open"
-  WriteRegStr HKCR "OH.CD3\shell\open\command" "" 'notepad.exe "%1"'
-  WriteRegStr HKCR "OH.CD3\shell\run" "" "Create ${APP_NAME} report"
-  WriteRegStr HKCR "OH.CD3\shell\run\command" "" '"$INSTDIR\pythonw.exe" -m ${PACKAGE_NAME} "%1"'
-
-  ReadRegStr $R0 HKCR ".md" ""
-  ${If} $R0 == ""
-    WriteRegStr HKCR ".md" "" "OH.md"
-    WriteRegStr HKCR ".md" "PerceivedType" "text"
-    WriteRegStr HKCR ".md" "Content Type" "text/plain"
-    WriteRegStr HKCR "OH.md" "" "Markdown formatted text file"
-    WriteRegStr HKCR "OH.md\shell" "" "open"
-    WriteRegStr HKCR "OH.md\shell\open\command" "" 'notepad.exe "%1"'
-  ${Else}
-    WriteRegStr HKCR ".md\OpenWithList\notepad.exe" "" ""
-  ${EndIf}
-
-SectionEnd
-
-
 Section "Download NRFA data"
 
   DetailPrint "Downloading NRFA data"
