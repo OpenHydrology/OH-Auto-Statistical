@@ -85,6 +85,7 @@ Section "Conda package manager" miniconda_installer
   DetailPrint "Conda successfully downloaded."
 
   DetailPrint "Running Conda installer"
+  ; Default installation location %LOCALAPPDATA%/Continuum/Miniconda3/
   ${StdUtils.ExecShellWaitEx} $0 $1 "Miniconda3_setup.exe" "" \
     "/InstallationType=JustMe /AddtoPath=1 /RegisterPython=0 /S"
   ${StdUtils.WaitForProcEx} $2 $1
@@ -149,13 +150,13 @@ Section "Start menu"
 
   ; Start menu: run program
   SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
-  CreateShortcut "OH Auto Statistical.lnk" "$INSTDIR\pythonw.exe" "-m ${PACKAGE_NAME}" "$INSTDIR\icons\Koding.ico" 0
+  CreateShortcut "OH Auto Statistical.lnk" "$INSTDIR\pythonw.exe" "-m ${PACKAGE_NAME}" "$INSTDIR\icons\application.ico" 0
 
   ; Start menu: link to online documentation
   File "..\..\docs\source\*.url"
 
   ; Start menu: download NRFA data
-  CreateShortcut "Download NRFA data.lnk" "$INSTDIR\Scripts\download_nrfa.exe" "" "$INSTDIR\icons\Downloads.ico" 0
+  CreateShortcut "Download NRFA data.lnk" "$INSTDIR\Scripts\download_nrfa.exe" "" "$INSTDIR\icons\download.ico" 0
 
 SectionEnd
 
