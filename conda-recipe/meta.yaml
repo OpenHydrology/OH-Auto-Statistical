@@ -32,14 +32,15 @@ test:
     - autostatistical
 
 app:
-  entry: autostatistical
-  type: desk
-  icon:
+  entry: autostatistical  # [not win]
+  # Run without console for Windows
+  entry: ${PREFIX}/pythonw.exe -m autostatistical  # [win]
   own_environment: true
   summary: Fully automated flood estimation for UK catchments
 
 about:
   home: https://github.com/OpenHydrology/OH-Auto-Statistical
   license: GPLv3
+  license_file: LICENSE
   summary: Fully automated flood estimation for UK catchments
   readme: README.md
