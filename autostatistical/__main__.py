@@ -21,6 +21,7 @@ import argparse
 import tkinter as tk
 import tkinter.messagebox as tkmb
 import tkinter.filedialog as tkfd
+import os.path
 from . import Analysis
 
 
@@ -30,6 +31,7 @@ def main():
     args = parser.parse_args()
     root = tk.Tk()
     root.withdraw()  # Hide main window to show dialogs only
+    root.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
 
     # If no file provided, show file dialog
     if not args.file_path:

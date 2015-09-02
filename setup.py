@@ -13,7 +13,8 @@ setup(
     version=version,
     packages=['autostatistical'],
     package_data={
-        'autostatistical': ['templates/*.*']
+        'autostatistical': ['application.ico',
+                            'templates/*.*']
     },
     zip_safe=False
 )
