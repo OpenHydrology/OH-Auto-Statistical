@@ -22,11 +22,6 @@ interfere with any existing Python installation.
    `National River Flow Archive (NRFA) <http://www.ceh.ac.uk/data/nrfa/>`_ for pooled analyses. This may take some time!
    NRFA data are subject to `terms and conditions <http://www.ceh.ac.uk/data/nrfa/data/data_terms.html>`_.
 
-.. attention::
-
-   No Windows Start Menu items are created, except for a link to the online documentation. This is intentionally. OH
-   Auto Statistical is run by **right-clicking on a .CD3-file**.
-
 
 Mac OS and Linux
 ----------------
@@ -45,9 +40,3 @@ Or alternatively directly from the source code:
 
    .. image:: https://img.shields.io/github/release/openhydrology/oh-auto-statistical.svg?style=flat-square
       :target: https://github.com/OpenHydrology/OH-Auto-Statistical/releases/latest
-
-OH Auto Statistical is run as follows:
-
-.. code-block:: shell
-
-   python -m autostatistical "path/to/catchment.cd3"

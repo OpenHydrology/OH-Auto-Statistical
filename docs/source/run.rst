@@ -1,8 +1,8 @@
 Usage
 =====
 
-OH Auto Statistical takes a **catchment descriptors (.CD3) file as input data**. The analyses are undertaken without any
-further user input and a report file is generated containing the calculation details and results.
+OH Auto Statistical takes a **catchment descriptors (.CD3 or .xml) file as input data**. The analyses are undertaken
+without any further user input and a report file is generated containing the calculation details and results.
 
 
 Ungauged catchments flood estimation
@@ -10,16 +10,17 @@ Ungauged catchments flood estimation
 
 To undertake an analysis:
 
-1. Export a .CD3-file from the `FEH CD-ROM <http://www.hydrosolutions.co.uk/products.asp?categoryID=4670>`_ and save
-   it somewhere.
+1. Export a .CD3 or .xml-file from the `FEH CD-ROM <http://www.hydrosolutions.co.uk/products.asp?categoryID=4670>`_
+   and save it somewhere.
 
-2. Locate the .CD3-file using :program:`Windows Explorer`, right-click and select
-   :menuselection:`Create OH Auto Statistical report`.
+2. Start OH Auto Statistical from the Windows Start Menu.
 
-   .. image:: _static/context-menu.png
+   .. image:: _static/start-menu.png
 
-3. A report is generated which has the same file name as the .CD3-file but ending with
-   :file:`Flood estimation report.yyyy-mm-dd.md`. This is a simple text file [#f1]_ and can be opened with
+3. Browse to and select the catchment file to run the analysis.
+
+4. A report is generated which has the same file name as the catchment file but ending with
+   :file:`Flood estimation report.yyyy-mm-dd.md`. This is a simple text file [#f1]_ which can be opened with
    :program:`Notepad`.
 
    .. image:: _static/report.png
@@ -29,14 +30,14 @@ Gauged catchments flood estimation
 ----------------------------------
 
 A statistical flood estimation for gauged catchments ("enhanced single site analysis") is undertaken when an .AM file is
-saved alongside the .CD3 file. The files should have the same name (except for the file extension) and be located in the
-same folder. The process is otherwise exactly the same as for ungauged catchments.
+saved alongside the catchment file. The files should have the same name (except for the file extension) and be located
+in the same folder. The process is otherwise exactly the same as for ungauged catchments.
 
 .. tip::
 
-   .CD3 and .AM files for gauged catchments (as downloaded from the :abbr:`NRFA (National River Flow Archive )`) can be found in the cache folder
-   :file:`C:\\Users\\{username}\\AppData\\Local\\Open Hydrology\\fehdata\\Cache` on Windows and equivalent locations on
-   other operating systems.
+   .CD3 and .AM files for gauged catchments (as downloaded from the :abbr:`NRFA (National River Flow Archive )`) can be
+   found in the cache folder :file:`C:\\Users\\{username}\\AppData\\Local\\Open Hydrology\\fehdata\\Cache` on Windows
+   and equivalent locations on other operating systems.
 
 
 Updating NRFA data
@@ -54,6 +55,7 @@ Customising the report template
 
 The report template can be customised by placing a file :file:`normal.md` in the folder
 :file:`C:\\Users\\<username>\\AppData\\Local\\Open Hydrology\\OH Auto Statistical\\templates`.
+
 
 .. rubric:: Footnotes
 

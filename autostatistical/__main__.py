@@ -26,7 +26,7 @@ from . import Analysis
 
 def main():
     parser = argparse.ArgumentParser(description='OH Auto Statistical')
-    parser.add_argument('file_path', nargs='?', default=None, help='Location of catchment CD3-file.')
+    parser.add_argument('file_path', nargs='?', default=None, help='Location of catchment .CD3 or.xml-file.')
     args = parser.parse_args()
     root = tk.Tk()
     root.withdraw()  # Hide main window to show dialogs only
@@ -34,8 +34,7 @@ def main():
     # If no file provided, show file dialog
     if not args.file_path:
         args.file_path = tkfd.askopenfilename(filetypes=[
-            ("Catchment descriptor files", "*.cd3 *.xml"),
-            ("All files", "*.*")
+            ("Catchment descriptor files", "*.cd3 *.xml")
         ])
     if not args.file_path:
         return  # User cancelled
@@ -46,7 +45,7 @@ def main():
         analysis.run()
         analysis.create_report()
     except Exception as e:
-        tkmb.showerror(parser.description, e)
+        tkmb.showerror(parser.description, 'The following error occurred:\n\n' + str(e))
     else:
         tkmb.showinfo(parser.description, 'OH Auto Statistical report successfully created.')
 
