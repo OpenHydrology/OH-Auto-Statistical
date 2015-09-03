@@ -20,7 +20,6 @@
 ; Imports
 
 !include MUI2.nsh
-!include StdUtils.nsh  ; http://nsis.sourceforge.net/StdUtils_plug-in
 !include "LogicLib.nsh"
 !include ".\includes\dumplog.nsi"
 
@@ -46,6 +45,7 @@
 !define MUI_FINISHPAGE_SHOWREADME_TEXT "Read the manual"
 !define MUI_COMPONENTSPAGE_NODESC
 !define MUI_WELCOMEFINISHPAGE_BITMAP "images\OH.portrait.bmp"
+!define MUI_ICON "images\computer.ico"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
 !define MUI_HEADERIMAGE_BITMAP "images\OH.landscape.bmp"
@@ -72,38 +72,32 @@ RequestExecutionLevel user
 
 
 Section "Conda package manager" miniconda_installer
-
   ; Install Miniconda
   SetOutPath "$TEMP\Conda"
-  DetailPrint "Downloading Conda installer"
+  DetailPrint "Downloading Conda."
   NSISdl::download /TIMEOUT=1800000 ${CONDA_URL} Miniconda3_setup.exe
   Pop $R0
   StrCmp $R0 "success" +4
     MessageBox MB_OK "Conda could not be downloaded."
     DetailPrint "Conda could not be downloaded (exit code $R0)."
-    Goto .finally
+    Abort
   DetailPrint "Conda successfully downloaded."
 
   DetailPrint "Running Conda installer"
-  ; Default installation location %LOCALAPPDATA%/Continuum/Miniconda3/
-  ${StdUtils.ExecShellWaitEx} $0 $1 "Miniconda3_setup.exe" "" \
-    "/InstallationType=JustMe /AddtoPath=1 /RegisterPython=0 /S"
-  ${StdUtils.WaitForProcEx} $2 $1
-  DetailPrint "Completed: Conda installer finished with exit code: $2"
+  ExecDos::exec /DETAILED '"$TEMP\Conda\Miniconda3_setup.exe" /S /D=$LOCALAPPDATA\Continuum\Miniconda3"' "" ""
+  Pop $0
+  DetailPrint "Conda package manager successfully installed."
 
   ; Clean up
   SetOutPath "$TEMP"
   RMDir /r "$TEMP\Conda"
-
 SectionEnd
 
 
-Section "${APP_NAME} program files" application_packages
-
+Section "${APP_NAME} application files" application_packages
   ; Remove any existing application files
   IfFileExists "$INSTDIR\*.*" 0 +3
-    DetailPrint "Existing ${APP_NAME} program files detected"
-    DetailPrint "Existing files in $INSTDIR will be removed"
+    DetailPrint "Deleting existing ${APP_NAME} application files in $INSTDIR"
     RMDir /r "$INSTDIR"
 
   ; Create python environment with conda and install packages
@@ -112,21 +106,21 @@ Section "${APP_NAME} program files" application_packages
   ; Update miniconda package manager only if we haven't just installed it
   SectionGetFlags ${miniconda_installer} $0
   IntCmp $0 16 0 +3 +3
-    DetailPrint "Updating Conda package manager"
+    DetailPrint "Updating Conda package manager."
     ExecDos::exec /DETAILED '"${CONDA}" update -y conda' "" ""
 
-  DetailPrint "Searching in channel(s) -c ${CONDA_CHANNEL}"
-  DetailPrint "Installing application packages (version ${VERSION}-${BUILD})"
+  DetailPrint "Searching in channel(s) -c ${CONDA_CHANNEL}."
+  DetailPrint "Installing application files (version ${VERSION}-${BUILD})."
 
   ExecDos::exec /DETAILED '"${CONDA}" create -y -n "_app_own_environment_${PACKAGE_NAME}" \
     -c ${CONDA_CHANNEL} python ${PACKAGE_NAME}=${VERSION}=${BUILD}' "" ""
 
   Pop $0
   IntCmp $0 0 +4 0 0
-    MessageBox MB_OK "Application packages could not be installed."
-    DetailPrint "Application packages could not be installed (exit code $0)."
-    Goto .finally
-  DetailPrint "Application packages installed (exit code $0)"
+    MessageBox MB_OK "Application files could not be installed."
+    DetailPrint "Application files could not be installed (exit code $0)."
+    Abort
+  DetailPrint "Application files installed."
 
   ; Uninstaller details
   WriteUninstaller $INSTDIR\uninstall.exe
@@ -139,41 +133,34 @@ Section "${APP_NAME} program files" application_packages
   WriteRegStr HKCU "${UNINST_KEY}" "HelpLink" "${HELP_URL}"
   WriteRegStr HKCU "${UNINST_KEY}" "URLInfoAbout" "${ORG_URL}"
   WriteRegDWORD HKCU "${UNINST_KEY}" "EstimatedSize" 408964
-
 SectionEnd
 
 
 Section "Start menu"
-
   SetOutPath "$INSTDIR\icons"
   File "images\*.ico"
 
-  ; Start menu: run program
+  ; Start menu
   SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
-  CreateShortcut "OH Auto Statistical.lnk" "$INSTDIR\pythonw.exe" "-m ${PACKAGE_NAME}" "$INSTDIR\icons\application.ico" 0
-
-  ; Start menu: link to online documentation
+  ; Download NRFA data
+  CreateShortcut "Download NRFA data.lnk" "$INSTDIR\Scripts\download_nrfa.exe" "" "$INSTDIR\icons\download.ico" 0 \
+    "" "" "Download peak flow data from the National River Flow Archive."
+  ; Run application
+  CreateShortcut "OH Auto Statistical.lnk" "$INSTDIR\pythonw.exe" "-m ${PACKAGE_NAME}" "$INSTDIR\icons\application.ico" 0 \
+    "" "" "Run Open Hydrology Auto Statistical."
+  ; Link to online documentation
   File "..\..\docs\source\*.url"
-
-  ; Start menu: download NRFA data
-  CreateShortcut "Download NRFA data.lnk" "$INSTDIR\Scripts\download_nrfa.exe" "" "$INSTDIR\icons\download.ico" 0
-
 SectionEnd
 
 
 Section "Download NRFA data"
-
-  DetailPrint "Downloading NRFA data"
+  DetailPrint "Downloading NRFA data (may take a while)."
   ExecDos::exec /DETAILED "$INSTDIR\Scripts\download_nrfa.exe" "" ""
   DetailPrint "Completed: NRFA data downloaded completed."
-
 SectionEnd
 
 
 Section -Log
-
-.finally:
-
   StrCpy $0 "$INSTDIR\install.log"
   Push $0
   Call DumpLog
@@ -181,7 +168,6 @@ SectionEnd
 
 
 Function .onInit
-
   SectionSetFlags ${miniconda_installer} 17 ; Selected and read-only
   SectionSetFlags ${application_packages} 17
 
@@ -191,5 +177,12 @@ Function .onInit
     SectionGetText ${miniconda_installer} $0
     StrCpy $0 "$0 (already installed)"
     SectionSetText ${miniconda_installer} $0
+FunctionEnd
 
+
+Function .onInstFailed
+  SetOutPath $INSTDIR  ; Folder might not have been created yet
+  StrCpy $0 "$INSTDIR\install.log"
+  Push $0
+  Call DumpLog
 FunctionEnd
