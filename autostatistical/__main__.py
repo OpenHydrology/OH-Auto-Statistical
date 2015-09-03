@@ -35,9 +35,8 @@ def main():
 
     # If no file provided, show file dialog
     if not args.file_path:
-        args.file_path = tkfd.askopenfilename(filetypes=[
-            ("Catchment descriptor files", "*.cd3 *.xml")
-        ])
+        args.file_path = tkfd.askopenfilename(filetypes=[("Catchment descriptor files", "*.cd3 *.xml")],
+                                              title="Select catchment file - " + parser.description)
     if not args.file_path:
         return  # User cancelled
 
