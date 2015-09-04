@@ -6,6 +6,7 @@ The table below provides an overview and comparison of features included in OH A
 ============================= =========================== =================
 Aspect                        OH Auto Statistical         WINFAP-FEH
 ============================= =========================== =================
+Input file type               .cd3 and .xml               .cd3
 Selection of best method      automatic                   manual
 Single site analyses          no (no longer a recommended yes
                               method)

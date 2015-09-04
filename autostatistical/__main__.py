@@ -18,22 +18,37 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import argparse
+import tkinter as tk
+import tkinter.messagebox as tkmb
+import tkinter.filedialog as tkfd
+import os.path
 from . import Analysis
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Create OH Auto Statistical flood estimation report.')
-    parser.add_argument('cd3_file_path', help='Location of catchment CD3-file.')
+    parser = argparse.ArgumentParser(description='OH Auto Statistical')
+    parser.add_argument('file_path', nargs='?', default=None, help='Location of catchment .CD3 or.xml-file.')
     args = parser.parse_args()
+    root = tk.Tk()
+    root.withdraw()  # Hide main window to show dialogs only
+    root.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
 
+    # If no file provided, show file dialog
+    if not args.file_path:
+        args.file_path = tkfd.askopenfilename(filetypes=[("Catchment descriptor files", "*.cd3 *.xml")],
+                                              title="Select catchment file - " + parser.description)
+    if not args.file_path:
+        return  # User cancelled
+
+    # Run analysis
     try:
-        analysis = Analysis(args.cd3_file_path)
+        analysis = Analysis(args.file_path)
         analysis.run()
         analysis.create_report()
-
     except Exception as e:
-        print(e)
-        input("Press Enter to close this window.")
+        tkmb.showerror(parser.description, 'The following error occurred:\n\n' + str(e))
+    else:
+        tkmb.showinfo(parser.description, 'OH Auto Statistical report successfully created.')
 
 
 if __name__ == "__main__":

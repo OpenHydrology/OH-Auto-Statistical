@@ -20,6 +20,7 @@
 import math
 import jinja2 as jj
 import jinja2.exceptions
+import jinja2.utils
 from appdirs import AppDirs
 import os
 
@@ -49,6 +50,7 @@ class TemplateEnvironment(jj.Environment):
         self.filters['signifcolumn'] = self.signifcolumn
         self.filters['intcolumn'] = self.intcolumn
         self.filters['strcolumn'] = self.strcolumn
+        self.filters['default'] = self.default
 
     def user_template_folder(self):
         template_folder = os.path.join(AppDirs(APP_NAME, APP_AUTHOR).user_data_dir, 'templates')
@@ -146,3 +148,10 @@ class TemplateEnvironment(jj.Environment):
             return "{value:<{width:d}s}".format(value=value, width=width)
         except (ValueError, TypeError):
             return ' ' * width
+
+    @staticmethod
+    def default(value, default=''):
+        if value is None or jinja2.utils.is_undefined(value):
+            return default
+        else:
+            return value

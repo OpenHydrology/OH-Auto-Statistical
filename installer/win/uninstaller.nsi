@@ -24,36 +24,20 @@
 
 
 Section "un.${APP_NAME}" uninstall_app_packages
-
   ; Start menu
   RmDir /r "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
   RmDir "$SMPROGRAMS\${ORG_NAME}"
 
-  ; Win context menu
-  DeleteRegKey HKCR "OH.CD3"
-  DeleteRegKey HKCR ".cd3"
-
   ; OH Auto Statistical program files
   RmDir /r $INSTDIR
-  RmDir "$PROGRAMFILES64\${ORG_NAME}"
 
   ; Uninstaller registry
   DeleteRegKey HKLM "${UNINST_KEY}"
-
 SectionEnd
 
 
 Section "un.NRFA data" uninstall_nrfa
-
   RmDir /r "$LOCALAPPDATA\${ORG_NAME}\fehdata"
-
 SectionEnd
 
-
-Section "un.Miniconda package manager" uninstall_miniconda
-
-  ExecDos::exec /DETAILED '"$PROGRAMFILES64\Miniconda3\Uninstall-Anaconda.exe" /S'
-  RmDir /r "$PROFILE\.conda"
-
-SectionEnd
 

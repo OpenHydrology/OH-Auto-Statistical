@@ -14,7 +14,7 @@ before_install:
   - conda update -q conda
   - conda info -a
   - conda config --add channels http://conda.anaconda.org/openhydrology
-  - conda create -q -n pyenv python=$TRAVIS_PYTHON_VERSION nose appdirs=1.4 Jinja2=2.8 floodestimation=0.4.2
+  - conda create -q -n pyenv python=$TRAVIS_PYTHON_VERSION nose appdirs=1.4 Jinja2=2.8 floodestimation=0.5.1
   - source activate pyenv
 
 install:
