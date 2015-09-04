@@ -162,6 +162,7 @@ SectionEnd
 
 
 Section -Log
+  DetailPrint "Creating log file."
   StrCpy $0 "$INSTDIR\install.log"
   Push $0
   Call DumpLog
