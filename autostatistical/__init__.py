@@ -17,6 +17,10 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions
+
 import os.path
 from datetime import date
 from floodestimation import loaders

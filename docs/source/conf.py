@@ -3,6 +3,7 @@
 import sys
 import os
 from datetime import date
+from autostatistical._version import get_versions
 
 
 autodoc_mock_imports = [
@@ -23,9 +24,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 project = 'OH Auto Statistical'
 copyright = '2014‒{}, Open Hydrology contributors'.format(date.today().year)
-full_version = open('../../VERSION').read().split('-')[0]  # Ignore build number
-version = '.'.join(full_version.split('.')[0:2])
-release = full_version
+release = get_versions()['version']
+version = '.'.join(release.split('.')[:2])
 pygments_style = 'sphinx'
 
 # -- Options for HTML output ----------------------------------------------
