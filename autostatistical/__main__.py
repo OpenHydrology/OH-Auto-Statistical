@@ -23,26 +23,36 @@ import tkinter.messagebox as tkmb
 import tkinter.filedialog as tkfd
 import os.path
 from . import Analysis
+import autostatistical
 
 
 def main():
-    parser = argparse.ArgumentParser(description='OH Auto Statistical')
-    parser.add_argument('file_path', nargs='?', default=None, help='Location of catchment .CD3 or.xml-file.')
+    parser = argparse.ArgumentParser(prog='autostatistical', description='OH Auto Statistical')
+    parser.add_argument(
+        'catchment_file',
+        nargs='?', default=None,
+        help='Location of catchment .CD3 or.xml-file.')
+    parser.add_argument(
+        '-v', '--version',
+        action='version',
+        version='{} {}'.format(parser.prog, autostatistical.__version__),
+        help='Show the application version number and exit.'
+    )
     args = parser.parse_args()
     root = tk.Tk()
     root.withdraw()  # Hide main window to show dialogs only
     root.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
 
     # If no file provided, show file dialog
-    if not args.file_path:
-        args.file_path = tkfd.askopenfilename(filetypes=[("Catchment descriptor files", "*.cd3 *.xml")],
-                                              title="Select catchment file - " + parser.description)
-    if not args.file_path:
+    if not args.catchment_file:
+        args.catchment_file = tkfd.askopenfilename(filetypes=[("Catchment descriptor files", "*.cd3 *.xml")],
+                                                   title="Select catchment file - {}".format(parser.description))
+    if not args.catchment_file:
         return  # User cancelled
 
     # Run analysis
     try:
-        analysis = Analysis(args.file_path)
+        analysis = Analysis(args.catchment_file)
         analysis.run()
         analysis.create_report()
     except Exception as e:
