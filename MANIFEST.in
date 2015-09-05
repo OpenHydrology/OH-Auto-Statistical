@@ -1,2 +1,3 @@
 include README.md
-include VERSION
+include versioneer.py
+include autostatistical/_version.py

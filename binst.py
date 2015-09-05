@@ -5,13 +5,9 @@
 # Requires NSIS including some extensions.
 
 from subprocess import call
-import version
+import versioneer
 
-# Update version from GIT tags if possible and create version file
-version.update()
-
-# Parse version and build number from VERSION file
-full_version = open('VERSION').read().split('-')
+full_version = versioneer.get_version().split('+')
 version = full_version[0]
 conda_channel = 'https://conda.anaconda.org/openhydrology'
 
@@ -19,7 +15,7 @@ if len(full_version) == 1:  # Public release version
     number = 0
     out_file_name = 'autostatistical-{}-win64.exe'.format(version)
 else:  # Private build version
-    number = int(full_version[1])
+    number = int(full_version[1].split('.')[0])
     out_file_name = 'autostatistical-{}-win64_{}.exe'.format(version, number)
     conda_channel = conda_channel + '/channel/dev -c ' + conda_channel  # Add dev channel
 build = 'py34_' + str(number)
