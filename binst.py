@@ -7,7 +7,7 @@
 from subprocess import call
 import versioneer
 
-full_version = versioneer.get_versions()['version'].split('+')
+full_version = versioneer.get_version().split('+')
 version = full_version[0]
 conda_channel = 'https://conda.anaconda.org/openhydrology'
 
