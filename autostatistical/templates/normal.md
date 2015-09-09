@@ -63,7 +63,7 @@ Donor river         | Donor location                 | Distance (km)| Observed/M
 {{ d.watercourse|strcolumn(19) }} | {{ d.location|strcolumn(30) }} | {{ d.dist|intcolumn(12) }} | {{ d.factor|floatcolumn(3, 14) }} | {{ d.weight|floatcolumn(3, 5) }}
 {% endfor %}
 
-Adj. factor:   {{ qmed.donor_adj_factor|round(3) }}
+Adj. factor:   {{ qmed.donor_adj_factor|round(3) }}  
 {% else %}
 Analysis type: {{ methods[qmed.method] }}  
 {% endif %}
