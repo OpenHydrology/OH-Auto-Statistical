@@ -22,6 +22,7 @@ __version__ = get_versions()['version']
 del get_versions
 
 import os.path
+import threading
 from datetime import date
 from floodestimation import loaders
 from floodestimation import db
@@ -31,37 +32,45 @@ from floodestimation.analysis import QmedAnalysis, GrowthCurveAnalysis
 from .template import TemplateEnvironment
 
 
-class Analysis(object):
+class Analysis(threading.Thread):
     def __init__(self, cd3_file_path):
+        threading.Thread.__init__(self)
         self.cd3_file_path = cd3_file_path
         self.name = os.path.basename(os.path.splitext(cd3_file_path)[0])
         self.folder = os.path.dirname(cd3_file_path)
-        self.results = {'report_date': date.today()}
+        self.catchment = None
+        self.db_session = None
+        self.gauged_catchments = None
+        self.results = {}
+        self.qmed = None
 
-        self.catchment = loaders.from_file(cd3_file_path)
+    def _load_data(self):
+        self.results['report_date'] = date.today()
+        self.catchment = loaders.from_file(self.cd3_file_path)
         self.results['catchment'] = self.catchment
         self.db_session = db.Session()
-        # Add subject catchment to db
-        if len(self.catchment.amax_records) > 0:
+        # Add subject catchment to db if gauged
+        if self.catchment.record_length > 0:
             loaders.to_db(self.catchment, self.db_session, method='update', autocommit=True)
         # Add additional catchment data
         loaders.userdata_to_db(self.db_session, autocommit=True)
 
         self.gauged_catchments = CatchmentCollections(self.db_session)
         self.results['nrfa'] = fehdata.nrfa_metadata()
-        self.qmed = None
 
     def finish(self):
         self.db_session.close()
 
     def run(self):
         try:
-            self.run_qmed_analysis()
-            self.run_growthcurve()
+            self._load_data()
+            self._run_qmed_analysis()
+            self._run_growthcurve()
+            self._create_report()
         finally:
             self.finish()
 
-    def run_qmed_analysis(self):
+    def _run_qmed_analysis(self):
         results = {}
 
         analysis = QmedAnalysis(self.catchment, self.gauged_catchments, results_log=results)
@@ -70,7 +79,7 @@ class Analysis(object):
         results['qmed'] = self.qmed
         self.results['qmed'] = results
 
-    def run_growthcurve(self):
+    def _run_growthcurve(self):
         results = {}
 
         analysis = GrowthCurveAnalysis(self.catchment, self.gauged_catchments, results_log=results)
@@ -85,7 +94,7 @@ class Analysis(object):
         results['flows'] = flows
         self.results['gc'] = results
 
-    def create_report(self):
+    def _create_report(self):
         rep = Report(self.name, self.results, template_name='normal.md')
         rep.save(self.folder)
 

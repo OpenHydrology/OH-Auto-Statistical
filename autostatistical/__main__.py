@@ -54,7 +54,6 @@ def main():
     try:
         analysis = Analysis(args.catchment_file)
         analysis.run()
-        analysis.create_report()
     except Exception as e:
         tkmb.showerror(parser.description, 'The following error occurred:\n\n' + str(e))
     else:
