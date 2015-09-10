@@ -49,7 +49,7 @@ class UI(tk.Tk):
         self.args = arg_parser.parse_args()
         self.title(arg_parser.description)
         self.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
-        self.queue = queue.Queue()
+        self.msq_queue = queue.Queue()
         self.status = tk.StringVar()
         self.listbox = tk.Label(self, textvariable=self.status, anchor='w')
         self.progressbar = ttk.Progressbar(self, orient='horizontal', length=300, mode='determinate')
@@ -79,7 +79,7 @@ class UI(tk.Tk):
     def start_analysis(self, catchment_file):
         """Run analysis is separate thread."""
         self.close_button.config(state='disabled')
-        self.analysis = Analysis(catchment_file, self.queue)
+        self.analysis = Analysis(catchment_file, self.msq_queue)
         self.analysis.start()
         self.periodiccall()
 
@@ -91,8 +91,8 @@ class UI(tk.Tk):
             self.close_button.config(state='active')
 
     def process_msg_queue(self):
-        while self.queue.qsize():
-            msg = self.queue.get(0)
+        while self.msq_queue.qsize():
+            msg = self.msq_queue.get(0)
             self.status.set(msg)
             self.progressbar.step(19.95)
 
