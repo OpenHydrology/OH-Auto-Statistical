@@ -23,6 +23,7 @@ del get_versions
 
 import os.path
 import threading
+import queue
 from datetime import date
 from floodestimation import loaders
 from floodestimation import db
@@ -33,10 +34,10 @@ from .template import TemplateEnvironment
 
 
 class Analysis(threading.Thread):
-    def __init__(self, cd3_file_path, msg_queue):
+    def __init__(self, cd3_file_path, msg_queue=None):
         threading.Thread.__init__(self)
         self.cd3_file_path = cd3_file_path
-        self.msg_queue = msg_queue
+        self.msg_queue = msg_queue if msg_queue is not None else queue.Queue()
         self.name = os.path.basename(os.path.splitext(cd3_file_path)[0])
         self.folder = os.path.dirname(cd3_file_path)
         self.catchment = None
