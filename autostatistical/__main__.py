@@ -57,6 +57,8 @@ class UI(tk.Tk):
         self.listbox.pack(fill='x', padx=10, pady=10)
         self.progressbar.pack(padx=10, pady=2)
         self.close_button.pack(anchor='e', ipadx=5, padx=10, pady=10)
+        self.protocol('WM_DELETE_WINDOW', self.on_delete)
+        self.analysis = None
 
         # If no file provided, show file dialog
         if not self.args.catchment_file:
@@ -67,20 +69,28 @@ class UI(tk.Tk):
         else:
             self.status.set("No catchment file selected.")
 
+    def on_delete(self):
+        """Intercept exit if analysis is running."""
+        if self.analysis:
+            if self.analysis.is_alive():
+                return
+        self.destroy()
+
     def start_analysis(self, catchment_file):
+        """Run analysis is separate thread."""
         self.close_button.config(state='disabled')
         self.analysis = Analysis(catchment_file, self.queue)
         self.analysis.start()
         self.periodiccall()
 
     def periodiccall(self):
-        self.checkqueue()
+        self.process_msg_queue()
         if self.analysis.is_alive():
             self.after(100, self.periodiccall)
         else:
             self.close_button.config(state='active')
 
-    def checkqueue(self):
+    def process_msg_queue(self):
         while self.queue.qsize():
             msg = self.queue.get(0)
             self.status.set(msg)
