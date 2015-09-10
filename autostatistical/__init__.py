@@ -34,21 +34,35 @@ from .template import TemplateEnvironment
 
 
 class Analysis(threading.Thread):
-    def __init__(self, cd3_file_path, msg_queue=None):
+    """
+    Analysis and report creation object.
+
+    Start thread as ``Analysis(...).start()``
+    """
+    def __init__(self, catchment_file, msg_queue=None):
         threading.Thread.__init__(self)
-        self.cd3_file_path = cd3_file_path
+        #: Path to catchment file
+        self.catchment_file = catchment_file
+        #: Queue for passing messages to UI
         self.msg_queue = msg_queue if msg_queue is not None else queue.Queue()
-        self.name = os.path.basename(os.path.splitext(cd3_file_path)[0])
-        self.folder = os.path.dirname(cd3_file_path)
+        #: Name of analysis/catchment based on file name
+        self.name = os.path.basename(os.path.splitext(catchment_file)[0])
+        #: Working folder
+        self.folder = os.path.dirname(catchment_file)
+        #: :class:`floodestimation.entities.Catchment` object
         self.catchment = None
+        #: Database session
         self.db_session = None
+        #: Gauged catchments collection
         self.gauged_catchments = None
+        #: Big dict holding all results, to be passed as context to Jinja2
         self.results = {}
+        #: QMED result value
         self.qmed = None
 
     def _load_data(self):
         self.results['report_date'] = date.today()
-        self.catchment = loaders.from_file(self.cd3_file_path)
+        self.catchment = loaders.from_file(self.catchment_file)
         self.results['catchment'] = self.catchment
         self.db_session = db.Session()
         # Add subject catchment to db if gauged
