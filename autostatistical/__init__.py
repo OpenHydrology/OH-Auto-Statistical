@@ -33,9 +33,10 @@ from .template import TemplateEnvironment
 
 
 class Analysis(threading.Thread):
-    def __init__(self, cd3_file_path):
+    def __init__(self, cd3_file_path, msg_queue):
         threading.Thread.__init__(self)
         self.cd3_file_path = cd3_file_path
+        self.msg_queue = msg_queue
         self.name = os.path.basename(os.path.splitext(cd3_file_path)[0])
         self.folder = os.path.dirname(cd3_file_path)
         self.catchment = None
@@ -63,10 +64,15 @@ class Analysis(threading.Thread):
 
     def run(self):
         try:
+            self.msg_queue.put("Loading data.")
             self._load_data()
+            self.msg_queue.put("Running median annual flood analysis.")
             self._run_qmed_analysis()
+            self.msg_queue.put("Running growth curve analysis.")
             self._run_growthcurve()
+            self.msg_queue.put("Creating results report.")
             self._create_report()
+            self.msg_queue.put("Results report completed.")
         finally:
             self.finish()
 
@@ -125,6 +131,6 @@ class Report(object):
         except FileNotFoundError:
             raise FileNotFoundError("Destination folder `{}` does not exist.".format(to_folder))
         except PermissionError:
-            raise PermissionError("No wright access to destination folder {}".format_map(to_folder))
+            raise PermissionError("No write access to destination folder {}".format_map(to_folder))
         except:
             raise

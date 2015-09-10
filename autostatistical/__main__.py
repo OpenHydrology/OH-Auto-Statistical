@@ -19,8 +19,9 @@
 
 import argparse
 import tkinter as tk
-import tkinter.messagebox as tkmb
+from tkinter import ttk
 import tkinter.filedialog as tkfd
+import queue
 import os.path
 from . import Analysis
 import autostatistical
@@ -38,26 +39,52 @@ def main():
         version='{} {}'.format(parser.prog, autostatistical.__version__),
         help='Show the application version number and exit.'
     )
-    args = parser.parse_args()
-    root = tk.Tk()
-    root.withdraw()  # Hide main window to show dialogs only
-    root.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
+    ui = UI(parser)
+    ui.mainloop()
 
-    # If no file provided, show file dialog
-    if not args.catchment_file:
-        args.catchment_file = tkfd.askopenfilename(filetypes=[("Catchment descriptor files", "*.cd3 *.xml")],
-                                                   title="Select catchment file - {}".format(parser.description))
-    if not args.catchment_file:
-        return  # User cancelled
 
-    # Run analysis
-    try:
-        analysis = Analysis(args.catchment_file)
-        analysis.run()
-    except Exception as e:
-        tkmb.showerror(parser.description, 'The following error occurred:\n\n' + str(e))
-    else:
-        tkmb.showinfo(parser.description, 'OH Auto Statistical report successfully created.')
+class UI(tk.Tk):
+    def __init__(self, arg_parser):
+        tk.Tk.__init__(self)
+        self.args = arg_parser.parse_args()
+        self.title(arg_parser.description)
+        self.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
+        self.queue = queue.Queue()
+        self.status = tk.StringVar()
+        self.listbox = tk.Label(self, textvariable=self.status, anchor='w')
+        self.progressbar = ttk.Progressbar(self, orient='horizontal', length=300, mode='determinate')
+        self.close_button = tk.Button(self, text="Close", command=self.destroy)
+        self.listbox.pack(fill='x', padx=10, pady=10)
+        self.progressbar.pack(padx=10, pady=2)
+        self.close_button.pack(anchor='e', ipadx=5, padx=10, pady=10)
+
+        # If no file provided, show file dialog
+        if not self.args.catchment_file:
+            self.args.catchment_file = tkfd.askopenfilename(filetypes=[("Catchment descriptor files", "*.cd3 *.xml")],
+                                                            title="Select catchment file")
+        if self.args.catchment_file:
+            self.start_analysis(self.args.catchment_file)
+        else:
+            self.status.set("No catchment file selected.")
+
+    def start_analysis(self, catchment_file):
+        self.close_button.config(state='disabled')
+        self.analysis = Analysis(catchment_file, self.queue)
+        self.analysis.start()
+        self.periodiccall()
+
+    def periodiccall(self):
+        self.checkqueue()
+        if self.analysis.is_alive():
+            self.after(100, self.periodiccall)
+        else:
+            self.close_button.config(state='active')
+
+    def checkqueue(self):
+        while self.queue.qsize():
+            msg = self.queue.get(0)
+            self.status.set(msg)
+            self.progressbar.step(19.95)
 
 
 if __name__ == "__main__":
