@@ -28,6 +28,7 @@ from datetime import date
 from floodestimation import loaders
 from floodestimation import db
 from floodestimation import fehdata
+from floodestimation import entities
 from floodestimation.collections import CatchmentCollections
 from floodestimation.analysis import QmedAnalysis, GrowthCurveAnalysis
 from .template import TemplateEnvironment
@@ -65,13 +66,15 @@ class Analysis(threading.Thread):
         self.catchment = loaders.from_file(self.catchment_file)
         self.results['catchment'] = self.catchment
         self.db_session = db.Session()
+        if self.db_session.query(entities.Catchment).count() == 0:
+            loaders.nrfa_to_db(self.db_session, autocommit=True, incl_pot=False)
         # Add subject catchment to db if gauged
         if self.catchment.record_length > 0:
             loaders.to_db(self.catchment, self.db_session, method='update', autocommit=True)
         # Add additional catchment data
         loaders.userdata_to_db(self.db_session, autocommit=True)
 
-        self.gauged_catchments = CatchmentCollections(self.db_session)
+        self.gauged_catchments = CatchmentCollections(self.db_session, load_data='manual')
         self.results['nrfa'] = fehdata.nrfa_metadata()
 
     def finish(self):
