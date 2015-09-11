@@ -24,6 +24,7 @@ del get_versions
 import os.path
 import threading
 import queue
+from collections import namedtuple
 from datetime import date
 from floodestimation import loaders
 from floodestimation import db
@@ -32,6 +33,9 @@ from floodestimation import entities
 from floodestimation.collections import CatchmentCollections
 from floodestimation.analysis import QmedAnalysis, GrowthCurveAnalysis
 from .template import TemplateEnvironment
+
+
+Progress = namedtuple('Progress', ['msg', 'perc'])
 
 
 class Analysis(threading.Thread):
@@ -66,12 +70,20 @@ class Analysis(threading.Thread):
         self.catchment = loaders.from_file(self.catchment_file)
         self.results['catchment'] = self.catchment
         self.db_session = db.Session()
+
         if self.db_session.query(entities.Catchment).count() == 0:
+            self.msg_queue.put("Downloading and storing NRFA data.")
             loaders.nrfa_to_db(self.db_session, autocommit=True, incl_pot=False)
+        if fehdata.update_available():
+            self.msg_queue.put("Downloading and storing NRFA data update.")
+            db.empty_db_tables()
+            loaders.nrfa_to_db(self.db_session, autocommit=True, incl_pot=False)
+
         # Add subject catchment to db if gauged
         if self.catchment.record_length > 0:
             loaders.to_db(self.catchment, self.db_session, method='update', autocommit=True)
-        # Add additional catchment data
+
+        self.msg_queue.put("Loading additional data.")
         loaders.userdata_to_db(self.db_session, autocommit=True)
 
         self.gauged_catchments = CatchmentCollections(self.db_session, load_data='manual')

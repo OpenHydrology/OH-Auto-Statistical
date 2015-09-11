@@ -88,7 +88,7 @@ class UI(tk.Tk):
     def periodiccall(self):
         self.process_msg_queue()
         if self.analysis.is_alive():
-            self.after(100, self.periodiccall)
+            self.after(50, self.periodiccall)
         else:
             self.progress.set(100)
             self.close_button.config(state='active')
