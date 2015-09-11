@@ -72,10 +72,10 @@ class Analysis(threading.Thread):
         self.db_session = db.Session()
 
         if self.db_session.query(entities.Catchment).count() == 0:
-            self.msg_queue.put("Downloading and storing NRFA data.")
+            self.msg_queue.put(Progress("Downloading and storing NRFA data.", 10))
             loaders.nrfa_to_db(self.db_session, autocommit=True, incl_pot=False)
         if fehdata.update_available():
-            self.msg_queue.put("Downloading and storing NRFA data update.")
+            self.msg_queue.put(Progress("Downloading and storing NRFA data update.", 10))
             db.empty_db_tables()
             loaders.nrfa_to_db(self.db_session, autocommit=True, incl_pot=False)
 
@@ -83,7 +83,7 @@ class Analysis(threading.Thread):
         if self.catchment.record_length > 0:
             loaders.to_db(self.catchment, self.db_session, method='update', autocommit=True)
 
-        self.msg_queue.put("Loading additional data.")
+        self.msg_queue.put(Progress("Loading additional data.", 20))
         loaders.userdata_to_db(self.db_session, autocommit=True)
 
         self.gauged_catchments = CatchmentCollections(self.db_session, load_data='manual')
@@ -94,15 +94,15 @@ class Analysis(threading.Thread):
 
     def run(self):
         try:
-            self.msg_queue.put("Loading data.")
+            self.msg_queue.put(Progress("Loading data.", 5))
             self._load_data()
-            self.msg_queue.put("Running median annual flood analysis.")
+            self.msg_queue.put(Progress("Running median annual flood analysis.", 25))
             self._run_qmed_analysis()
-            self.msg_queue.put("Running growth curve analysis.")
+            self.msg_queue.put(Progress("Running growth curve analysis.", 50))
             self._run_growthcurve()
-            self.msg_queue.put("Creating results report.")
+            self.msg_queue.put(Progress("Creating results report.", 75))
             self._create_report()
-            self.msg_queue.put("Results report completed.")
+            self.msg_queue.put(Progress("Results report completed.", 95))
         finally:
             self.finish()
 
