@@ -28,26 +28,29 @@ import autostatistical
 
 
 def main():
-    parser = argparse.ArgumentParser(prog='autostatistical', description='OH Auto Statistical')
-    parser.add_argument(
+    p = argparse.ArgumentParser(prog='autostatistical', description='OH Auto Statistical')
+    p.add_argument(
         'catchment_file',
         nargs='?', default=None,
         help='Location of catchment .CD3 or.xml-file.')
-    parser.add_argument(
+    p.add_argument(
         '-v', '--version',
         action='version',
-        version='{} {}'.format(parser.prog, autostatistical.__version__),
+        version='{} {}'.format(p.prog, autostatistical.__version__),
         help='Show the application version number and exit.'
     )
-    ui = UI(parser)
+    args = p.parse_args()
+    ui = UI(args.catchment_file)
     ui.mainloop()
 
 
 class UI(tk.Tk):
-    def __init__(self, arg_parser):
+    APP_NAME = "OH Auto Statistical"
+
+    def __init__(self, catchment_file):
         tk.Tk.__init__(self)
-        self.args = arg_parser.parse_args()
-        self.title(arg_parser.description)
+        self.catchment_file = catchment_file
+        self.title(self.APP_NAME)
         self.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
         self.msg_queue = queue.Queue()
         self.progress = tk.IntVar()
@@ -60,14 +63,15 @@ class UI(tk.Tk):
         self.progressbar.pack(padx=10, pady=2)
         self.close_button.pack(anchor='e', ipadx=5, padx=10, pady=10)
         self.protocol('WM_DELETE_WINDOW', self.on_delete)
+        #: Analysis thread
         self.analysis = None
 
         # If no file provided, show file dialog
-        if not self.args.catchment_file:
-            self.args.catchment_file = tkfd.askopenfilename(filetypes=[("Catchment descriptor files", "*.cd3 *.xml")],
-                                                            title="Select catchment file")
-        if self.args.catchment_file:
-            self.start_analysis(self.args.catchment_file)
+        if not self.catchment_file:
+            self.catchment_file = tkfd.askopenfilename(filetypes=[("Catchment descriptor files", "*.cd3 *.xml")],
+                                                       title="Select catchment file")
+        if self.catchment_file:
+            self.start_analysis(self.catchment_file)
         else:
             self.status.set("No catchment file selected.")
 
