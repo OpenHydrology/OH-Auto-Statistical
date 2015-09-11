@@ -55,13 +55,17 @@ class UI(tk.Tk):
         self.msg_queue = queue.Queue()
         self.progress = tk.IntVar()
         self.status = tk.StringVar()
+        self.open_report = tk.IntVar()
+        self.open_report.set(1)
         self.listbox = tk.Label(self, textvariable=self.status, anchor='w')
         self.progressbar = ttk.Progressbar(self, orient='horizontal', length=300, mode='determinate',
                                            variable=self.progress)
+        self.open_report_ceck = tk.Checkbutton(self, text="Open report on exit.", variable=self.open_report)
         self.close_button = tk.Button(self, text="Close", command=self.destroy)
         self.listbox.pack(fill='x', padx=10, pady=10)
         self.progressbar.pack(padx=10, pady=2)
-        self.close_button.pack(anchor='e', ipadx=5, padx=10, pady=10)
+        self.close_button.pack(anchor='e', side='right', ipadx=5, padx=10, pady=10)
+        self.open_report_ceck.pack(anchor='w', padx=10, pady=10)
         self.protocol('WM_DELETE_WINDOW', self.on_delete)
         #: Analysis thread
         self.analysis = None
