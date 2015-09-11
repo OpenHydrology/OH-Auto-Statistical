@@ -50,9 +50,11 @@ class UI(tk.Tk):
         self.title(arg_parser.description)
         self.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
         self.msg_queue = queue.Queue()
+        self.progress = tk.IntVar()
         self.status = tk.StringVar()
         self.listbox = tk.Label(self, textvariable=self.status, anchor='w')
-        self.progressbar = ttk.Progressbar(self, orient='horizontal', length=300, mode='determinate')
+        self.progressbar = ttk.Progressbar(self, orient='horizontal', length=300, mode='determinate',
+                                           variable=self.progress)
         self.close_button = tk.Button(self, text="Close", command=self.destroy)
         self.listbox.pack(fill='x', padx=10, pady=10)
         self.progressbar.pack(padx=10, pady=2)
@@ -88,13 +90,14 @@ class UI(tk.Tk):
         if self.analysis.is_alive():
             self.after(100, self.periodiccall)
         else:
+            self.progress.set(100)
             self.close_button.config(state='active')
 
     def process_msg_queue(self):
         while self.msg_queue.qsize():
             msg = self.msg_queue.get(0)
             self.status.set(msg)
-            self.progressbar.step(19.95)
+            self.progress.set(self.progress.get() + 15)
 
 
 if __name__ == "__main__":
