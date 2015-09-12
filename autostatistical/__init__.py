@@ -35,6 +35,7 @@ from floodestimation.analysis import QmedAnalysis, GrowthCurveAnalysis
 from .template import TemplateEnvironment
 
 
+#: Named tuple for passing messages and percentage completion through thread queue
 Progress = namedtuple('Progress', ['msg', 'perc'])
 
 
@@ -64,6 +65,8 @@ class Analysis(threading.Thread):
         self.results = {}
         #: QMED result value
         self.qmed = None
+        #: Report file path
+        self.report_file = None
 
     def _load_data(self):
         self.results['report_date'] = date.today()
@@ -92,6 +95,11 @@ class Analysis(threading.Thread):
     def finish(self):
         self.db_session.close()
 
+    def join(self):
+        """Return report file path when completed and thread joined."""
+        threading.Thread.join(self)
+        return self.report_file
+
     def run(self):
         try:
             self.msg_queue.put(Progress("Loading data.", 5))
@@ -101,7 +109,7 @@ class Analysis(threading.Thread):
             self.msg_queue.put(Progress("Running growth curve analysis.", 50))
             self._run_growthcurve()
             self.msg_queue.put(Progress("Creating results report.", 75))
-            self._create_report()
+            self.report_file = self._create_report()
             self.msg_queue.put(Progress("Results report completed.", 95))
         finally:
             self.finish()
@@ -132,7 +140,7 @@ class Analysis(threading.Thread):
 
     def _create_report(self):
         rep = Report(self.name, self.results, template_name='normal.md')
-        rep.save(self.folder)
+        return rep.save(self.folder)
 
 
 class Report(object):
@@ -164,3 +172,4 @@ class Report(object):
             raise PermissionError("No write access to destination folder {}".format_map(to_folder))
         except:
             raise
+        return file_path

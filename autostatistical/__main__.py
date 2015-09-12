@@ -19,12 +19,17 @@
 
 import argparse
 import tkinter as tk
+import subprocess
 from tkinter import ttk
 import tkinter.filedialog as tkfd
 import queue
 import os.path
+import sys
 from . import Analysis
 import autostatistical
+
+
+on_win = sys.platform == 'win32'
 
 
 def main():
@@ -54,21 +59,26 @@ class UI(tk.Tk):
         self.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
         self.msg_queue = queue.Queue()
         self.progress = tk.IntVar()
-        self.status = tk.StringVar()
-        self.open_report = tk.IntVar()
-        self.open_report.set(1)
-        self.listbox = tk.Label(self, textvariable=self.status, anchor='w')
         self.progressbar = ttk.Progressbar(self, orient='horizontal', length=300, mode='determinate',
                                            variable=self.progress)
+        self.status = tk.StringVar()
+        self.open_report = tk.IntVar()
+        self.listbox = tk.Label(self, textvariable=self.status, anchor='w')
         self.open_report_ceck = tk.Checkbutton(self, text="Open report on exit.", variable=self.open_report)
-        self.close_button = tk.Button(self, text="Close", command=self.destroy)
+        if on_win:
+            self.open_report.set(1)
+        else:
+            self.open_report_ceck.config(state=tk.DISABLED)
+        self.close_button = tk.Button(self, text="Close", command=self.quit)
         self.listbox.pack(fill='x', padx=10, pady=10)
         self.progressbar.pack(padx=10, pady=2)
         self.close_button.pack(anchor='e', side='right', ipadx=5, padx=10, pady=10)
         self.open_report_ceck.pack(anchor='w', padx=10, pady=10)
-        self.protocol('WM_DELETE_WINDOW', self.on_delete)
+        self.protocol('WM_DELETE_WINDOW', self.quit)
         #: Analysis thread
         self.analysis = None
+        #: Results report file path
+        self.report_file = None
 
         # If no file provided, show file dialog
         if not self.catchment_file:
@@ -79,11 +89,14 @@ class UI(tk.Tk):
         else:
             self.status.set("No catchment file selected.")
 
-    def on_delete(self):
+    def quit(self):
         """Intercept exit if analysis is running."""
         if self.analysis:
             if self.analysis.is_alive():
                 return
+        if self.open_report.get() and self.report_file:
+            subprocess.Popen(['notepad', self.report_file],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE) # Don't wait
         self.destroy()
 
     def start_analysis(self, catchment_file):
@@ -98,6 +111,7 @@ class UI(tk.Tk):
         if self.analysis.is_alive():
             self.after(10, self.periodiccall)
         else:
+            self.report_file = self.analysis.join()
             self.progress.set(100)
             self.close_button.config(state='active')
 
