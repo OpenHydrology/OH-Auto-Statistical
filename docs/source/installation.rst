@@ -36,7 +36,5 @@ manager <http://conda.pydata.org/miniconda.html>`_:
 
    conda install -c https://conda.anaconda.org/openhydrology autostatistical
 
-Or alternatively directly from the source code:
-
-   .. image:: https://img.shields.io/github/release/openhydrology/oh-auto-statistical.svg?style=flat-square
-      :target: https://github.com/OpenHydrology/OH-Auto-Statistical/releases/latest
+It is recommended to install OH Auto Statistical in its own Conda environment. See the `Conda documentation
+<http://conda.pydata.org/>`_ for details.
