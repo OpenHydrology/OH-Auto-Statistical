@@ -69,12 +69,12 @@ class UI(tk.Tk):
             self.open_report.set(1)
         else:
             self.open_report_ceck.config(state=tk.DISABLED)
-        self.close_button = tk.Button(self, text="Close", command=self.quit)
+        self.close_button = tk.Button(self, text="Close", command=self.quit, default='active')
         self.listbox.pack(fill='x', padx=10, pady=10)
         self.progressbar.pack(padx=10, pady=2)
         self.close_button.pack(anchor='e', side='right', ipadx=5, padx=10, pady=10)
         self.open_report_ceck.pack(anchor='w', padx=10, pady=10)
-        self.close_button.lower()  # First TAB stop
+        self.bind('<Return>', lambda e: self.quit())
         self.protocol('WM_DELETE_WINDOW', self.quit)
         #: Analysis thread
         self.analysis = None
