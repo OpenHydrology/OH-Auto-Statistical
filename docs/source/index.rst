@@ -5,7 +5,8 @@ Version |release|
 
 Fully automated flood estimation for UK catchments using the latest revisions to the Flood Estimation Handbook.
 
-Contents:
+Contents
+--------
 
 .. toctree::
    :maxdepth: 2
@@ -16,10 +17,5 @@ Contents:
    science
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+OH Auto Statistical is open source software. `Review the code on GitHub
+<https://github.com/OpenHydrology/OH-Auto-Statistical>`_.
