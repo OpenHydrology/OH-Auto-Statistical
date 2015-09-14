@@ -19,9 +19,11 @@ To undertake an analysis:
 
 3. Browse to and select the catchment file to run the analysis.
 
-4. A report is generated which has the same file name as the catchment file but ending with
-   :file:`Flood estimation report.yyyy-mm-dd.md`. This is a simple text file [#f1]_ which can be opened with
-   :program:`Notepad`.
+   .. image:: _static/run-analysis.png
+
+4. A report is generated and is saved in the same folder as the catchment file with a file name ending with
+   :file:`...Flood estimation report.yyyy-mm-dd.md` [#f1]_. Closing OH Auto Statistical will open the report. Untick the check
+   box to close the application without opening the report.
 
    .. image:: _static/report.png
 
@@ -44,10 +46,9 @@ Updating NRFA data
 ------------------
 
 :abbr:`NRFA (National River Flow Archive )` data are automatically downloaded during the installation of OH Auto
-Statistical. To update the data using the latest published NRFA dataset, select in the
-:menuselection:`Windows Start Menu --> Open Hydrology --> OH Auto Statistical --> Reload NRFA data`.
-
-All existing data will be removed before downloading a complete new dataset. This may take a while.
+Statistical. Before undertaking an analysis, OH Auto Statistical checks whether an NRFA update is available and will
+download this if necessary. All existing data will be removed before downloading a complete new dataset. This may take a
+while.
 
 
 Customising the report template
@@ -59,6 +60,6 @@ The report template can be customised by placing a file :file:`normal.md` in the
 
 .. rubric:: Footnotes
 
-.. [#f1] This is in fact a `Markdown (*.md) file <http://daringfireball.net/projects/markdown/>`_ or more precisely a
+.. [#f1] This is a `Markdown (*.md) file <http://daringfireball.net/projects/markdown/>`_ or more precisely a
          `GitHub Flavoured Markdown file <https://help.github.com/articles/github-flavored-markdown/>`_. Markdown files
          are plain text files that can be easily rendered as web pages or other formats.
