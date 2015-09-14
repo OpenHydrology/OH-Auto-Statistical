@@ -64,7 +64,7 @@ class UI(tk.Tk):
         self.status = tk.StringVar()
         self.open_report = tk.IntVar()
         self.listbox = tk.Label(self, textvariable=self.status, anchor='w')
-        self.open_report_ceck = tk.Checkbutton(self, text="Open report on exit.", variable=self.open_report)
+        self.open_report_ceck = tk.Checkbutton(self, text="Open report when closing application", variable=self.open_report)
         if on_win:
             self.open_report.set(1)
         else:
@@ -74,6 +74,7 @@ class UI(tk.Tk):
         self.progressbar.pack(padx=10, pady=2)
         self.close_button.pack(anchor='e', side='right', ipadx=5, padx=10, pady=10)
         self.open_report_ceck.pack(anchor='w', padx=10, pady=10)
+        self.close_button.lower()  # First TAB stop
         self.protocol('WM_DELETE_WINDOW', self.quit)
         #: Analysis thread
         self.analysis = None
