@@ -10,9 +10,8 @@ autodoc_mock_imports = [
     'scipy', 'scipy.misc', 'scipy.stats', 'scipy.stats._continuous_distns', 'scipy.special',
     'floodestimation'
 ]
-sys.path.insert(0, os.path.abspath('..'))
-sys.path.insert(0, os.path.abspath('../..'))
-sys.path.insert(0, os.path.abspath('../../autostatistical'))
+print('working dir: ' + os.getcwd())
+os.chdir('../..')
 print('working dir: ' + os.getcwd())
 print('sys argv[0]: ' + sys.argv[0])
 
@@ -28,14 +27,12 @@ master_doc = 'index'
 project = 'OH Auto Statistical'
 copyright = '2014‒{}, Open Hydrology contributors'.format(date.today().year)
 
-#sys.path.insert(0, '../') # to get the versioneer module
-
-import imp
-fp, pathname, description = imp.find_module('versioneer')
-print(pathname)
-versioneer = imp.load_module('versioneer', fp, pathname, description)
-del imp
-
+# import imp
+# fp, pathname, description = imp.find_module('versioneer')
+# print(pathname)
+# versioneer = imp.load_module('versioneer', fp, pathname, description)
+# del imp
+import versioneer
 release = versioneer.get_version()
 version = '.'.join(release.split('.')[:2])
 pygments_style = 'sphinx'
