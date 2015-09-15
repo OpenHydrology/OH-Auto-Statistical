@@ -67,6 +67,8 @@ class Analysis(threading.Thread):
         self.qmed = None
         #: Report file path
         self.report_file = None
+        #: Any exceptions occurring during analysis
+        self.exc = None
 
     def _load_data(self):
         self.results['report_date'] = date.today()
@@ -93,11 +95,15 @@ class Analysis(threading.Thread):
         self.results['nrfa'] = fehdata.nrfa_metadata()
 
     def finish(self):
-        self.db_session.close()
+        if self.db_session:
+            self.db_session.close()
 
     def join(self):
         """Return report file path when completed and thread joined."""
         threading.Thread.join(self)
+        if self.exc:
+            raise self.exc
+
         return self.report_file
 
     def run(self):
@@ -111,6 +117,8 @@ class Analysis(threading.Thread):
             self.msg_queue.put(Progress("Creating results report.", 75))
             self.report_file = self._create_report()
             self.msg_queue.put(Progress("Results report completed.", 95))
+        except BaseException as e:
+            self.exc = e
         finally:
             self.finish()
 

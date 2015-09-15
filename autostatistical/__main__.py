@@ -19,9 +19,10 @@
 
 import argparse
 import tkinter as tk
-import subprocess
 from tkinter import ttk
+import tkinter.messagebox as tkmb
 import tkinter.filedialog as tkfd
+import subprocess
 import queue
 import os.path
 import sys
@@ -112,8 +113,12 @@ class UI(tk.Tk):
         if self.analysis.is_alive():
             self.after(10, self.periodiccall)
         else:
-            self.report_file = self.analysis.join()
-            self.progress.set(100)
+            try:
+                self.report_file = self.analysis.join()
+                self.progress.set(100)
+            except Exception as e:
+                self.status.set("An error occurred.")
+                tkmb.showerror(message="The following error occurred:\n\n{}".format(repr(e)))
             self.close_button.config(state='active')
 
     def process_msg_queue(self):
