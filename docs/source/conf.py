@@ -3,7 +3,6 @@
 import sys
 import os
 from datetime import date
-import autostatistical
 
 
 autodoc_mock_imports = [
@@ -25,6 +24,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 project = 'OH Auto Statistical'
 copyright = '2014‒{}, Open Hydrology contributors'.format(date.today().year)
+import autostatistical
 release = autostatistical.__version__
 version = '.'.join(release.split('.')[:2])
 pygments_style = 'sphinx'
