@@ -12,6 +12,7 @@ autodoc_mock_imports = [
 ]
 print('working dir: ' + os.getcwd())
 os.chdir('../..')
+sys.path.insert(0, os.getcwd())
 print('working dir: ' + os.getcwd())
 print('sys argv[0]: ' + sys.argv[0])
 
