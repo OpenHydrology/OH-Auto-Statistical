@@ -5,12 +5,7 @@ import os
 from datetime import date
 
 
-autodoc_mock_imports = [
-    'numpy',
-    'scipy', 'scipy.misc', 'scipy.stats', 'scipy.stats._continuous_distns', 'scipy.special',
-    'floodestimation'
-]
-os.chdir('../..')  # Versioneer requires us to run from the root of the project
+os.chdir('../..')  # Versioneer requires us to work from the root of the project
 sys.path.insert(0, os.getcwd())
 import versioneer
 
@@ -21,7 +16,6 @@ source_suffix = '.rst'
 master_doc = 'index'
 project = 'OH Auto Statistical'
 copyright = '2014‒{}, Open Hydrology contributors'.format(date.today().year)
-
 release = versioneer.get_version()
 version = '.'.join(release.split('.')[:2])
 pygments_style = 'sphinx'
