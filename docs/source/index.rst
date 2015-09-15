@@ -1,7 +1,7 @@
 OH Auto Statistical
 ===================
 
-Version |release|
+Version |version|
 
 Fully automated flood estimation for UK catchments using the latest revisions to the Flood Estimation Handbook.
 
