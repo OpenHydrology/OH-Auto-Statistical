@@ -27,12 +27,11 @@ master_doc = 'index'
 project = 'OH Auto Statistical'
 copyright = '2014‒{}, Open Hydrology contributors'.format(date.today().year)
 
-# import imp
-# fp, pathname, description = imp.find_module('versioneer')
-# print(pathname)
-# versioneer = imp.load_module('versioneer', fp, pathname, description)
-# del imp
-import versioneer
+import imp
+fp, pathname, description = imp.find_module('versioneer')
+print(pathname)
+versioneer = imp.load_module('versioneer', fp, pathname, description)
+del imp
 release = versioneer.get_version()
 version = '.'.join(release.split('.')[:2])
 pygments_style = 'sphinx'
