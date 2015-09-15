@@ -111,21 +111,27 @@ class UI(tk.Tk):
     def periodiccall(self):
         self.process_msg_queue()
         if self.analysis.is_alive():
-            self.after(10, self.periodiccall)
+            self.after(50, self.periodiccall)
         else:
-            try:
-                self.report_file = self.analysis.join()
-                self.progress.set(100)
-            except Exception as e:
-                self.status.set("An error occurred.")
-                tkmb.showerror(message="The following error occurred:\n\n{}".format(repr(e)))
-            self.close_button.config(state='active')
+            self.finish_analysis()
 
     def process_msg_queue(self):
-        while self.msg_queue.qsize():
-            progress = self.msg_queue.get(0)
-            self.status.set(progress.msg)
-            self.progress.set(progress.perc)
+        while 1:
+            try:
+                progress = self.msg_queue.get(0)
+                self.status.set(progress.msg)
+                self.progress.set(progress.perc)
+            except queue.Empty:
+                return
+
+    def finish_analysis(self):
+        try:
+            self.report_file = self.analysis.join()
+            self.progress.set(100)
+        except Exception as e:
+            self.status.set("An error occurred.")
+            tkmb.showerror(message="The following error occurred:\n\n{}".format(repr(e)))
+        self.close_button.config(state='active')
 
 
 if __name__ == "__main__":
