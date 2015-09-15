@@ -10,30 +10,18 @@ autodoc_mock_imports = [
     'scipy', 'scipy.misc', 'scipy.stats', 'scipy.stats._continuous_distns', 'scipy.special',
     'floodestimation'
 ]
-print('working dir: ' + os.getcwd())
-os.chdir('../..')
+os.chdir('../..')  # Versioneer requires us to run from the root of the project
 sys.path.insert(0, os.getcwd())
-print('working dir: ' + os.getcwd())
-print('sys argv[0]: ' + sys.argv[0])
+import versioneer
 
 # -- General configuration ------------------------------------------------
 
 needs_sphinx = '1.3'
-extensions = [
-#    'sphinx.ext.autodoc',
-#    'sphinx.ext.doctest',
-]
 source_suffix = '.rst'
 master_doc = 'index'
 project = 'OH Auto Statistical'
 copyright = '2014‒{}, Open Hydrology contributors'.format(date.today().year)
 
-# import imp
-# fp, pathname, description = imp.find_module('versioneer')
-# print(pathname)
-# versioneer = imp.load_module('versioneer', fp, pathname, description)
-# del imp
-import versioneer
 release = versioneer.get_version()
 version = '.'.join(release.split('.')[:2])
 pygments_style = 'sphinx'
