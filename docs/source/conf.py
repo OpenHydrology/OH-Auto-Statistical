@@ -8,7 +8,8 @@ import autostatistical
 
 autodoc_mock_imports = [
     'numpy',
-    'scipy', 'scipy.misc', 'scipy.stats', 'scipy.stats._continuous_distns', 'scipy.special'
+    'scipy', 'scipy.misc', 'scipy.stats', 'scipy.stats._continuous_distns', 'scipy.special',
+    'floodestimation'
 ]
 sys.path.insert(0, os.path.abspath('../..'))
 sys.path.insert(0, os.path.abspath('../../autostatistical'))
