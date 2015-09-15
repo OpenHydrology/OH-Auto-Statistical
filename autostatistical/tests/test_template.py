@@ -48,7 +48,7 @@ class TestReport(unittest.TestCase):
         with TemporaryDirectory() as folder:
             analysis.folder = folder
             analysis.results.update(self.empty_context)
-            analysis.create_report()
+            analysis._create_report()
             self.assertTrue(os.path.isfile(
                 os.path.join(folder, '17002.Flood estimation report.' + date.today().isoformat() + '.md')))
 
@@ -57,7 +57,8 @@ class TestReport(unittest.TestCase):
         with TemporaryDirectory() as folder:
             analysis.folder = folder
             analysis.results.update(self.empty_context)
-            analysis.create_report()
+            analysis._load_data()
+            analysis._create_report()
             file_path = os.path.join(folder, '17002.Flood estimation report.' + date.today().isoformat() + '.md')
             with open(file_path) as f:
                 for line in f:
@@ -68,7 +69,6 @@ class TestReport(unittest.TestCase):
     def test_results(self):
         analysis = astat.Analysis('./autostatistical/tests/data/17002.CD3')
         analysis.run()
-        analysis.create_report()
 
     def test_user_templates_empty(self):
         env = templ.TemplateEnvironment()
@@ -101,9 +101,7 @@ class TestReport(unittest.TestCase):
     def test_gauged_report(self):
         analysis = astat.Analysis('./autostatistical/tests/data/37017.CD3')
         analysis.run()
-        analysis.create_report()
 
     def test_xml_catchment(self):
         analysis = astat.Analysis('./autostatistical/tests/data/NN 04000 48400.xml')
         analysis.run()
-        analysis.create_report()

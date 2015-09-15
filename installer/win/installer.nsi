@@ -140,12 +140,8 @@ Section "Start menu"
   SetOutPath "$INSTDIR\icons"
   File "images\*.ico"
 
-  ; Start menu
   RMDir /r "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
   SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
-  ; Download NRFA data
-  CreateShortcut "Download NRFA data.lnk" "$INSTDIR\Scripts\download_nrfa.exe" "" "$INSTDIR\icons\download.ico" 0 \
-    "" "" "Download peak flow data from the National River Flow Archive."
   ; Run application
   CreateShortcut "OH Auto Statistical ${VERSION}.lnk" "$INSTDIR\pythonw.exe" "-m ${PACKAGE_NAME}" \
     "$INSTDIR\icons\application.ico" 0 "" "" "Run Open Hydrology Auto Statistical."

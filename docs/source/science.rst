@@ -60,10 +60,3 @@ The following assumptions are made by OH Auto Statistical:
   group regardless whether the catchment is flagged as being suitable for QMED or growth curve donor analyses.
 - The Generalised Logistic statistical distribution is used to create a frequency curve. Future versions of OH Auto
   Statistical will choose the best fitting distribution.
-
-OH Auto Statistical is open source software. `Review the code on GitHub
-<https://github.com/OpenHydrology/OH-Auto-Statistical>`_.
-
-
-
-

@@ -1,3 +1,8 @@
+version 0.7.0 (2015-09-15)
+--------------------------
+- Analysis progress window
+- Check fro NRFA data update
+
 version 0.6.0 (2015-09-04)
 --------------------------
 - Application starts from Windows Start Menu instead of Windows Explorer context menu

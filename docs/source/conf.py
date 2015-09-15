@@ -5,27 +5,19 @@ import os
 from datetime import date
 
 
-autodoc_mock_imports = [
-    'numpy',
-    'scipy', 'scipy.misc', 'scipy.stats', 'scipy.stats._continuous_distns', 'scipy.special'
-]
-sys.path.insert(0, os.path.abspath('../..'))
-sys.path.insert(0, os.path.abspath('../../autostatistical'))
+os.chdir('../..')  # Versioneer requires us to work from the root of the project
+sys.path.insert(0, os.getcwd())
+import versioneer
 
 # -- General configuration ------------------------------------------------
 
 needs_sphinx = '1.3'
-extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-]
 source_suffix = '.rst'
 master_doc = 'index'
 project = 'OH Auto Statistical'
 copyright = '2014‒{}, Open Hydrology contributors'.format(date.today().year)
-full_version = open('../../VERSION').read().split('-')[0]  # Ignore build number
-version = '.'.join(full_version.split('.')[0:2])
-release = full_version
+release = versioneer.get_version()
+version = '.'.join(release.split('.')[:2])
 pygments_style = 'sphinx'
 
 # -- Options for HTML output ----------------------------------------------

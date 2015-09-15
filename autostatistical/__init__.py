@@ -17,47 +17,112 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions
+
 import os.path
+import threading
+import queue
+from collections import namedtuple
 from datetime import date
 from floodestimation import loaders
 from floodestimation import db
 from floodestimation import fehdata
+from floodestimation import entities
 from floodestimation.collections import CatchmentCollections
 from floodestimation.analysis import QmedAnalysis, GrowthCurveAnalysis
 from .template import TemplateEnvironment
 
 
-class Analysis(object):
-    def __init__(self, cd3_file_path):
-        self.cd3_file_path = cd3_file_path
-        self.name = os.path.basename(os.path.splitext(cd3_file_path)[0])
-        self.folder = os.path.dirname(cd3_file_path)
-        self.results = {'report_date': date.today()}
+#: Named tuple for passing messages and percentage completion through thread queue
+Progress = namedtuple('Progress', ['msg', 'perc'])
 
-        self.catchment = loaders.from_file(cd3_file_path)
+
+class Analysis(threading.Thread):
+    """
+    Analysis and report creation object.
+
+    Start thread as ``Analysis(...).start()``
+    """
+    def __init__(self, catchment_file, msg_queue=None):
+        threading.Thread.__init__(self)
+        #: Path to catchment file
+        self.catchment_file = catchment_file
+        #: Queue for passing messages to UI
+        self.msg_queue = msg_queue if msg_queue is not None else queue.Queue()
+        #: Name of analysis/catchment based on file name
+        self.name = os.path.basename(os.path.splitext(catchment_file)[0])
+        #: Working folder
+        self.folder = os.path.dirname(catchment_file)
+        #: :class:`floodestimation.entities.Catchment` object
+        self.catchment = None
+        #: Database session
+        self.db_session = None
+        #: Gauged catchments collection
+        self.gauged_catchments = None
+        #: Big dict holding all results, to be passed as context to Jinja2
+        self.results = {}
+        #: QMED result value
+        self.qmed = None
+        #: Report file path
+        self.report_file = None
+        #: Any exceptions occurring during analysis
+        self.exc = None
+
+    def _load_data(self):
+        self.results['report_date'] = date.today()
+        self.catchment = loaders.from_file(self.catchment_file)
         self.results['catchment'] = self.catchment
         self.db_session = db.Session()
-        # Add subject catchment to db
-        if len(self.catchment.amax_records) > 0:
+
+        if self.db_session.query(entities.Catchment).count() == 0:
+            self.msg_queue.put(Progress("Downloading and storing NRFA data.", 10))
+            loaders.nrfa_to_db(self.db_session, autocommit=True, incl_pot=False)
+        if fehdata.update_available():
+            self.msg_queue.put(Progress("Downloading and storing NRFA data update.", 10))
+            db.empty_db_tables()
+            loaders.nrfa_to_db(self.db_session, autocommit=True, incl_pot=False)
+
+        # Add subject catchment to db if gauged
+        if self.catchment.record_length > 0:
             loaders.to_db(self.catchment, self.db_session, method='update', autocommit=True)
-        # Add additional catchment data
+
+        self.msg_queue.put(Progress("Loading additional data.", 20))
         loaders.userdata_to_db(self.db_session, autocommit=True)
 
-        self.gauged_catchments = CatchmentCollections(self.db_session)
+        self.gauged_catchments = CatchmentCollections(self.db_session, load_data='manual')
         self.results['nrfa'] = fehdata.nrfa_metadata()
-        self.qmed = None
 
     def finish(self):
-        self.db_session.close()
+        if self.db_session:
+            self.db_session.close()
+
+    def join(self):
+        """Return report file path when completed and thread joined."""
+        threading.Thread.join(self)
+        if self.exc:
+            raise self.exc
+
+        return self.report_file
 
     def run(self):
         try:
-            self.run_qmed_analysis()
-            self.run_growthcurve()
+            self.msg_queue.put(Progress("Loading data.", 5))
+            self._load_data()
+            self.msg_queue.put(Progress("Running median annual flood analysis.", 25))
+            self._run_qmed_analysis()
+            self.msg_queue.put(Progress("Running growth curve analysis.", 50))
+            self._run_growthcurve()
+            self.msg_queue.put(Progress("Creating results report.", 75))
+            self.report_file = self._create_report()
+            self.msg_queue.put(Progress("Results report completed.", 95))
+        except BaseException as e:
+            self.exc = e
         finally:
             self.finish()
 
-    def run_qmed_analysis(self):
+    def _run_qmed_analysis(self):
         results = {}
 
         analysis = QmedAnalysis(self.catchment, self.gauged_catchments, results_log=results)
@@ -66,7 +131,7 @@ class Analysis(object):
         results['qmed'] = self.qmed
         self.results['qmed'] = results
 
-    def run_growthcurve(self):
+    def _run_growthcurve(self):
         results = {}
 
         analysis = GrowthCurveAnalysis(self.catchment, self.gauged_catchments, results_log=results)
@@ -81,9 +146,9 @@ class Analysis(object):
         results['flows'] = flows
         self.results['gc'] = results
 
-    def create_report(self):
+    def _create_report(self):
         rep = Report(self.name, self.results, template_name='normal.md')
-        rep.save(self.folder)
+        return rep.save(self.folder)
 
 
 class Report(object):
@@ -112,6 +177,7 @@ class Report(object):
         except FileNotFoundError:
             raise FileNotFoundError("Destination folder `{}` does not exist.".format(to_folder))
         except PermissionError:
-            raise PermissionError("No wright access to destination folder {}".format_map(to_folder))
+            raise PermissionError("No write access to destination folder {}".format_map(to_folder))
         except:
             raise
+        return file_path
