@@ -130,7 +130,7 @@ class UI(tk.Tk):
             self.progress.set(100)
         except Exception as e:
             self.status.set("An error occurred.")
-            tkmb.showerror(message="The following error occurred:\n\n{}".format(repr(e)))
+            tkmb.showerror(title=self.APP_NAME, message="The following error occurred:\n\n{}".format(repr(e)))
         self.close_button.config(state='active')
 
 
