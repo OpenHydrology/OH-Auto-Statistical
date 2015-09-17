@@ -26,7 +26,8 @@ import subprocess
 import queue
 import os.path
 import sys
-from . import Analysis
+import webbrowser
+from . import Analysis, UpdateChecker
 import autostatistical
 
 
@@ -61,6 +62,10 @@ class UI(tk.Tk):
         self.analysis = None
         #: Results report file path
         self.report_file = None
+        #: Application update checker
+        self.update_checker = None
+        #: Holds update info
+        self.update = None
 
         self.title(self.APP_NAME)
         self.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
@@ -73,19 +78,16 @@ class UI(tk.Tk):
 
         # Widgets
         self.columnconfigure(0, weight=1)
-        frame = ttk.Frame(self)
-        frame.grid(column=0, row=0, sticky=('n', 'e', 's', 'w'))
-        frame.columnconfigure(0, weight=1)
-        frame.rowconfigure(0, weight=1)
-        content = ttk.Frame(frame, padding=(10, 10, 10, 10))
+        self.frame = ttk.Frame(self)
+        self.frame.grid(column=0, row=0, sticky=('n', 'e', 's', 'w'))
+        self.frame.columnconfigure(0, weight=1)
+        self.frame.rowconfigure(0, weight=1)
+        content = ttk.Frame(self.frame, padding=(10, 10, 10, 10))
         content.grid(column=0, row=1, sticky=('n', 'e', 's', 'w'))
         content.columnconfigure(0, weight=1)
         content.rowconfigure(0, pad=10)
         content.rowconfigure(1, pad=10)
         content.rowconfigure(2, pad=10)
-        # TODO: create messagebar if needed
-        #MessageBar(frame, text="OH Auto Statistical update available", actiontext="Download",
-        #           command=self.destroy).grid(column=0, row=0, columnspan=2, sticky=('e', 'w'))
         ttk.Label(content, textvariable=self.status, anchor='w').grid(column=0, row=0, columnspan=2, sticky=('e', 'w'))
         ttk.Progressbar(content, variable=self.progress).grid(column=0, row=1, columnspan=2, sticky=('e', 'w'))
         open_report_chk = ttk.Checkbutton(content, text="Open report when closing application",
@@ -110,7 +112,7 @@ class UI(tk.Tk):
         else:
             self.status.set("No catchment file selected.")
 
-        self.after(1000, self.check_update)
+        self.after(2000, self.start_update_check)  # Delay start with 2 seconds
 
     def quit(self):
         """Intercept exit if analysis is running."""
@@ -154,16 +156,47 @@ class UI(tk.Tk):
             tkmb.showerror(title=self.APP_NAME, message="The following error occurred:\n\n{}".format(repr(e)))
         self.close_button.config(state='active')
 
-    def check_update(self):
-        print("Update available.")
-        return True
+    def start_update_check(self):
+        """Run update check in separate thread"""
+        self.update_checker = UpdateChecker()
+        self.update_checker.start()
+        self.periodiccall_update_check()
+
+    def periodiccall_update_check(self):
+        if self.update_checker.is_alive():
+            self.after(1000, self.periodiccall_update_check)
+        else:
+            self.finish_update_check()
+
+    def finish_update_check(self):
+        self.update = self.update_checker.join()
+        if self.update:
+            bar = MessageBar(self.frame, text="OH Auto Statistical version {} is available.".format(self.update.version),
+                             actiontext="Download", command=self.open_update_url)
+            bar.grid(column=0, row=0, columnspan=2, sticky=('e', 'w'))
+
+    def open_update_url(self):
+        if self.update:
+            webbrowser.open(self.update.url)
+            self.quit()  # Close application as well
 
 
 class MessageBar(ttk.Frame):
+    """
+    A message bar with action button to be placed at the top of the application window.
+    """
     bg_colour = '#d9edf7'
     text_colour = '#31708f'
 
     def __init__(self, parent, text, actiontext=None, command=None):
+        """
+        :param parent: Parent window/Tkinter frame
+        :param text: Text to display in message bar
+        :param actiontext: Text on action button
+        :param command: Callback function for action button
+        :return: Message bar
+        :rtype: :class:`ttk.Frame`
+        """
         ttk.Frame.__init__(self, parent, padding=(10, 5, 10, 5), style='MB.TFrame')
         style = ttk.Style()
         style.configure('MB.TFrame', background=self.bg_colour)

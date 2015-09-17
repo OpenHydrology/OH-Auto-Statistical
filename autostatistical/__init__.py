@@ -181,3 +181,19 @@ class Report(object):
         except:
             raise
         return file_path
+
+
+Update = namedtuple('Update', ['version', 'url'])
+
+
+class UpdateChecker(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+
+    def run(self):
+        pass
+
+    def join(self):
+        threading.Thread.join(self)
+        return Update(version='1.0.0',
+                      url='https://github.com/OpenHydrology/OH-Auto-Statistical/releases/latest')
