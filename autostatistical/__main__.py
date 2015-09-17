@@ -55,36 +55,51 @@ class UI(tk.Tk):
 
     def __init__(self, catchment_file):
         tk.Tk.__init__(self)
+        #: Input catchment file path
         self.catchment_file = catchment_file
-        self.title(self.APP_NAME)
-        self.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
-        self.msg_queue = queue.Queue()
-        self.progress = tk.IntVar()
-        self.progressbar = ttk.Progressbar(self, length=350, variable=self.progress)
-        self.status = tk.StringVar()
-        self.open_report = tk.IntVar()
-        self.statuslabel = ttk.Label(self, textvariable=self.status, anchor='w')
-        # TODO: create messagebar if needed
-        #self.messagebar = MessageBar(self, text="OH Auto Statistical update available", actiontext="Download",
-        #                             command=self.destroy)
-        self.open_report_ceck = ttk.Checkbutton(self, text="Open report when closing application",
-                                                variable=self.open_report)
-        if on_win:
-            self.open_report.set(1)
-        else:
-            self.open_report_ceck.config(state=tk.DISABLED)
-        self.close_button = ttk.Button(self, text="Close", command=self.quit, default='active')
-        self.messagebar.pack(fill='x')
-        self.statuslabel.pack(fill='x', padx=10, pady=10)
-        self.progressbar.pack(padx=10, pady=2)
-        self.close_button.pack(anchor='e', side='right', ipadx=5, padx=10, pady=10)
-        self.open_report_ceck.pack(anchor='w', padx=10, pady=10)
-        self.bind('<Return>', lambda e: self.quit())
-        self.protocol('WM_DELETE_WINDOW', self.quit)
         #: Analysis thread
         self.analysis = None
         #: Results report file path
         self.report_file = None
+
+        self.title(self.APP_NAME)
+        self.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
+
+        # Queues and variables
+        self.msg_queue = queue.Queue()
+        self.progress = tk.IntVar()
+        self.status = tk.StringVar()
+        self.open_report = tk.IntVar()
+
+        # Widgets
+        self.columnconfigure(0, weight=1)
+        frame = ttk.Frame(self)
+        frame.grid(column=0, row=0, sticky=('n', 'e', 's', 'w'))
+        frame.columnconfigure(0, weight=1)
+        frame.rowconfigure(0, weight=1)
+        content = ttk.Frame(frame, padding=(10, 10, 10, 10))
+        content.grid(column=0, row=1, sticky=('n', 'e', 's', 'w'))
+        content.columnconfigure(0, weight=1)
+        content.rowconfigure(0, pad=10)
+        content.rowconfigure(1, pad=10)
+        content.rowconfigure(2, pad=10)
+        # TODO: create messagebar if needed
+        #MessageBar(frame, text="OH Auto Statistical update available", actiontext="Download",
+        #           command=self.destroy).grid(column=0, row=0, columnspan=2, sticky=('e', 'w'))
+        ttk.Label(content, textvariable=self.status, anchor='w').grid(column=0, row=0, columnspan=2, sticky=('e', 'w'))
+        ttk.Progressbar(content, variable=self.progress).grid(column=0, row=1, columnspan=2, sticky=('e', 'w'))
+        open_report_chk = ttk.Checkbutton(content, text="Open report when closing application",
+                                          variable=self.open_report)
+        open_report_chk.grid(column=0, row=2, sticky='w', padx=(0, 20))
+        ttk.Button(content, text="Close", command=self.quit, default='active').grid(column=1, row=2)
+
+        if on_win:
+            self.open_report.set(1)
+        else:
+            open_report_chk.config(state=tk.DISABLED)
+
+        self.bind('<Return>', lambda e: self.quit())
+        self.protocol('WM_DELETE_WINDOW', self.quit)
 
         # If no file provided, show file dialog
         if not self.catchment_file:
@@ -94,6 +109,8 @@ class UI(tk.Tk):
             self.start_analysis(self.catchment_file)
         else:
             self.status.set("No catchment file selected.")
+
+        self.after(1000, self.check_update)
 
     def quit(self):
         """Intercept exit if analysis is running."""
@@ -136,6 +153,10 @@ class UI(tk.Tk):
             self.status.set("An error occurred.")
             tkmb.showerror(title=self.APP_NAME, message="The following error occurred:\n\n{}".format(repr(e)))
         self.close_button.config(state='active')
+
+    def check_update(self):
+        print("Update available.")
+        return True
 
 
 class MessageBar(ttk.Frame):
