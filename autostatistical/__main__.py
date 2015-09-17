@@ -93,7 +93,8 @@ class UI(tk.Tk):
         open_report_chk = ttk.Checkbutton(content, text="Open report when closing application",
                                           variable=self.open_report)
         open_report_chk.grid(column=0, row=2, sticky='w', padx=(0, 20))
-        ttk.Button(content, text="Close", command=self.quit, default='active').grid(column=1, row=2)
+        self.close_button = ttk.Button(content, text="Close", command=self.quit, default='active')
+        self.close_button.grid(column=1, row=2)
 
         if on_win:
             self.open_report.set(1)
