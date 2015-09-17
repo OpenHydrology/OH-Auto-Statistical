@@ -27,7 +27,7 @@ import queue
 import os.path
 import sys
 import webbrowser
-from . import Analysis, UpdateChecker
+from . import Analysis, UpdateChecker, Config
 import autostatistical
 
 
@@ -66,6 +66,8 @@ class UI(tk.Tk):
         self.update_checker = None
         #: Holds update info
         self.update = None
+        #: Settings from ini file
+        self.config = Config()
 
         self.title(self.APP_NAME)
         self.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
@@ -97,7 +99,8 @@ class UI(tk.Tk):
         self.close_button.grid(column=1, row=2)
 
         if on_win:
-            self.open_report.set(1)
+            if self.config.getboolean('application', 'open_report', fallback=True):
+                self.open_report.set(1)
         else:
             open_report_chk.config(state=tk.DISABLED)
 
@@ -113,7 +116,8 @@ class UI(tk.Tk):
         else:
             self.status.set("No catchment file selected.")
 
-        self.after(2000, self.start_update_check)  # Delay start with 2 seconds
+        if self.config.getboolean('application', 'check_updates', fallback=True):
+            self.after(2000, self.start_update_check)  # Delay start with 2 seconds
 
     def quit(self):
         """Intercept exit if analysis is running."""
@@ -121,8 +125,11 @@ class UI(tk.Tk):
             if self.analysis.is_alive():
                 return
         if self.open_report.get() and self.report_file:
-            subprocess.Popen(['notepad', self.report_file],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE) # Don't wait
+            subprocess.Popen([self.config.get('application', 'text_editor', fallback='notepad'), self.report_file],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)  # Don't wait
+
+        self.config['application']['open_report'] = 'yes' if self.open_report.get() else 'no'
+        self.config.save()
         self.destroy()
 
     def start_analysis(self, catchment_file):

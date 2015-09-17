@@ -21,12 +21,14 @@ from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
 
+import configparser
 import os.path
 import threading
 import queue
 import json
 from urllib import request
 import urllib.error
+from appdirs import AppDirs
 from collections import namedtuple
 from distutils.version import LooseVersion
 from datetime import date
@@ -53,6 +55,8 @@ class Analysis(threading.Thread):
         threading.Thread.__init__(self)
         #: Path to catchment file
         self.catchment_file = catchment_file
+        #: Settings from ini file
+        self.config = Config()
         #: Queue for passing messages to UI
         self.msg_queue = msg_queue if msg_queue is not None else queue.Queue()
         #: Name of analysis/catchment based on file name
@@ -83,10 +87,11 @@ class Analysis(threading.Thread):
         if self.db_session.query(entities.Catchment).count() == 0:
             self.msg_queue.put(Progress("Downloading and storing NRFA data.", 10))
             loaders.nrfa_to_db(self.db_session, autocommit=True, incl_pot=False)
-        if fehdata.update_available():
-            self.msg_queue.put(Progress("Downloading and storing NRFA data update.", 10))
-            db.empty_db_tables()
-            loaders.nrfa_to_db(self.db_session, autocommit=True, incl_pot=False)
+        if self.config.getboolean('application', 'check_nrfa_updates', fallback=True):
+            if fehdata.update_available():
+                self.msg_queue.put(Progress("Downloading and storing NRFA data update.", 10))
+                db.empty_db_tables()
+                loaders.nrfa_to_db(self.db_session, autocommit=True, incl_pot=False)
 
         # Add subject catchment to db if gauged
         if self.catchment.record_length > 0:
@@ -217,3 +222,41 @@ class UpdateChecker(threading.Thread):
     def join(self):
         threading.Thread.join(self)
         return self.update
+
+
+class Config(configparser.ConfigParser):
+    """
+    Configuration/settings object.
+
+    Settings are read from a `config.ini` file within the python package (default values) or from the user's appdata
+    folder. Data is read immediately when object initiated. Data are only written to user file.
+    """
+    FILE_NAME = 'config.ini'
+    APP_NAME = 'autostatistical'
+    APP_ORG = 'Open Hydrology'
+
+    def __init__(self):
+        configparser.ConfigParser.__init__(self)
+
+        here = os.path.abspath(os.path.dirname(__file__))
+        self._app_folders = AppDirs(self.APP_NAME, self.APP_ORG)
+        self._default_config_file = os.path.join(here, self.FILE_NAME)
+
+        os.makedirs(self._app_folders.user_config_dir, exist_ok=True)  # Create folder in advance if necessary
+        self._user_config_file = os.path.join(self._app_folders.user_config_dir, self.FILE_NAME)
+
+        self.read_file(open(self._default_config_file, encoding='utf-8'))
+        self.read()
+
+    def read(self):
+        """
+        Read config data from user config file.
+        """
+        configparser.ConfigParser.read(self, self._user_config_file, encoding='utf-8')
+
+    def save(self):
+        """
+        Write data to user config file.
+        """
+        with open(self._user_config_file, 'w', encoding='utf-8') as f:
+            self.write(f)

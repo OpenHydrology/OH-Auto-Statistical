@@ -35,6 +35,9 @@ Section "un.${APP_NAME}" uninstall_app_packages
   DeleteRegKey HKLM "${UNINST_KEY}"
 SectionEnd
 
+Section "un.Settings" uninstall_settings
+  RmDir /r "$LOCALAPPDATA\${ORG_NAME}\autostatistical"
+SectionEnd
 
 Section "un.NRFA data" uninstall_nrfa
   RmDir /r "$LOCALAPPDATA\${ORG_NAME}\fehdata"
