@@ -171,8 +171,10 @@ class UI(tk.Tk):
     def finish_update_check(self):
         self.update = self.update_checker.join()
         if self.update:
-            bar = MessageBar(self.frame, text="OH Auto Statistical version {} is available.".format(self.update.version),
-                             actiontext="Download", command=self.open_update_url)
+            bar = MessageBar(self.frame,
+                             text="OH Auto Statistical version {} is available.".format(self.update.version),
+                             actiontext="Download",
+                             command=self.open_update_url)
             bar.grid(column=0, row=0, columnspan=2, sticky=('e', 'w'))
 
     def open_update_url(self):
