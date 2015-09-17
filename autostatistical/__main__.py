@@ -109,8 +109,10 @@ class UI(tk.Tk):
 
         # If no file provided, show file dialog
         if not self.catchment_file:
+            initialdir = self.config.get('application', 'default_folder', fallback=None)
             self.catchment_file = tkfd.askopenfilename(filetypes=[("Catchment descriptor files", "*.cd3 *.xml")],
-                                                       title="Select catchment file")
+                                                       title="Select catchment file",
+                                                       initialdir=initialdir)
         if self.catchment_file:
             self.start_analysis(self.catchment_file)
         else:
