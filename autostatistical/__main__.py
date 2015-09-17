@@ -207,7 +207,7 @@ class MessageBar(ttk.Frame):
         self.columnconfigure(0, weight=1)
         ttk.Label(self, text=text, anchor='w', style='MB.TLabel').grid(column=0, row=0, sticky=('e', 'w'))
         if actiontext and command:
-            ttk.Button(self, text=actiontext, command=command).grid(column=1, row=0, sticky='e')
+            ttk.Button(self, text=actiontext, command=command).grid(column=1, row=0, sticky='e', padx=(5, 0))
 
 
 if __name__ == "__main__":

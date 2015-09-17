@@ -24,7 +24,11 @@ del get_versions
 import os.path
 import threading
 import queue
+import json
+from urllib import request
+import urllib.error
 from collections import namedtuple
+from distutils.version import LooseVersion
 from datetime import date
 from floodestimation import loaders
 from floodestimation import db
@@ -183,17 +187,33 @@ class Report(object):
         return file_path
 
 
+#: Update information. `version` key is :class:`distutils.version.Version` object
 Update = namedtuple('Update', ['version', 'url'])
 
 
 class UpdateChecker(threading.Thread):
+    """
+    Checks for application updates based on GitHub repo published releases
+    """
+    API_URL = 'https://api.github.com/repos/openhydrology/oh-auto-statistical/releases/latest'
+    TAG_PREFIX = 'v'
+
     def __init__(self):
         threading.Thread.__init__(self)
+        self.update = None
 
     def run(self):
-        pass
+        try:
+            with request.urlopen(self.API_URL, timeout=5) as f:
+                data = json.loads(f.read().decode('utf-8'))
+                repo_version = LooseVersion(data['tag_name'].lstrip(self.TAG_PREFIX))
+                url = data['html_url']
+        except urllib.error.URLError:
+            return
+        current_version = LooseVersion(__version__)
+        if repo_version > current_version:
+            self.update = Update(version=repo_version, url=url)
 
     def join(self):
         threading.Thread.join(self)
-        return Update(version='1.0.0',
-                      url='https://github.com/OpenHydrology/OH-Auto-Statistical/releases/latest')
+        return self.update
