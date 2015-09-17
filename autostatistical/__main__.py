@@ -60,18 +60,22 @@ class UI(tk.Tk):
         self.iconbitmap(os.path.join(os.path.dirname(__file__), 'application.ico'))
         self.msg_queue = queue.Queue()
         self.progress = tk.IntVar()
-        self.progressbar = ttk.Progressbar(self, orient='horizontal', length=300, mode='determinate',
-                                           variable=self.progress)
+        self.progressbar = ttk.Progressbar(self, length=350, variable=self.progress)
         self.status = tk.StringVar()
         self.open_report = tk.IntVar()
-        self.listbox = tk.Label(self, textvariable=self.status, anchor='w')
-        self.open_report_ceck = tk.Checkbutton(self, text="Open report when closing application", variable=self.open_report)
+        self.statuslabel = ttk.Label(self, textvariable=self.status, anchor='w')
+        # TODO: create messagebar if needed
+        #self.messagebar = MessageBar(self, text="OH Auto Statistical update available", actiontext="Download",
+        #                             command=self.destroy)
+        self.open_report_ceck = ttk.Checkbutton(self, text="Open report when closing application",
+                                                variable=self.open_report)
         if on_win:
             self.open_report.set(1)
         else:
             self.open_report_ceck.config(state=tk.DISABLED)
-        self.close_button = tk.Button(self, text="Close", command=self.quit, default='active')
-        self.listbox.pack(fill='x', padx=10, pady=10)
+        self.close_button = ttk.Button(self, text="Close", command=self.quit, default='active')
+        self.messagebar.pack(fill='x')
+        self.statuslabel.pack(fill='x', padx=10, pady=10)
         self.progressbar.pack(padx=10, pady=2)
         self.close_button.pack(anchor='e', side='right', ipadx=5, padx=10, pady=10)
         self.open_report_ceck.pack(anchor='w', padx=10, pady=10)
@@ -132,6 +136,24 @@ class UI(tk.Tk):
             self.status.set("An error occurred.")
             tkmb.showerror(title=self.APP_NAME, message="The following error occurred:\n\n{}".format(repr(e)))
         self.close_button.config(state='active')
+
+
+class MessageBar(ttk.Frame):
+    bg_colour = '#d9edf7'
+    text_colour = '#31708f'
+
+    def __init__(self, parent, text, actiontext=None, command=None):
+        ttk.Frame.__init__(self, parent, padding=(10, 5, 10, 5), style='MB.TFrame')
+        style = ttk.Style()
+        style.configure('MB.TFrame', background=self.bg_colour)
+        style.configure('MB.TFrame', relief=tk.GROOVE)
+        style.configure('MB.TLabel', background=self.bg_colour)
+        style.configure('MB.TLabel', foreground=self.text_colour)
+        self.grid(column=0, row=0)
+        self.columnconfigure(0, weight=1)
+        ttk.Label(self, text=text, anchor='w', style='MB.TLabel').grid(column=0, row=0, sticky=('e', 'w'))
+        if actiontext and command:
+            ttk.Button(self, text=actiontext, command=command).grid(column=1, row=0, sticky='e')
 
 
 if __name__ == "__main__":
