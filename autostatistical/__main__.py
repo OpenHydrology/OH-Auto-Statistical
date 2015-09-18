@@ -25,7 +25,6 @@ import tkinter.filedialog as tkfd
 import subprocess
 import queue
 import os.path
-import sys
 import webbrowser
 from . import Analysis, UpdateChecker, Config
 import autostatistical
