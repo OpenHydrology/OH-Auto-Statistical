@@ -31,9 +31,6 @@ from . import Analysis, UpdateChecker, Config
 import autostatistical
 
 
-on_win = sys.platform == 'win32'
-
-
 def main():
     p = argparse.ArgumentParser(prog='autostatistical', description='OH Auto Statistical')
     p.add_argument(
@@ -93,17 +90,14 @@ class UI(tk.Tk):
         content.rowconfigure(2, pad=10)
         ttk.Label(content, textvariable=self.status, anchor='w').grid(column=0, row=0, columnspan=2, sticky=('e', 'w'))
         ttk.Progressbar(content, variable=self.progress).grid(column=0, row=1, columnspan=2, sticky=('e', 'w'))
-        open_report_chk = ttk.Checkbutton(content, text="Open report when closing application",
-                                          variable=self.open_report)
-        open_report_chk.grid(column=0, row=2, sticky='w', padx=(0, 20))
+        self.open_report_chk = ttk.Checkbutton(content, text="Open report when closing application",
+                                               variable=self.open_report)
+        self.open_report_chk.grid(column=0, row=2, sticky='w', padx=(0, 20))
         self.close_button = ttk.Button(content, text="Close", command=self.quit, default='active')
         self.close_button.grid(column=1, row=2)
 
-        if on_win:
-            if self.config.getboolean('application', 'open_report', fallback=True):
-                self.open_report.set(1)
-        else:
-            open_report_chk.config(state=tk.DISABLED)
+        if self.config.getboolean('application', 'open_report', fallback=True):
+            self.open_report.set(1)
 
         self.bind('<Return>', lambda e: self.quit())
         self.protocol('WM_DELETE_WINDOW', self.quit)
@@ -137,8 +131,10 @@ class UI(tk.Tk):
                 subprocess.Popen([text_editor, self.report_file],
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)  # Don't wait
             except FileNotFoundError:
-                tkmb.showwarning(self.APP_NAME, "Cannot open report with application {}. Check the text editor \
-                                 settings and try again.".format(text_editor))
+                self.open_report.set(0)
+                self.open_report_chk.configure(state=tk.DISABLED)
+                tkmb.showwarning(self.APP_NAME, "Cannot open report with application {}. Check the text editor "
+                                 "settings and try again.".format(text_editor))
                 return
         self.config.save()
         self.destroy()
