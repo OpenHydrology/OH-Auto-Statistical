@@ -138,7 +138,7 @@ class UI(tk.Tk):
         self.config.save()
         self.destroy()
 
-    def onchange_open_report(self, *args):
+    def onchange_open_report(self, *dummy):
         """Callback method for `open_report` variable"""
         self.config['application']['open_report'] = 'yes' if self.open_report.get() else 'no'
 
