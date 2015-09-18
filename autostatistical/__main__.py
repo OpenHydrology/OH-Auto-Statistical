@@ -77,6 +77,7 @@ class UI(tk.Tk):
         self.progress = tk.IntVar()
         self.status = tk.StringVar()
         self.open_report = tk.IntVar()
+        self.open_report.trace('w', self.onchange_open_report)  # Save to config on change
 
         # Widgets
         self.columnconfigure(0, weight=1)
@@ -131,12 +132,20 @@ class UI(tk.Tk):
             if self.analysis.is_alive():
                 return
         if self.open_report.get() and self.report_file:
-            subprocess.Popen([self.config.get('application', 'text_editor', fallback='notepad'), self.report_file],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)  # Don't wait
-
-        self.config['application']['open_report'] = 'yes' if self.open_report.get() else 'no'
+            text_editor = self.config.get('application', 'text_editor', fallback='notepad')
+            try:
+                subprocess.Popen([text_editor, self.report_file],
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)  # Don't wait
+            except FileNotFoundError:
+                tkmb.showwarning(self.APP_NAME, "Cannot open report with application {}. Check the text editor \
+                                 settings and try again.".format(text_editor))
+                return
         self.config.save()
         self.destroy()
+
+    def onchange_open_report(self, *args):
+        """Callback method for `open_report` variable"""
+        self.config['application']['open_report'] = 'yes' if self.open_report.get() else 'no'
 
     def start_analysis(self, catchment_file):
         """Run analysis is separate thread."""
