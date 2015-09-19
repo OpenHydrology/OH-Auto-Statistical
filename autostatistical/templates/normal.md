@@ -1,6 +1,7 @@
 # Flood Estimation Report
 
-Date:          {{ report_date|default(None)|dateformat }}
+Date:          {{ report_date|default(None)|dateformat }}  
+Software:      OH Auto Statistical version {{ version }}
 
 ## Input data
 

@@ -80,6 +80,7 @@ class Analysis(threading.Thread):
 
     def _load_data(self):
         self.results['report_date'] = date.today()
+        self.results['version'] = __version__
         self.catchment = loaders.from_file(self.catchment_file)
         self.results['catchment'] = self.catchment
         self.db_session = db.Session()
