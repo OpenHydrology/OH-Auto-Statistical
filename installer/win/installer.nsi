@@ -95,12 +95,6 @@ SectionEnd
 
 
 Section "${APP_NAME} application files" application_packages
-  ; Remove any existing application files
-  IfFileExists "$INSTDIR\*.*" 0 +3
-    DetailPrint "Deleting existing ${APP_NAME} application files in $INSTDIR"
-    RMDir /r "$INSTDIR"
-
-  ; Create python environment with conda and install packages
   !define CONDA "$LOCALAPPDATA\Continuum\Miniconda3\Scripts\conda"
 
   ; Update miniconda package manager only if we haven't just installed it
@@ -109,11 +103,24 @@ Section "${APP_NAME} application files" application_packages
     DetailPrint "Updating Conda package manager."
     ExecDos::exec /DETAILED '"${CONDA}" update -y conda' "" ""
 
+  ; Create conda environment if necessary
+  IfFileExists $INSTDIR\*.* +10 0
+    DetailPrint "Creating application environment."
+    ExecDos::exec /DETAILED '"${CONDA}" create -y -n "_app_own_environment_${PACKAGE_NAME}" python=3.4*' "" ""
+
+    Pop $0
+    IntCmp $0 0 +4 0 0
+      MessageBox MB_OK "Application environment could not be created."
+      DetailPrint "Application environment could not be created (exit code $0)."
+      Abort
+    DetailPrint "Application environment created."
+
+  ; Install or update packages into environment
   DetailPrint "Searching in channel(s) -c ${CONDA_CHANNEL}."
   DetailPrint "Installing application files (version ${VERSION}-${BUILD})."
 
-  ExecDos::exec /DETAILED '"${CONDA}" create -y -n "_app_own_environment_${PACKAGE_NAME}" \
-    -c ${CONDA_CHANNEL} python ${PACKAGE_NAME}=${VERSION}=${BUILD}' "" ""
+  ExecDos::exec /DETAILED '"${CONDA}" install -y -n "_app_own_environment_${PACKAGE_NAME}" \
+    -c ${CONDA_CHANNEL} ${PACKAGE_NAME}=${VERSION}=${BUILD}' "" ""
 
   Pop $0
   IntCmp $0 0 +4 0 0
@@ -136,9 +143,11 @@ Section "${APP_NAME} application files" application_packages
 SectionEnd
 
 
-Section "Start menu"
-  SetOutPath "$INSTDIR\icons"
-  File "images\*.ico"
+Section -start_menu  ; Compulsory
+  DetailPrint "Creating Windows Start Menu shortcuts."
+  SetOutPath $INSTDIR\icons
+  Delete $INSTDIR\icons\*.*
+  File images\*.ico
 
   RMDir /r "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
   SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
@@ -150,7 +159,7 @@ Section "Start menu"
 SectionEnd
 
 
-Section "Download NRFA data"
+Section "Download NRFA data" download_nrfa
   DetailPrint "Downloading NRFA data (may take a while)."
   ExecDos::exec /DETAILED "$INSTDIR\Scripts\download_nrfa.exe" "" ""
   DetailPrint "Completed: NRFA data downloaded completed."
@@ -170,11 +179,18 @@ Function .onInit
   SectionSetFlags ${application_packages} 17
 
   ; Check if Miniconda has already been installed
-  IfFileExists "$LOCALAPPDATA\Continuum\Miniconda3\Uninstall-Anaconda.exe" 0 +5
+  IfFileExists $LOCALAPPDATA\Continuum\Miniconda3\Uninstall-Anaconda.exe 0 +5
     SectionSetFlags ${miniconda_installer} 16 ; Unselected and read-only
     SectionGetText ${miniconda_installer} $0
     StrCpy $0 "$0 (already installed)"
     SectionSetText ${miniconda_installer} $0
+
+  ; Check if OH AutoStatistical has already been installed
+  IfFileExists $INSTDIR\*.* 0 +5
+    SectionSetFlags ${download_nrfa} 0 ; Unselected
+    SectionGetText ${download_nrfa} $0
+    StrCpy $0 "$0 (previously downloaded)"
+    SectionSetText ${download_nrfa} $0
 FunctionEnd
 
 
