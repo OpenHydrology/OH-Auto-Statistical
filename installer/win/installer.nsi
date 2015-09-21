@@ -78,7 +78,7 @@ Section "Conda package manager" miniconda_installer
   NSISdl::download /TIMEOUT=1800000 ${CONDA_URL} Miniconda3_setup.exe
   Pop $R0
   StrCmp $R0 "success" +4
-    MessageBox MB_OK "Conda could not be downloaded."
+    MessageBox MB_OK|MB_ICONEXCLAMATION "Conda could not be downloaded."
     DetailPrint "Conda could not be downloaded (exit code $R0)."
     Abort
   DetailPrint "Conda successfully downloaded."
@@ -101,30 +101,30 @@ Section "${APP_NAME} application files" application_packages
   SectionGetFlags ${miniconda_installer} $0
   IntCmp $0 16 0 +3 +3
     DetailPrint "Updating Conda package manager."
-    ExecDos::exec /DETAILED '"${CONDA}" update -y conda' "" ""
+    ExecDos::exec /DETAILED '"${CONDA}" update -y -q conda' "" ""
 
   ; Create conda environment if necessary
-  IfFileExists $INSTDIR\*.* +10 0
+  IfFileExists "$INSTDIR\python.exe" +10 0
     DetailPrint "Creating application environment."
-    ExecDos::exec /DETAILED '"${CONDA}" create -y -n "_app_own_environment_${PACKAGE_NAME}" python=3.4*' "" ""
+    ExecDos::exec /DETAILED '"${CONDA}" create -y -q -n "_app_own_environment_${PACKAGE_NAME}" python=3.4*' "" ""
 
     Pop $0
     IntCmp $0 0 +4 0 0
-      MessageBox MB_OK "Application environment could not be created."
+      MessageBox MB_OK|MB_ICONEXCLAMATION "Application environment could not be created."
       DetailPrint "Application environment could not be created (exit code $0)."
       Abort
     DetailPrint "Application environment created."
 
   ; Install or update packages into environment
   DetailPrint "Searching in channel(s) -c ${CONDA_CHANNEL}."
-  DetailPrint "Installing application files (version ${VERSION}-${BUILD})."
+  DetailPrint "Downloading and installing application files (version ${VERSION}-${BUILD})."
 
-  ExecDos::exec /DETAILED '"${CONDA}" install -y -n "_app_own_environment_${PACKAGE_NAME}" \
+  ExecDos::exec /DETAILED '"${CONDA}" install -y -q -n "_app_own_environment_${PACKAGE_NAME}" \
     -c ${CONDA_CHANNEL} ${PACKAGE_NAME}=${VERSION}=${BUILD}' "" ""
 
   Pop $0
   IntCmp $0 0 +4 0 0
-    MessageBox MB_OK "Application files could not be installed."
+    MessageBox MB_OK|MB_ICONEXCLAMATION "Application files could not be installed."
     DetailPrint "Application files could not be installed (exit code $0)."
     Abort
   DetailPrint "Application files installed."
@@ -145,17 +145,20 @@ SectionEnd
 
 Section -start_menu  ; Compulsory
   DetailPrint "Creating Windows Start Menu shortcuts."
-  SetOutPath $INSTDIR\icons
-  Delete $INSTDIR\icons\*.*
+  SetOutPath "$INSTDIR\icons"
+  Delete "$INSTDIR\icons\*.*"
   File images\*.ico
 
-  RMDir /r "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
-  SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
-  ; Run application
-  CreateShortcut "OH Auto Statistical ${VERSION}.lnk" "$INSTDIR\pythonw.exe" "-m ${PACKAGE_NAME}" \
-    "$INSTDIR\icons\application.ico" 0 "" "" "Run Open Hydrology Auto Statistical."
+  Delete "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}\*.*"
   ; Link to online documentation
+  SetOutPath "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}"
   File "..\..\docs\source\*.url"
+
+  SetOutPath "$PROFILE"  ; For shortcut's working folder
+  ; Run application
+  CreateShortcut "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}\OH Auto Statistical ${VERSION}.lnk" \
+    "$INSTDIR\pythonw.exe" "-m ${PACKAGE_NAME}" \
+    "$INSTDIR\icons\application.ico" 0 "" "" "Run Open Hydrology Auto Statistical."
 SectionEnd
 
 
@@ -178,15 +181,23 @@ Function .onInit
   SectionSetFlags ${miniconda_installer} 17 ; Selected and read-only
   SectionSetFlags ${application_packages} 17
 
+  ; Check if application version <= 0.5.5 previously installed
+  IfFileExists "$PROGRAMFILES64\${ORG_NAME}\${APP_NAME}" 0 +4
+    MessageBox MB_OK|MB_ICONEXCLAMATION \
+      "${APP_NAME} version 0.5.5 or less detected. This version must be uninstalled first through the Microsoft \
+      Windows Control Panel."
+    DetailPrint "Old version of ${APP_NAME} must be uninstalled first."
+    Abort
+
   ; Check if Miniconda has already been installed
-  IfFileExists $LOCALAPPDATA\Continuum\Miniconda3\Uninstall-Anaconda.exe 0 +5
+  IfFileExists "$LOCALAPPDATA\Continuum\Miniconda3\Uninstall-Anaconda.exe" 0 +5
     SectionSetFlags ${miniconda_installer} 16 ; Unselected and read-only
     SectionGetText ${miniconda_installer} $0
     StrCpy $0 "$0 (already installed)"
     SectionSetText ${miniconda_installer} $0
 
-  ; Check if OH AutoStatistical has already been installed
-  IfFileExists $INSTDIR\*.* 0 +5
+  ; Check if application has already been installed
+  IfFileExists "$INSTDIR\python.exe" 0 +5
     SectionSetFlags ${download_nrfa} 0 ; Unselected
     SectionGetText ${download_nrfa} $0
     StrCpy $0 "$0 (previously downloaded)"
