@@ -45,10 +45,10 @@
 !define MUI_FINISHPAGE_SHOWREADME_TEXT "Read the manual"
 !define MUI_COMPONENTSPAGE_NODESC
 !define MUI_WELCOMEFINISHPAGE_BITMAP "images\OH.portrait.bmp"
-!define MUI_ICON "images\computer.ico"
+!define MUI_ICON "images\setup.ico"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "images\OH.landscape.bmp"
+!define MUI_HEADERIMAGE_BITMAP "images\setup.bmp"
 !define MUI_HEADERIMAGE_BITMAP_STRETCH "AspectFitHeight"
 !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PACKAGE_NAME}"
 
