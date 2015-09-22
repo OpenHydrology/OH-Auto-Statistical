@@ -159,6 +159,9 @@ Section -start_menu  ; Compulsory
   CreateShortcut "$SMPROGRAMS\${ORG_NAME}\${APP_NAME}\OH Auto Statistical ${VERSION}.lnk" \
     "$INSTDIR\pythonw.exe" "-m ${PACKAGE_NAME}" \
     "$INSTDIR\icons\application.ico" 0 "" "" "Run Open Hydrology Auto Statistical."
+
+  DetailPrint "Refreshing Start Menu icons."
+  ExecDos::exec /DETAILED "ie4uinit.exe -ClearIconCache" "" ""
 SectionEnd
 
 
