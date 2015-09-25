@@ -214,7 +214,7 @@ class UpdateChecker(threading.Thread):
                 data = json.loads(f.read().decode('utf-8'))
                 repo_version = LooseVersion(data['tag_name'].lstrip(self.TAG_PREFIX))
                 url = data['html_url']
-        except urllib.error.URLError:
+        except BaseException:  # Anything going wrong: we don't care
             return
         current_version = LooseVersion(__version__)
         if repo_version > current_version:
