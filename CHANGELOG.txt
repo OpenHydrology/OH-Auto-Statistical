@@ -2,6 +2,7 @@ version 0.8.0 (2015-09-25)
 --------------------------
 - Main window tweaks
 - Check for available application updates
+- Improved conda upgrade process
 
 version 0.7.0 (2015-09-15)
 --------------------------
