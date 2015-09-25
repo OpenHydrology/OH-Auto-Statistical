@@ -32,12 +32,17 @@ Section "un.${APP_NAME}" uninstall_app_packages
   RmDir /r $INSTDIR
 
   ; Uninstaller registry
-  DeleteRegKey HKLM "${UNINST_KEY}"
+  DeleteRegKey HKCU "${UNINST_KEY}"
 SectionEnd
 
+Section "un.Settings" uninstall_settings
+  RmDir /r "$LOCALAPPDATA\${ORG_NAME}\autostatistical"
+  RmDir "$LOCALAPPDATA\${ORG_NAME}"
+SectionEnd
 
 Section "un.NRFA data" uninstall_nrfa
   RmDir /r "$LOCALAPPDATA\${ORG_NAME}\fehdata"
+  RmDir "$LOCALAPPDATA\${ORG_NAME}"
 SectionEnd
 
 

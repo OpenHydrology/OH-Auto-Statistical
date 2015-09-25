@@ -6,6 +6,7 @@ setup(
     packages=['autostatistical'],
     package_data={
         'autostatistical': ['application.ico',
+                            'config.ini',
                             'templates/*.*']
     },
     zip_safe=False,

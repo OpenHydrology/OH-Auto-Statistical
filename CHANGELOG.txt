@@ -1,7 +1,12 @@
+version 0.8.0 (2015-09-25)
+--------------------------
+- Main window tweaks
+- Check for available application updates
+
 version 0.7.0 (2015-09-15)
 --------------------------
 - Analysis progress window
-- Check fro NRFA data update
+- Check for NRFA data update
 
 version 0.6.0 (2015-09-04)
 --------------------------

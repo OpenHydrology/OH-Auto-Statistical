@@ -64,7 +64,7 @@ class TestReport(unittest.TestCase):
                 for line in f:
                     if line.startswith("Date: "):
                         break
-        self.assertEqual(line, "Date:          " + date.today().strftime('%d/%m/%Y') + "\n")
+        self.assertEqual(line, "Date:          " + date.today().strftime('%d/%m/%Y') + "  \n")
 
     def test_results(self):
         analysis = astat.Analysis('./autostatistical/tests/data/17002.CD3')

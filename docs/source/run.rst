@@ -15,8 +15,6 @@ To undertake an analysis:
 
 2. Start OH Auto Statistical from the Windows Start Menu.
 
-   .. image:: _static/start-menu.png
-
 3. Browse to and select the catchment file to run the analysis.
 
    .. image:: _static/run-analysis.png
