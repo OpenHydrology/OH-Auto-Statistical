@@ -3,15 +3,16 @@ user: openhydrology
 build_targets: conda
 
 platform:
-  - linux-64
+- linux-64
 
 engine:
-  - python=3.3
-  - python=3.4
+- python=3.3
+- python=3.4
 
 before_script:
-  - conda update --name=root conda conda-build
-  - conda config --add channels https://conda.anaconda.org/openhydrology
+- conda update --name=root conda conda-build
+- conda install --name=root anaconda-client
+- conda config --add channels https://conda.anaconda.org/openhydrology
 
 script:
-  - conda build .
+- conda build .
